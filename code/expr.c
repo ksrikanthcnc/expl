@@ -1,12 +1,15 @@
-struct tnode* createtree(int t, int num,char *str,int nt,struct tnode *l, struct tnode *d,struct tnode *r,struct Gsymbol *gentry){
+struct tnode* createtree(int t, int num,char *str,int nt,struct tnode *l, struct tnode *d,struct tnode *r,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry){
+	struct Paramstruct *ptemp;
+	struct tnode *atemp,*treetemp;
 	switch(nt){
 		case nt_NODE:
 			break;
 		case nt_PLUS:	
 		case nt_MINUS:
-			if(	!(l->nt == nt_PTR && (r->nt==nt_PTR || r->nt==nt_NUM))	&&
-				!(r->nt == nt_PTR && (l->nt==nt_PTR || l->nt==nt_NUM)))
-					mismatch(nt, l->t, r->t);
+			if(l->nt==nt_PTR || r->nt==nt_PTR)
+				if(	!(l->nt == nt_PTR && (r->nt==nt_PTR || r->nt==nt_NUM))	&&
+					!(r->nt == nt_PTR && (l->nt==nt_PTR || l->nt==nt_NUM))){
+						mismatch(nt, l->t, r->t);}
 			if(l->nt==nt_PTR && r->nt==nt_PTR)
 				if(l->t!=r->t)
 					mismatch(nt, l->t, r->t);
@@ -53,70 +56,220 @@ struct tnode* createtree(int t, int num,char *str,int nt,struct tnode *l, struct
 		case nt_IFELSE:
 		case nt_WHILE:
 			if(l->t!=t_BOOL)
-				{printf("CHECK:Impossible mismatch\n");mismatch(nt,l->t,-1);}
-			break;}
+				{printf("line:%d\tCHECK:Impossible mismatch in WHILE\n",line);mismatch(nt,l->t,-1);}
+			break;
+		case nt_FUNC:
+			ptemp=GLookup(str)->paramlist;
+			atemp=arglist;
+			int param_pos=0;
+			while(ptemp!=NULL && atemp!=NULL){
+				param_pos++;
+				if(ptemp->type!=atemp->t){
+					printf("line:%d\ttype mismatch in Function call at '%d' parameter from right\n",line,param_pos);
+					printf("Declared type:'%d'\nCalled type:'%d'\n",ptemp->type,atemp->t);
+					exit(1);}
+				ptemp=ptemp->next;
+				atemp=atemp->down;}
+			break;
+		case nt_RET:
+			if(t!=d->t)
+				mismatch(nt,t,d->t);
+		case nt_BRKP:
+			break;
+		case nt_EXIT:
+			break;
+			}
 		
 	
-	struct tnode *temp=(struct tnode *)malloc(sizeof(struct tnode));
-	temp->num=num;
-	temp->t=t;
-	temp->nt=nt;
+	treetemp=(struct tnode *)malloc(sizeof(struct tnode));
+	treetemp->num=num;
+	treetemp->t=t;
+	treetemp->nt=nt;
 	if(str!=NULL)
-		temp->str=strdup(str);
+		treetemp->str=strdup(str);
 	else
-		temp->str=NULL;
-	temp->Gentry=gentry;
-	temp->left=l;
-	temp->right=r;
-	temp->down=d;
-	return temp;}
+		treetemp->str=NULL;
+	treetemp->Gentry=gentry;
+	treetemp->Lentry=lentry;
+	treetemp->arglist=arglist;
+	treetemp->left=l;
+	treetemp->right=r;
+	treetemp->down=d;
+	return treetemp;}
 
 
-struct Gsymbol *Lookup(char* name){
-	//printf("Searching symbol table...\n");
+void GInstall(char *name, int type, int size){
+	//printf("Install-ing in Global Symbol table...\n");
+	struct Gsymbol* gitemp;
+	if(GLookup(name)!=NULL){
+		printf("line:%d\tGvariable:'%s' redeclared\n",line,name);
+		exit(1);
+	}
+	/*
+	gtail->name=name;
+	gtail->type=type;
+	gtail->size=size;
+	gtail->binding=binding;
+	binding=binding+size;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tarr:%d\n",gtail->name,gtail->type,gtail->size,gtail->arr);
+	gitemp=malloc(sizeof(struct Gsymbol));
+	gitemp->next=NULL;
+	gtail->next=gitemp;
+	gtail=gitemp;
+	*/
+	gitemp=malloc(sizeof(struct Gsymbol));
+	gitemp->name=name;
+	gitemp->type=type;
+	gitemp->size=size;
+	gitemp->binding=binding;
+	binding=binding+size;
+	gitemp->next=ghead;
+	ghead=gitemp;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tbinding:'%d'\tarr:%d\n",gitemp->name,gitemp->type,gitemp->size,gitemp->binding,gitemp->arr);
+	//printf("Install-ed...\n\n");
+	;}
+
+struct Gsymbol *GLookup(char* name){
+	//printf("  Searching symbol table...\n");
 	struct Gsymbol* temp;
-	temp=head;
-	while(temp!=tail){
-		//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tarr:%d\n",temp->name,temp->type,temp->size,temp->arr);
+	temp=ghead;
+	while(temp!=NULL){
+		//printf("  name:'%s'\ttype:'%d'\tsize:'%d'\tbinding:'%d'\tarr:%d\n",temp->name,temp->type,temp->size,temp->binding,temp->arr);
+		if(strcmp(temp->name,name)==0){
+			//printf("  Found!\n");
+			return temp;}
+		temp=temp->next;}
+	//printf("  Not found...\n");
+	return NULL;}
+
+void PInstall(char* name, int type){
+	//printf("Install-ing in ParamList...\n");
+	if(PLookup(name)!=NULL){
+		printf("line:%d\tPvariable:'%s' redeclared\n",line,name);
+		exit(1);
+	}
+	/*
+	ptail->name=name;
+	ptail->type=type;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\t\n",ptail->name,ptail->type);
+	struct Paramstruct* temp=malloc(sizeof(struct Paramstruct));
+	temp->next=NULL;
+	ptail->next=temp;
+	ptail=temp;
+	*/
+	struct Paramstruct* pitemp=malloc(sizeof(struct Paramstruct));
+	pitemp->name=name;
+	pitemp->type=type;
+	pitemp->next=phead;
+	phead=pitemp;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\t\n",ptail->name,ptail->type);
+	//printf("Install-ed...\n\n");
+	;}
+
+struct Paramlist* PLookup(char* name){
+	struct Paramstruct* temp;
+	temp=phead;
+	while(temp!=NULL){
+		//printf("  name:'%s'\ttype:'%d'\n",temp->name,temp->type);
+		if(strcmp(temp->name,name)==0){
+			//printf("  Found!\n");
+			return temp;}
+		temp=temp->next;}
+	//printf("  Not found!\n");
+	return NULL;}
+
+void LInstall(char *name, int type){
+	//printf("Install-ing in Local Symbol table...\n");
+	if(LLookup(name)!=NULL){
+		printf("line:%d\tLvariable:'%s' redeclared\n",line,name);
+		exit(1);
+	}
+	/*
+	ltail->name=name;
+	ltail->type=type;
+	ltail->binding=binding;
+	//binding=binding+1;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",ltail->name,ltail->type,ltail->binding);
+	struct Lsymbol* temp=malloc(sizeof(struct Lsymbol));
+	temp->next=NULL;
+	ltail->next=temp;
+	ltail=temp;
+	*/
+	struct Lsymbol* litemp=malloc(sizeof(struct Lsymbol));
+	litemp->name=name;
+	litemp->type=type;
+	litemp->binding=binding;
+	litemp->next=lhead;
+	lhead=litemp;
+	//printf("New entry is----\n");
+	//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",ltail->name,ltail->type,ltail->binding);
+	//printf("Install-ed...\n\n");
+	;}
+
+struct Lsymbol *LLookup(char *name){
+	//printf("Searching Lsymbol table...\n");
+	struct Lsymbol* temp;
+	temp=lhead;
+	while(temp!=NULL){
+		//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",temp->name,temp->type,temp->binding);
 		if(strcmp(temp->name,name)==0){
 			//printf("Found!\n");
 			return temp;}
 		temp=temp->next;}
 	//printf("Not found...\n");
 	return NULL;}
-	
-void Install(char *name, int type, int size){
-	//printf("Install-ing in Symbol table...\n");
-	if(Lookup(name)!=NULL){
-		printf("variable:'%s' redeclared\n",name);
-		exit(1);
-	}
-	tail->name=name;
-	tail->type=type;
-	tail->size=size;
-	tail->binding=binding;
-	binding=binding+size;
-	//printf("New entry is----\n");
-	//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tarr:%d\n",tail->name,tail->type,tail->size,tail->arr);
-	struct Gsymbol* temp=malloc(sizeof(struct Gsymbol));
-	temp->next=NULL;
-	tail->next=temp;
-	tail=temp;
-	//printf("Install-ed...\n\n");
-	;}
 
-int generate(struct tnode *t,FILE *target_file){
+void LocalParam(struct Paramstruct* phead,struct Gsymbol *g){
+	struct Paramstruct *pgtemp,*pltemp;
+	pgtemp=g->paramlist;
+	pltemp=phead;
+	while(pgtemp!=NULL && pltemp!=NULL){
+		if(strcmp(pgtemp->name,pltemp->name)==0 && pgtemp->type==pltemp->type){
+			binding--;
+			LInstall(pgtemp->name,pgtemp->type);}
+		else{
+			printf("line:%d\nParameter Globally Declared:\tname:'%s'\ttype:'%d'\nParameter Locally Declared:\tname:'%s'\ttype:'%d'\n",line,pgtemp->name,pgtemp->type,pltemp->name,pltemp->type);
+			exit(1);}
+		pltemp=pltemp->next;
+		pgtemp=pgtemp->next;}
+	if(pgtemp!=NULL || pltemp!=NULL){
+		if(pgtemp!=NULL){
+			printf("line:%d\tExtra Global Parameters Declared...\n",line);
+			while(pgtemp==NULL){
+				printf("name:'%s'\ttype:'%d'\n",pgtemp->name,pgtemp->type);
+				pgtemp=pgtemp->next;
+			}}
+		else{
+			printf("line:%d\tExtra Local Parameters Declared...\n",line);
+			while(pltemp==NULL){
+				printf("name:'%s'\ttype:'%d'\n",pltemp->name,pltemp->type);
+				pltemp=pltemp->next;}}
+	exit(1);}
+	/*
+	struct Lsymbol *ltemp=lhead;
+	while(ltemp!=ltail){
+		if(ltemp->next==ltail){
+			ltemp->next=NULL;break;}
+		ltemp=ltemp->next;}
+	if(ltemp==ltail)	{lhead=NULL;}
+	*/}
+
+
+int generate(FILE *target_file){
 	//printf("------------Generating Code------------\n");
 	fprintf(target_file,"%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",0,2056,0,0,0,0,0,0);
 	fprintf(target_file,"MOV SP,%d\n",binding);
-	Brkp(target_file);
-	codeGen(t,target_file);
-	Debrkp(target_file);
-	Halt(target_file);
+	fprintf(target_file,"MOV BP,SP\n");
+	fprintf(target_file,"CALL F1001\n");
 	//printf("-------------Generated--------------\n");
 	;}
 
-int reg=-1;
+int reg=-1,regtemp;
 int label=0;
 int break2[100];
 int cont1[100];
@@ -124,15 +277,34 @@ int top=-1;
 
 int getReg(){
 	reg++;
+	printf("\t\tgotReg:R%d\t",reg);
+	for(int s=reg;s>-1;s--) printf(".");
+	printf("\n");
 	if(reg>19){printf("Out of registers\n");
 				exit(1);}
 	return reg;}
-void freeReg(){reg--;}
+void freeReg(){
+	reg--;
+	printf("\t\tfreedReg:R%d\t",reg);
+	for(int s=reg;s>-1;s--) printf(".");
+	printf("\n");}
 int getLabel(){label++;return label;}
-
+//int argtemp=0;
 int codeGen(struct tnode *t,FILE *target_file){
 	int i,j,k,ret,label1,label2,result;
-	struct Gsymbol *node;
+	struct Gsymbol *node,*temp;
+	struct tnode *atemp;
+	struct Lsymbol *ltemp;
+	/*
+	if(argtemp!=0){
+		i=codeGen(t->down,target_file);
+		if(i!=-1){
+			fprintf(target_file, "PUSH R%d\n",i);
+			freeReg();}}
+	if(t==NULL){
+		puts("check meeeeeeeeeeeeeeeee");
+		return -1;}
+	*/
 	switch(t->nt){
 		case nt_NODE:
 			puts("node");
@@ -159,29 +331,60 @@ int codeGen(struct tnode *t,FILE *target_file){
 			puts("id");
 			//printf("%s\n",t->str);
 			i=getReg();
-			fprintf(target_file, "MOV R%d,[%d]\n",i,t->Gentry->binding);
+			if(LLookup(t->str)==NULL){
+				j=t->Gentry->binding;
+				fprintf(target_file, "MOV R%d,[%d]\n",i,j);}
+			else{
+				j=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",j);
+				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->str)->binding);
+				fprintf(target_file, "MOV R%d,R%d\n",i,j);
+				freeReg();}
+			
 			return i;
 			break;
 		case nt_PTR:
 			puts("pointer-<var name>");
 			//printf("%s\n",t->str);
 			i=getReg();
-			fprintf(target_file, "MOV R%d, [%d]\n",i,t->Gentry->binding);
+			if(t->Gentry!=NULL){
+				fprintf(target_file, "MOV R%d, [%d]\n",i,t->Gentry->binding);}
+			else{
+				j=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",j);
+				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->str)->binding);
+				fprintf(target_file, "MOV R%d,[R%d]\n",i,j);
+				freeReg();}
 			return i;
 			break;
 		case nt_APTR:
 			puts("pointer-&");
 			//printf("%s\n",t->str);
 			i=getReg();
-			fprintf(target_file, "MOV R%d, %d\n",i,t->Gentry->binding+t->num);
+			if(t->Gentry!=NULL){
+				fprintf(target_file, "MOV R%d, %d\n",i,t->Gentry->binding+t->num);}
+			else{
+				j=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",j);
+				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->str)->binding);
+				fprintf(target_file, "MOV R%d,R%d\n",i,j);
+				freeReg();}
 			return i;
 			break;
 		case nt_SPTR:
 			puts("pointer-*");
 			//printf("%s\n",t->str);
 			i=getReg();
-			fprintf(target_file, "MOV R%d, [%d]\n",i,t->Gentry->binding+t->num);
-			fprintf(target_file, "MOV R%d, [R%d]\n",i,i);
+			if(t->Gentry!=NULL){
+				fprintf(target_file, "MOV R%d, [%d]\n",i,t->Gentry->binding+t->num);
+				fprintf(target_file, "MOV R%d, [R%d]\n",i,i);}
+			else{
+				j=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",j);
+				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->str)->binding);
+				fprintf(target_file, "MOV R%d,[R%d]\n",i,j);
+				fprintf(target_file, "MOV R%d, [R%d]\n",i,i);
+				freeReg();}
 			return i;
 			break;
 		case nt_ARR:
@@ -286,7 +489,14 @@ int codeGen(struct tnode *t,FILE *target_file){
 			puts("read");
 			// printf("%s",t->down->str);
 			ret = getReg();
-			Read(t->down->Gentry->binding + t->num, target_file, ret);
+			if(t->down->Gentry!=NULL){
+				Read(t->down->Gentry->binding + t->num, target_file, ret);}
+			else{
+				j=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",j);
+				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->down->str)->binding);
+				LRead(j, target_file, ret);
+				freeReg();}
 			freeReg();
 			break;
 		case nt_WRITE:
@@ -298,28 +508,47 @@ int codeGen(struct tnode *t,FILE *target_file){
 			ret=getReg();
 			Write(i,target_file,ret);
 			freeReg();
+			freeReg();//--------------------------
 			break;
 		case nt_ASGN:
 			puts("=");
-			i=codeGen(t->right,target_file);
-			node=t->left->Gentry;
-			if(t->left->nt==nt_SPTR){
-				j=(node->binding+t->left->num);
-				k=getReg();
-				fprintf(target_file,"MOV R%d,[%d]\n",k,j);
-				fprintf(target_file,"MOV [R%d],R%d\n",k,i );
-				freeReg();
-				break;}
-			else if(t->left->nt==nt_STR){
-				j=(node->binding)+(t->left->num);
-				fprintf(target_file,"MOV [%d],%s\n",j,t->right->str);}
+			if(LLookup(t->left->str)==NULL){
+				node=t->left->Gentry;
+				if(t->left->nt==nt_SPTR){
+					i=codeGen(t->right,target_file);
+					j=(node->binding+t->left->num);
+					k=getReg();
+					fprintf(target_file,"MOV R%d,[%d]\n",k,j);
+					fprintf(target_file,"MOV [R%d],R%d\n",k,i );
+					freeReg();
+					freeReg();//---------------------
+					}
+				else if(t->left->nt==nt_STR){
+					j=(node->binding)+(t->left->num);
+					fprintf(target_file,"MOV [%d],\"%s\"\n",j,t->right->str);}
+				else{
+					if((t->left->num)>node->size)
+						printf("WARNING:Accessing beyond declaration!\n");
+						;
+					i=codeGen(t->right,target_file);
+					j=(node->binding)+(t->left->num);
+					fprintf(target_file,"MOV [%d],R%d\n",j,i);
+					freeReg();}}
 			else{
-				if((t->left->num)>node->size)
-					printf("WARNING:Accessing beyond declaration!\n");
-					;
-				j=(node->binding)+(t->left->num);
-				fprintf(target_file,"MOV [%d],R%d\n",j,i );}
-			freeReg();
+				k=getReg();
+				fprintf(target_file, "MOV R%d,BP\n",k);
+				fprintf(target_file, "ADD R%d,%d\n",k,t->left->Lentry->binding);
+				if(t->left->nt==nt_SPTR){
+					i=codeGen(t->right,target_file);
+					fprintf(target_file,"MOV [R%d],R%d\n",k,i);
+					freeReg();}
+				else if(t->left->nt==nt_STR){
+					fprintf(target_file,"MOV [R%d],\"%s\"\n",k,t->right->str);}
+				else{
+					i=codeGen(t->right,target_file);
+					fprintf(target_file,"MOV [R%d],R%d\n",k,i);
+					freeReg();}
+				freeReg();}
 			break;
 		case nt_IF:
 			puts("if");
@@ -367,10 +596,103 @@ int codeGen(struct tnode *t,FILE *target_file){
 			else{puts("continue");
 				fprintf(target_file, "JMP L%d\n",cont1[top]);}
 			break;
+		case nt_FUNC://-------------------------------------------------------------------
+			puts("function");
+			regtemp=reg;
+			while(reg!=-1)
+				fprintf(target_file, "PUSH R%d\n",reg--);
+			atemp=t->arglist;
+			while(atemp){
+				i=getReg();
+				j=codeGen(atemp,target_file);
+				fprintf(target_file, "MOV R%d,R%d\n",i,j);
+				fprintf(target_file, "PUSH R%d\n",i);
+				freeReg();
+				freeReg();
+				atemp=atemp->down;}
+			/*
+			i=codeGen(t->arglist,target_file);
+			if(i!=-1){
+				argtemp=1;
+				fprintf(target_file, "PUSH R%d\n",i);}
+			*/
+			i=getReg();
+			fprintf(target_file, "MOV R%d,\"\"\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			freeReg();
+			fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
+			fprintf(target_file, "MOV R%d, [SP]\n",regtemp+1);
+			/*
+			ttemp=t->arglist;
+			while(ttemp){
+				fprintf(target_file, "POP R%d\n",regtemp+2==19?18:regtemp+2);
+				if(regtemp+2>19){
+					printf("POPed to reg 20,congrats!\n");}
+				ttemp=ttemp->down;}
+			*/
+			atemp=t->arglist;
+			while(atemp){
+				fprintf(target_file, "POP R%d\n",regtemp+2);
+				atemp=atemp->down;}
+			while(regtemp--!=-1){
+				fprintf(target_file, "POP R%d\n",++reg);}
+			reg++;
+			//argtemp--;
+			break;
+		case nt_RET:
+			puts("ret");
+			ltemp=lhead;
+			i=getReg();
+			while(ltemp!=NULL){
+				fprintf(target_file, "POP R%d\n",i);
+				ltemp=ltemp->next;}
+			freeReg();
+			i=codeGen(t->down,target_file);
+			j=getReg();
+			fprintf(target_file, "MOV R%d,BP\n",j);
+			fprintf(target_file, "SUB R%d,2\n",j);
+			fprintf(target_file, "MOV [R%d],R%d\n",j,i);
+			freeReg();//--------------------------------
+			fprintf(target_file, "MOV BP,[SP]\n");
+			fprintf(target_file, "POP R%d\n",j);
+			freeReg();
+			fprintf(target_file, "RET\n");
+			break;
+		case nt_BRKP:
+			fprintf(target_file, "BRKP\n");
+			break;
+		case nt_EXIT:
+			i=getReg();
+			fprintf(target_file, "MOV R%d, \"Exit\"\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			fprintf(target_file, "MOV R%d, \"\"\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			fprintf(target_file, "PUSH R%d\n",i);
+			freeReg();
+			fprintf(target_file, "CALL 0\n");
+			break;
 		default:
 			puts("\tNO CODE-GEN MATCHING FOUND\n");
 			exit(1);	
 			}}
+void funcGen(struct Gsymbol *g, FILE *target_file){
+	fprintf(target_file, "F%d:\n",g->flabel);
+	fprintf(target_file, "PUSH BP\n");
+	fprintf(target_file, "MOV BP, SP\n");
+	if(g->flabel==1000){
+		fprintf(target_file, "F1001:\n");
+		//Brkp(target_file);
+		}
+	struct Lsymbol *temp=lhead;
+	int i;
+	i=getReg();
+	fprintf(target_file, "MOV R%d,\"\"\n",i);
+	while(temp){
+		fprintf(target_file, "PUSH R%d\n",i);
+		temp=temp->next;}
+	freeReg();}
 
 void Write(int reg,FILE* target_file,int ret){
 	int t;
@@ -400,6 +722,27 @@ void Read(int addr,FILE* target_file,int ret){
 	fprintf(target_file, "MOV R%d, -1\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
 	fprintf(target_file, "MOV R%d, %d\n",t,addr);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "MOV R%d, \"\"\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	freeReg();
+	fprintf(target_file, "CALL 0\n");
+	fprintf(target_file, "POP R%d\n",ret);
+	t=getReg();
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	freeReg();}
+void LRead(int reg_addr,FILE* target_file,int ret){
+	int t;
+	t=getReg();
+	fprintf(target_file, "MOV R%d, \"Read\"\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "MOV R%d, -1\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "MOV R%d, R%d\n",t,reg_addr);
 	fprintf(target_file, "PUSH R%d\n",t);
 	fprintf(target_file, "MOV R%d, \"\"\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
@@ -554,3 +897,11 @@ void debt(struct tnode *t){
 	printf("\tnt:nt_%d\n", t->nt);
 	debg(t->Gentry);
 	printf("\t..........\n");}
+
+void temp(struct Paramstruct* pghead){
+	struct Paramstruct* temp=pghead;
+//	while(temp!=NULL){
+		printf("name:'%s'\ttype:'%d'\n",temp->name,temp->type);
+//		temp=temp->next;}
+
+}

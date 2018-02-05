@@ -1,6 +1,7 @@
-//#include <signal.h>
-//#define brkp	raise(SIGINT);
+#include <signal.h>
+#define brkp	raise(SIGINT);
 //#define boo 	printf("\t\t\t\tERROR:\t(File:%s\tfunc:%s\tLine:%d)\n",__FILE__,__func__,__LINE__);
+//#define debug	{printf("debug\n");}
 
 #define t_NULL 0
 #define t_BOOL 1
@@ -11,7 +12,7 @@
 #define t_INPTR 6
 #define t_CHPTR 7
 
-#define nt_NUM 0
+#define nt_NUM 36
 #define nt_ID 1
 #define nt_PLUS 2
 #define nt_MINUS 3
@@ -45,6 +46,10 @@
 #define nt_APTR 31
 #define nt_SPTR 32
 #define nt_PTR 33
+#define nt_FUNC 34
+#define nt_RET 35
+#define nt_BRKP 37
+#define nt_EXIT 38
 
 int val[26];
 int line=1;
@@ -52,29 +57,60 @@ int line=1;
 
 typedef struct tnode {
 	int t;
-	int num;//offset,address for pointer
+	int num;//offset,address for pointer,no.of arguements
 	char *str;
 	int nt;
-	struct tnode *left,*right,*down;
+	struct tnode *left,*right,*down, *arglist;
 	struct Gsymbol *Gentry;
+	struct Lsymbol *Lentry;
 }tnode;
+struct tnode *qwer;
+
+
 
 struct Gsymbol{
 	char* name;
 	int type;
 	int size;
 	int binding;
+	struct Paramstruct *paramlist;
+	int flabel;
 	int arr;
 	struct Gsymbol* next;
-}*head,*tail;
+}*ghead;
 int binding=4096;
+struct Gsymbol *GLookup(char * name);
+void GInstall(char *name, int type, int size);
 
-struct tnode* createtree(int type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry);
 
-struct Gsymbol *Lookup(char * name);
-void Install(char *name, int type, int size);
 
-int generate(struct tnode *t,FILE *target_file);
+struct Paramstruct{
+	char* name;
+	int type;
+	struct Paramstruct* next;
+}*phead;
+
+void Pinstall(char* name,int type);
+struct Paramlist* PLookup(char *name);
+
+
+
+struct Lsymbol{
+	char *name;
+	int type;//struct Typetable
+	int binding;
+	struct Lsymbol *next;
+}*lhead;
+//void LInstall(char *name, struct Typetable *type);
+void LInstall(char *name, int type);
+struct Lsymbol *LLookup(char* name);
+
+
+
+struct tnode* createtree(int type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
+void LocalParam(struct Paramstruct* phead,struct Gsymbol *g);
+
+int generate(FILE *target_file);
 int gerReg();
 void freeReg();
 int getLabel();

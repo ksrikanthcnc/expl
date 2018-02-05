@@ -1,0 +1,25 @@
+--
+++
+
+replace install with genrty
+	lookup
+	.y gentry
+
+a[1]
+*a should work
+
+*&&p
+		*
+		&
+		&
+		p
+		
+		
+		
+LLookup for
+	ptr
+	sptr
+	aptr
+	read
+		
+deallocate

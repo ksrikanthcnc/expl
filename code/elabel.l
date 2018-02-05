@@ -20,7 +20,7 @@
 
 %%
 
-[L][1-9]+":"	{debug
+[L][0-9]+":"	{debug
 				if(flag==0){
 					struct label* temp;
 					temp=(struct label*)malloc(sizeof(struct label));
@@ -31,10 +31,37 @@
 				else{
 					//puts(yytext);
 					//puts("---");
+					;
 					}
 				}
 
-[L][1-9]+[^:]	{debug
+[L][0-9]+[^:]	{debug
+				if(flag==1){
+					int line;
+					line=search(yytext);
+//					printf("%d",line);
+					fprintf(filey,"%d\n",line);
+					}
+				else 
+					lin++;
+				}
+
+[F][0-9]+":"	{debug
+				if(flag==0){
+					struct label* temp;
+					temp=(struct label*)malloc(sizeof(struct label));
+					lin--;
+					new(yytext,lin,present,temp);
+					present=present->next;
+					debug}
+				else{
+					//puts(yytext);
+					//puts("---");
+					;
+					}
+				}
+
+[F][0-9]+[^:]	{debug
 				if(flag==1){
 					int line;
 					line=search(yytext);

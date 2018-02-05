@@ -22,6 +22,12 @@
 "=="			{return EE;}
 "++"			{return INC;}
 "--"			{return DEC;}
+"||"			{return OR;}
+"&&"			{return AND;}
+"main"			{return MAIN;}
+"return"		{return RETURN;}
+"brkp"			{return BRKP;}
+"exit"			{return EXIT;}
 "if"			{return IF;}
 "then"			{return THEN;}
 "else"			{return ELSE;}
@@ -41,11 +47,11 @@
 "enddecl"		{return ENDDECL;}
 "int"			{return INT;}
 "str"			{return STR;}
-["][^"\n]*["]	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]*[']	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
-[0-9]+			{yylval = createtree(t_INT,atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL); return NUM;}
-[a-z]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
-[(),\[\];&]		{return *yytext;}
+["][^"\n]*["]	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+[0-9]+			{yylval = createtree(t_INT,atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
+[a-z]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
+[(),\[\];&{}]	{return *yytext;}
 [ \t]			{}
 [\n]			{line++;}
 .				{printf("unknown character:%c\n",*yytext);exit(1);}
