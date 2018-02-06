@@ -59,7 +59,7 @@ Gid			:ID										{GInstall($1->str,type,1);}
 					ParamList {type=temptype;}
 								')'	{	GInstall($1->str,type,0);
 										GLookup($1->str)->paramlist=phead;
-										GLookup($1->str)->flabel=flabel++;};
+										GLookup($1->str)->flabel=flabel;flabel++;};
 //int factorial(int a, int b){}--------------------------------------------------------------------------------------
 FDefBlock	:FDefBlock FDef
 			|FDef;
@@ -77,7 +77,9 @@ FDef		:Type ID '(' {	check($2);
 ParamList	:ParamList ',' Param			{}
 			|Param
 			| /*param can be empty*/;
-Param		:Type ID	{PInstall($2->str,type);};
+Param		:Type Pid;
+Pid			:ID			{PInstall($1->str,type);}
+			/*|MUL ID		{PInstall($2->str,type);}*/;//-----------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 LDeclBlock	:DECL LDecList ENDDECL ';'
 			|DECL ENDDECL ';';
@@ -132,7 +134,7 @@ Arth		:Arth PLUS Arth			{$$=createtree(t_INT,NULL,NULL,nt_PLUS,$1,NULL,$3,NULL,N
 			|NUM					{$$=$1;}
 			|STRING					{$$=$1;}
 			|id						{$$=$1;}
-			|ID '(' ')'				{check($1);$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
+			|ID '(' ')'				{check($1);$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);q=$$;} 
 			|ID '(' ArgList ')'		{check($1);
 									$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
 ArgList		:ArgList ',' Arth		{	$3->down=$1;

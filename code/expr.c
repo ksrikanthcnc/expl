@@ -103,21 +103,7 @@ void GInstall(char *name, int type, int size){
 	struct Gsymbol* gitemp;
 	if(GLookup(name)!=NULL){
 		printf("line:%d\tGvariable:'%s' redeclared\n",line,name);
-		exit(1);
-	}
-	/*
-	gtail->name=name;
-	gtail->type=type;
-	gtail->size=size;
-	gtail->binding=binding;
-	binding=binding+size;
-	//printf("New entry is----\n");
-	//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tarr:%d\n",gtail->name,gtail->type,gtail->size,gtail->arr);
-	gitemp=malloc(sizeof(struct Gsymbol));
-	gitemp->next=NULL;
-	gtail->next=gitemp;
-	gtail=gitemp;
-	*/
+		exit(1);}
 	gitemp=malloc(sizeof(struct Gsymbol));
 	gitemp->name=name;
 	gitemp->type=type;
@@ -151,18 +137,7 @@ void PInstall(char* name, int type){
 	//printf("Install-ing in ParamList...\n");
 	if(PLookup(name)!=NULL){
 		printf("line:%d\tPvariable:'%s' redeclared\n",line,name);
-		exit(1);
-	}
-	/*
-	ptail->name=name;
-	ptail->type=type;
-	//printf("New entry is----\n");
-	//printf("name:'%s'\ttype:'%d'\t\n",ptail->name,ptail->type);
-	struct Paramstruct* temp=malloc(sizeof(struct Paramstruct));
-	temp->next=NULL;
-	ptail->next=temp;
-	ptail=temp;
-	*/
+		exit(1);}
 	struct Paramstruct* pitemp=malloc(sizeof(struct Paramstruct));
 	pitemp->name=name;
 	pitemp->type=type;
@@ -189,20 +164,7 @@ void LInstall(char *name, int type){
 	//printf("Install-ing in Local Symbol table...\n");
 	if(LLookup(name)!=NULL){
 		printf("line:%d\tLvariable:'%s' redeclared\n",line,name);
-		exit(1);
-	}
-	/*
-	ltail->name=name;
-	ltail->type=type;
-	ltail->binding=binding;
-	//binding=binding+1;
-	//printf("New entry is----\n");
-	//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",ltail->name,ltail->type,ltail->binding);
-	struct Lsymbol* temp=malloc(sizeof(struct Lsymbol));
-	temp->next=NULL;
-	ltail->next=temp;
-	ltail=temp;
-	*/
+		exit(1);}
 	struct Lsymbol* litemp=malloc(sizeof(struct Lsymbol));
 	litemp->name=name;
 	litemp->type=type;
@@ -252,16 +214,7 @@ void LocalParam(struct Paramstruct* phead,struct Gsymbol *g){
 			while(pltemp==NULL){
 				printf("name:'%s'\ttype:'%d'\n",pltemp->name,pltemp->type);
 				pltemp=pltemp->next;}}
-	exit(1);}
-	/*
-	struct Lsymbol *ltemp=lhead;
-	while(ltemp!=ltail){
-		if(ltemp->next==ltail){
-			ltemp->next=NULL;break;}
-		ltemp=ltemp->next;}
-	if(ltemp==ltail)	{lhead=NULL;}
-	*/}
-
+	exit(1);}}
 
 int generate(FILE *target_file){
 	//printf("------------Generating Code------------\n");
@@ -269,6 +222,7 @@ int generate(FILE *target_file){
 	fprintf(target_file,"MOV SP,%d\n",gbinding-1);
 	fprintf(target_file,"MOV BP,%d\n",gbinding);
 	fprintf(target_file,"PUSH R0\n");
+	//Brkp(target_file);
 	fprintf(target_file,"CALL F1000\n");
 	Halt(target_file);
 	//printf("-------------Generated--------------\n");
@@ -304,16 +258,6 @@ int codeGen(struct tnode *t,FILE *target_file){
 	struct Gsymbol *node,*temp;
 	struct tnode *atemp;
 	struct Lsymbol *ltemp;
-	/*
-	if(argtemp!=0){
-		i=codeGen(t->down,target_file);
-		if(i!=-1){
-			fprintf(target_file, "PUSH R%d\n",i);
-			freeReg();}}
-	if(t==NULL){
-		//puts("check meeeeeeeeeeeeeeeee");
-		return -1;}
-	*/
 	switch(t->nt){
 		case nt_NODE:
 			//puts("node");
@@ -515,10 +459,10 @@ int codeGen(struct tnode *t,FILE *target_file){
 			i=codeGen(t->down,target_file);
 			ret=getReg();
 			if(t->down->Gentry!=NULL || t->down->nt==nt_STR){
-				//puts(" global");
+				puts(" global");
 				Write(i,target_file,ret);}
 			else{
-				//puts(" local");
+				puts(" local");
 				Write(i,target_file,ret);}//---------------------------------------------LWrite??
 			freeReg();
 			freeReg();//--------------------------
@@ -535,7 +479,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 					fprintf(target_file,"MOV [R%d],R%d\n",k,i );
 					freeReg();
 					freeReg();//---------------------
-					}
+					;}
 				else if(t->left->nt==nt_STR){
 					j=(node->binding)+(t->left->num);
 					fprintf(target_file,"MOV [%d],\"%s\"\n",j,t->right->str);}
@@ -626,27 +570,12 @@ int codeGen(struct tnode *t,FILE *target_file){
 				fprintf(target_file, "PUSH R%d--arg\n",i);
 				freeReg();
 				atemp=atemp->down;}
-			/*
-			i=codeGen(t->arglist,target_file);
-			if(i!=-1){
-				argtemp=1;
-				fprintf(target_file, "PUSH R%d\n",i);}
-			*/
 			i=getReg();
 			fprintf(target_file, "MOV R%d,\"\"\n",i);
 			fprintf(target_file, "PUSH R%d--for.ret\n",i);
 			freeReg();
 			fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
-
-			fprintf(target_file, "MOV R%d, SP--ret\n",regtemp+1);
-			/*
-			ttemp=t->arglist;
-			while(ttemp){
-				fprintf(target_file, "POP R%d\n",regtemp+2==19?18:regtemp+2);
-				if(regtemp+2>19){
-					printf("POPed to reg 20,congrats!\n");}
-				ttemp=ttemp->down;}
-			*/
+			fprintf(target_file, "POP R%d\n",regtemp+1);
 			atemp=t->arglist;
 			i=getReg();
 			while(atemp){
@@ -658,7 +587,6 @@ int codeGen(struct tnode *t,FILE *target_file){
 				reg++;
 				fprintf(target_file, "POP R%d--old.regs\n",reg);}
 			i=getReg();
-			//argtemp--;
 			return i;
 			break;
 		case nt_RET:
@@ -706,13 +634,6 @@ void funcGen(struct Gsymbol *g, FILE *target_file){
 	fprintf(target_file, "F%d:\n",g->flabel);
 	fprintf(target_file, "PUSH BP\n");
 	fprintf(target_file, "MOV BP, SP\n");
-	/*
-	if(g->flabel==1000){
-		fprintf(target_file, "F1001:\n");
-		//fprintf(target_file, "MOV BP, SP\n");
-		//Brkp(target_file);
-		}
-	*/
 	struct Lsymbol *temp=lhead;
 	int i;
 	i=getReg();
@@ -743,6 +664,7 @@ void Write(int reg,FILE* target_file,int ret){
 	fprintf(target_file, "POP R%d\n",t);
 	fprintf(target_file, "POP R%d\n",t);
 	freeReg();}
+/*
 void LWrite(int reg,FILE* target_file,int ret){
 	int t;
 	t=getReg();
@@ -764,6 +686,7 @@ void LWrite(int reg,FILE* target_file,int ret){
 	fprintf(target_file, "POP R%d\n",t);
 	fprintf(target_file, "POP R%d\n",t);
 	freeReg();}
+*/
 void Read(int addr,FILE* target_file,int ret){
 	int t;
 	t=getReg();
@@ -860,13 +783,6 @@ int evaluate(struct tnode *t){
 		case nt_ID:
 		//puts("id");
 				return val[*(t->str)-'a'];
-		/*	if(val[*(t->str)-'a']!=NULL)
-			else
-			{
-				printf("error\n");
-				exit(1);
-			}
-		*/
 			break;
 		case nt_READ:
 		//puts("read");
@@ -917,10 +833,8 @@ int evaluate(struct tnode *t){
 		case nt_WHILE:
 			while(evaluate(t->left))
 				evaluate(t->right);
-			break;
-
-	}}	
-
+			break;}}	
+/*
 void debg(struct Gsymbol *g){
 	printf("\t##############\tgsymbol\n");
 	if(g==NULL){
@@ -950,8 +864,7 @@ void debt(struct tnode *t){
 
 void temp(struct Paramstruct* pghead){
 	struct Paramstruct* temp=pghead;
-//	while(temp!=NULL){
+  //while(temp!=NULL){
 		printf("name:'%s'\ttype:'%d'\n",temp->name,temp->type);
-//		temp=temp->next;}
-
-}
+  //	temp=temp->next;}}
+*/

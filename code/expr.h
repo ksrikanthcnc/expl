@@ -76,6 +76,7 @@ struct Gsymbol{
 	int arr;
 	struct Gsymbol* next;
 }*ghead;
+struct tnode *q;
 int binding=0;
 int gbinding=4096;
 struct Gsymbol *GLookup(char * name);
