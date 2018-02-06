@@ -1,38 +1,24 @@
 decl
-	int fact(int n);
+	int sum(),m();
 enddecl;
 
-int fact(int n)
-{
+int sum(){
 	decl
-		int f;
 	enddecl;
+	
 	begin
-		write("fact");
-		write(n);
-		if(n<=1) then
-			f=1;
-		else
-			f=n*fact(n-1);
-		endif;
-		write("ret");
-		return f;
+		return 0;
 	end;
 }
 
 int main()
 {
 	decl
-		int n,m,res;
+		int n;
 	enddecl;
 	begin
-		read(n);
-		while( n >= 1 ) do
-			read(m);
-			res = fact(m);
-			write(res);
-			n = n-1;
-		endwhile;
+		n=m();
+		write(n);
 		return 0;
 	end	;
 }

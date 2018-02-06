@@ -53,6 +53,7 @@
 
 int val[26];
 int line=1;
+char *funcname;
 //
 
 typedef struct tnode {
@@ -64,9 +65,6 @@ typedef struct tnode {
 	struct Gsymbol *Gentry;
 	struct Lsymbol *Lentry;
 }tnode;
-struct tnode *qwer;
-
-
 
 struct Gsymbol{
 	char* name;
@@ -78,22 +76,18 @@ struct Gsymbol{
 	int arr;
 	struct Gsymbol* next;
 }*ghead;
-int binding=4096;
+int binding=0;
+int gbinding=4096;
 struct Gsymbol *GLookup(char * name);
 void GInstall(char *name, int type, int size);
-
-
 
 struct Paramstruct{
 	char* name;
 	int type;
 	struct Paramstruct* next;
 }*phead;
-
 void Pinstall(char* name,int type);
 struct Paramlist* PLookup(char *name);
-
-
 
 struct Lsymbol{
 	char *name;
@@ -104,8 +98,6 @@ struct Lsymbol{
 //void LInstall(char *name, struct Typetable *type);
 void LInstall(char *name, int type);
 struct Lsymbol *LLookup(char* name);
-
-
 
 struct tnode* createtree(int type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 void LocalParam(struct Paramstruct* phead,struct Gsymbol *g);

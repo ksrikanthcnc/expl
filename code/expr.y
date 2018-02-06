@@ -12,8 +12,7 @@ yydebug=0;
 //void yyerror(char const *s);
 FILE *yyin,*target_file;
 int reg;
-int type,temptype,retcount=0,flabel=0;;
-char *funcname;
+int type,temptype,retcount=0,flabel=0,mainflag=0;
 %}
 
 %token NUM ID STRING
@@ -41,25 +40,16 @@ Program		:GDeclBlock FDefBlock MainBlock		{printf("Syntax Matched\n");}
 			|MainBlock							{printf("Syntax Matched\n");}
 			;
 //-------------------------------------------------------------------------
-GDeclBlock	:DECL GDeclList ENDDECL ';'	{generate(target_file);}
+GDeclBlock	:DECL GDeclList ENDDECL ';'	{generate(target_file);gother();}
 			|DECL ENDDECL ';'			{generate(target_file);puts("No Global declared!");}
 			;
-
 GDeclList	:GDeclList GDecl			{}
-			|GDecl						{}
-			;
-
-GDecl		:Type GidList ';'			{}
-			;
-
+			|GDecl						{};
+GDecl		:Type GidList ';'			{};
 Type		:INT	{type=t_INT;}
-			|STR	{type=t_CHAR;}
-			;
-
+			|STR	{type=t_CHAR;};
 GidList		:GidList ',' Gid
-			|Gid
-			;
-
+			|Gid;
 Gid			:ID										{GInstall($1->str,type,1);}
 			|ID '[' NUM ']'							{int t=type;type=type==t_INT?t_INARR:t_CHARR;GInstall($1->str,type,$3->num);type=t;}
 			|ID '[' NUM ']' '[' NUM ']'				{int t=type;type=type==t_INT?t_INARR:t_CHARR;GInstall($1->str,type,$3->num*$6->num);type=t;GLookup($1->str)->arr=$3->num;}
@@ -69,12 +59,10 @@ Gid			:ID										{GInstall($1->str,type,1);}
 					ParamList {type=temptype;}
 								')'	{	GInstall($1->str,type,0);
 										GLookup($1->str)->paramlist=phead;
-										GLookup($1->str)->flabel=flabel++;}
-			;
+										GLookup($1->str)->flabel=flabel++;};
 //int factorial(int a, int b){}--------------------------------------------------------------------------------------
 FDefBlock	:FDefBlock FDef
-			|FDef
-			;
+			|FDef;
 			//Type ID '(' ParamList ')' '{' LDeclBlock Body '}'
 FDef		:Type ID '(' {	check($2);
 							funcname=$2->str;
@@ -83,61 +71,44 @@ FDef		:Type ID '(' {	check($2);
 							phead=NULL;}
 						ParamList ')' {	LocalParam(phead,GLookup($2->str));}//dealloc
 									 '{' {	binding=0;}
-		 									LDeclBlock Body '}'
-			;
+		 									LDeclBlock {lother();}
+		 												Body '}';
 
 ParamList	:ParamList ',' Param			{}
 			|Param
-			| /*param can be empty*/
-			;
-
-Param		:Type ID	{PInstall($2->str,type);}
-			;
-
+			| /*param can be empty*/;
+Param		:Type ID	{PInstall($2->str,type);};
 //-----------------------------------------------------------------------------------------
 LDeclBlock	:DECL LDecList ENDDECL ';'
-			|DECL ENDDECL ';'
-			;
-
+			|DECL ENDDECL ';';
 LDecList	:LDecList LDecl
-			|LDecl
-			;
-
-LDecl		:Type IdList ';'
-			;
-
+			|LDecl;
+LDecl		:Type IdList ';';
 IdList		:IdList ',' Lid
-			|Lid
-			;
-			
-Lid			:ID				{binding++;LInstall($1->str,type);}
-			;
+			|Lid;
+Lid			:ID				{binding++;LInstall($1->str,type);};
 //-------------------------------------------------------------------------------------------
-
-MainBlock : INT MAIN {binding=0;}'(' ')' '{' {	funcname="main";
+MainBlock : INT MAIN {	binding=0;}
+						'(' ')' '{' {	funcname="main";
 												lhead=NULL;
 		 										binding=0;}
-		 									LDeclBlock Body '}'
+		 									LDeclBlock {lother();}
+		 												Body '}'
 /*                                {
                                     type = TLookup("int");
                                     gtemp = GInstall("MAIN",type,0,NULL);
                                     //...Some more work to be done
                                 }
-*/			;
-
+*/;
 //-------------------------------------------------------------------------------------------
 Body		:BEG Slist END ';'		{//$$=$2;
 									if(retcount==0){
 										printf("No return statements found!\n");}
 									funcGen(GLookup(funcname),target_file);
  									codeGen($2,target_file);retcount=0;}
-			|BEG END ';'			{$$=NULL;printf("No Body!\n");}
-			;
-
+			|BEG END ';'			{$$=NULL;printf("No Body!\n");};
 Slist		:Slist Stmt				{$$=createtree(t_NULL,NULL,NULL,nt_NODE,$1,NULL,$2,NULL,NULL,NULL);}
-			|Stmt					{$$=$1;}
-			;
-
+			|Stmt					{$$=$1;};
 Stmt		:READ '(' id ')' ';'								{$$=createtree(t_NULL,NULL,NULL,nt_READ,NULL,$3,NULL,NULL,NULL,NULL);}
 			|WRITE '(' Arth ')' ';'								{$$=createtree(t_NULL,NULL,NULL,nt_WRITE,NULL,$3,NULL,NULL,NULL,NULL);}
 			|WRITE STRING ';'									{$$=createtree(t_NULL,NULL,NULL,nt_WRITE,NULL,$2,NULL,NULL,NULL,NULL);}
@@ -151,9 +122,7 @@ Stmt		:READ '(' id ')' ';'								{$$=createtree(t_NULL,NULL,NULL,nt_READ,NULL,$
 			|CONTINUE ';'										{$$=createtree(t_NULL,NULL,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
 			|RETURN Arth ';'									{retcount++;$$=createtree(GLookup(funcname)->type,NULL,NULL,nt_RET,NULL,$2,NULL,NULL,NULL,NULL);}
 			|BRKP ';'											{$$=createtree(t_NULL,NULL,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
-			|EXIT ';'											{$$=createtree(t_NULL,NULL,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
-			;
-
+			|EXIT ';'											{$$=createtree(t_NULL,NULL,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);};
 Arth		:Arth PLUS Arth			{$$=createtree(t_INT,NULL,NULL,nt_PLUS,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth MINUS Arth		{$$=createtree(t_INT,NULL,NULL,nt_MINUS,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth MUL Arth			{$$=createtree(t_INT,NULL,NULL,nt_MUL,$1,NULL,$3,NULL,NULL,NULL);}
@@ -165,9 +134,7 @@ Arth		:Arth PLUS Arth			{$$=createtree(t_INT,NULL,NULL,nt_PLUS,$1,NULL,$3,NULL,N
 			|id						{$$=$1;}
 			|ID '(' ')'				{check($1);$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
 			|ID '(' ArgList ')'		{check($1);
-									$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);}
-			;
-
+									$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
 ArgList		:ArgList ',' Arth		{	$3->down=$1;
 										$$=$3;
 										/*
@@ -177,17 +144,14 @@ ArgList		:ArgList ',' Arth		{	$3->down=$1;
 										t->down=$3;
 										$$=$1;
 										*/}
-			|Arth					{$$=$1;}
-			;
-
+			|Arth					{$$=$1;};
 Bool		:Arth LT Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth LE Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_LE,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth GT Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_GT,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth GE Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_GE,$1,NULL,$3,NULL,NULL,NULL);}
 			|Arth EE Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_EE,$1,NULL,$3,NULL,NULL,NULL);}
-			|Arth NE Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);}
-			;
-
+			|Arth NE Arth			{$$ =createtree(t_BOOL,NULL,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);};
+//-----------------------------------------------------------------------------------------------------------------------
 id			:ID							{check($1);
 										if(LLookup($1->str)==NULL){//Global
 											int t=GLookup($1->str)->type,nt;
@@ -226,8 +190,7 @@ id			:ID							{check($1);
 										else{int t=LLookup($2->str)->type;
 											if(t==t_INARR || t==t_CHARR)t=t==t_INARR?t_INT:t_CHAR;
 											else if(t!=t_INT && t!=t_CHAR)printf("\tSomething's wrong!--&\tline:%d\tt=t_%d\n",line,t);
-											$$=createtree(t,$2->num,$2->str,nt_APTR,NULL,NULL,NULL,NULL,NULL,LLookup($1->str));}}
-			;
+											$$=createtree(t,$2->num,$2->str,nt_APTR,NULL,NULL,NULL,NULL,NULL,LLookup($1->str));}};
 %%
 
 void check(struct tnode *t){
@@ -249,15 +212,20 @@ void func(struct Paramstruct* phead){
 		temp=temp->next;}
 }
 
-void other(){
-	printf("\t\tGlobal Table\n");
+void gother(){
+	printf("\t~~~~Global Table~~~~('%d')\n",gbinding-4096);
 	struct Gsymbol* gtemp=ghead;
 	while(gtemp!=NULL){
 		printf("name:'%s'\ttype:'%d'\tsize:'%d'\tarr:%d\n",gtemp->name,gtemp->type,gtemp->size,gtemp->arr);
 		gtemp=gtemp->next;}
-	printf("\t\tLocal Table\n");
+}
+
+void lother(){
+	printf("\t~~~~Local Table~~~~('%s')\n",funcname);
+	int count=0;
 	struct Lsymbol* ltemp=lhead;
 	while(ltemp!=NULL){
+		count++;
 		printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",ltemp->name,ltemp->type,ltemp->binding);
 		ltemp=ltemp->next;}
 }

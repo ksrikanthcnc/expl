@@ -122,8 +122,11 @@ void GInstall(char *name, int type, int size){
 	gitemp->name=name;
 	gitemp->type=type;
 	gitemp->size=size;
-	gitemp->binding=binding;
-	binding=binding+size;
+	if(size>0)
+		gitemp->binding=gbinding;
+	else
+		gitemp->binding=0;
+	gbinding=gbinding+size;
 	gitemp->next=ghead;
 	ghead=gitemp;
 	//printf("New entry is----\n");
@@ -263,9 +266,11 @@ void LocalParam(struct Paramstruct* phead,struct Gsymbol *g){
 int generate(FILE *target_file){
 	//printf("------------Generating Code------------\n");
 	fprintf(target_file,"%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",0,2056,0,0,0,0,0,0);
-	fprintf(target_file,"MOV SP,%d\n",binding);
-	fprintf(target_file,"MOV BP,SP\n");
-	fprintf(target_file,"CALL F1001\n");
+	fprintf(target_file,"MOV SP,%d\n",gbinding-1);
+	fprintf(target_file,"MOV BP,%d\n",gbinding);
+	fprintf(target_file,"PUSH R0\n");
+	fprintf(target_file,"CALL F1000\n");
+	Halt(target_file);
 	//printf("-------------Generated--------------\n");
 	;}
 
@@ -277,17 +282,21 @@ int top=-1;
 
 int getReg(){
 	reg++;
+	/*
 	printf("\t\tgotReg:R%d\t",reg);
 	for(int s=reg;s>-1;s--) printf(".");
 	printf("\n");
+	*/
 	if(reg>19){printf("Out of registers\n");
 				exit(1);}
 	return reg;}
 void freeReg(){
 	reg--;
+	/*
 	printf("\t\tfreedReg:R%d\t",reg);
 	for(int s=reg;s>-1;s--) printf(".");
-	printf("\n");}
+	printf("\n");
+	*/}
 int getLabel(){label++;return label;}
 //int argtemp=0;
 int codeGen(struct tnode *t,FILE *target_file){
@@ -302,33 +311,33 @@ int codeGen(struct tnode *t,FILE *target_file){
 			fprintf(target_file, "PUSH R%d\n",i);
 			freeReg();}}
 	if(t==NULL){
-		puts("check meeeeeeeeeeeeeeeee");
+		//puts("check meeeeeeeeeeeeeeeee");
 		return -1;}
 	*/
 	switch(t->nt){
 		case nt_NODE:
-			puts("node");
-			puts("\tleft");
+			//puts("node");
+			//puts("\tleft");
 			codeGen(t->left,target_file);
-			puts("\tright");
+			//puts("\tright");
 			codeGen(t->right,target_file);
 			break;
 		case nt_NUM:
-			puts("num");
+			//puts("num");
 			//printf("%d\n",t->num);
 			i=getReg();
 			fprintf(target_file, "MOV R%d,%d\n",i,t->num);
 			return i;
 			break;
 		case nt_STR:
-			puts("str");
+			//puts("str");
 			//printf("%s\n",t->str);
 			i=getReg();
 			fprintf(target_file, "MOV R%d,%s\n",i,t->str);//----------------
 			return i;
 			break;
 		case nt_ID:
-			puts("id");
+			//puts("id");
 			//printf("%s\n",t->str);
 			i=getReg();
 			if(LLookup(t->str)==NULL){
@@ -338,13 +347,12 @@ int codeGen(struct tnode *t,FILE *target_file){
 				j=getReg();
 				fprintf(target_file, "MOV R%d,BP\n",j);
 				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->str)->binding);
-				fprintf(target_file, "MOV R%d,R%d\n",i,j);
+				fprintf(target_file, "MOV R%d,[R%d]\n",i,j);
 				freeReg();}
-			
 			return i;
 			break;
 		case nt_PTR:
-			puts("pointer-<var name>");
+			//puts("pointer-<var name>");
 			//printf("%s\n",t->str);
 			i=getReg();
 			if(t->Gentry!=NULL){
@@ -358,7 +366,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_APTR:
-			puts("pointer-&");
+			//puts("pointer-&");
 			//printf("%s\n",t->str);
 			i=getReg();
 			if(t->Gentry!=NULL){
@@ -372,7 +380,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_SPTR:
-			puts("pointer-*");
+			//puts("pointer-*");
 			//printf("%s\n",t->str);
 			i=getReg();
 			if(t->Gentry!=NULL){
@@ -388,7 +396,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_ARR:
-			puts("arr");
+			//puts("arr");
 			//printf("%s\n",t->str);
 			i=getReg();
 			node=t->Gentry;
@@ -398,7 +406,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_PLUS:
-			puts("+");
+			//puts("+");
 			i=codeGen(t->left,target_file);
 			j=codeGen(t->right,target_file);
 			fprintf(target_file, "ADD R%d,R%d\n",i,j );
@@ -406,7 +414,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_MUL:
-			puts("*");
+			//puts("*");
 			i=codeGen(t->left,target_file);
 			j=codeGen(t->right,target_file);
 			fprintf(target_file, "MUL R%d,R%d\n",i,j );
@@ -414,7 +422,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_MINUS:
-			puts("-");
+			//puts("-");
 			i=codeGen(t->left,target_file);
 			j=codeGen(t->right,target_file);
 			fprintf(target_file, "SUB R%d,R%d\n",i,j );
@@ -422,7 +430,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_DIV:
-			puts("/");
+			//puts("/");
 			i=codeGen(t->left,target_file);
 			j=codeGen(t->right,target_file);
 			fprintf(target_file, "DIV R%d,R%d\n",i,j );
@@ -430,7 +438,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_MOD:
-			puts("%");
+			//puts("%");
 			i=codeGen(t->left,target_file);
 			j=codeGen(t->right,target_file);
 			fprintf(target_file, "MOD R%d,R%d\n",i,j );
@@ -438,7 +446,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_LT:
-			puts("<");
+			//puts("<");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "LT R%d,R%d\n", i, j);
@@ -446,7 +454,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_LE:
-			puts("<=");
+			//puts("<=");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "LE R%d,R%d\n", i, j);
@@ -454,7 +462,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_GT:
-			puts(">");
+			//puts(">");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "GT R%d,R%d\n", i, j);
@@ -462,7 +470,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_GE:
-			puts(">=");
+			//puts(">=");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "GE R%d,R%d\n", i, j);
@@ -470,7 +478,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_EE:
-			puts("==");
+			//puts("==");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "EQ R%d,R%d\n", i, j);
@@ -478,7 +486,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_NE:
-			puts("!=");
+			//puts("!=");
 			i = codeGen(t->left, target_file);
 			j = codeGen(t->right, target_file);
 			fprintf(target_file, "NE R%d,R%d\n", i, j);
@@ -486,7 +494,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			return i;
 			break;
 		case nt_READ:
-			puts("read");
+			//puts("read");
 			// printf("%s",t->down->str);
 			ret = getReg();
 			if(t->down->Gentry!=NULL){
@@ -500,19 +508,24 @@ int codeGen(struct tnode *t,FILE *target_file){
 			freeReg();
 			break;
 		case nt_WRITE:
-			puts("write");
+			//puts("write");
 			if((t->down->t)==t_CHAR)
 				//printf("%s\n",t->down->str);
 				;
 			i=codeGen(t->down,target_file);
 			ret=getReg();
-			Write(i,target_file,ret);
+			if(t->down->Gentry!=NULL || t->down->nt==nt_STR){
+				//puts(" global");
+				Write(i,target_file,ret);}
+			else{
+				//puts(" local");
+				Write(i,target_file,ret);}//---------------------------------------------LWrite??
 			freeReg();
 			freeReg();//--------------------------
 			break;
 		case nt_ASGN:
-			puts("=");
-			if(LLookup(t->left->str)==NULL){
+			//puts("=");
+			if(LLookup(t->left->str)==NULL){//------------------------
 				node=t->left->Gentry;
 				if(t->left->nt==nt_SPTR){
 					i=codeGen(t->right,target_file);
@@ -534,7 +547,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 					j=(node->binding)+(t->left->num);
 					fprintf(target_file,"MOV [%d],R%d\n",j,i);
 					freeReg();}}
-			else{
+			else{//Local
 				k=getReg();
 				fprintf(target_file, "MOV R%d,BP\n",k);
 				fprintf(target_file, "ADD R%d,%d\n",k,t->left->Lentry->binding);
@@ -546,12 +559,12 @@ int codeGen(struct tnode *t,FILE *target_file){
 					fprintf(target_file,"MOV [R%d],\"%s\"\n",k,t->right->str);}
 				else{
 					i=codeGen(t->right,target_file);
-					fprintf(target_file,"MOV [R%d],R%d\n",k,i);
+					fprintf(target_file,"MOV [R%d],R%d--\n",k,i);
 					freeReg();}
 				freeReg();}
 			break;
 		case nt_IF:
-			puts("if");
+			//puts("if");
 			result=codeGen(t->left,target_file);
 			label1=getLabel();
 			fprintf(target_file,"JZ R%d,L%d\n",result,label1);
@@ -560,7 +573,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			fprintf(target_file,"L%d:\n",label1);
 			break;
 		case nt_IFELSE:
-			puts("ifelse");
+			//puts("ifelse");
 			label1=getLabel();
 			label2=getLabel();
 			result=codeGen(t->left,target_file);
@@ -573,7 +586,7 @@ int codeGen(struct tnode *t,FILE *target_file){
 			fprintf(target_file,"L%d:\n",label2);
 			break;
 		case nt_WHILE:
-			puts("while");
+			//puts("while");
 			top++;
 			break2[top]=label1=getLabel();
 			cont1[top]=label2=getLabel();
@@ -587,27 +600,30 @@ int codeGen(struct tnode *t,FILE *target_file){
 			top--;
 			break;
 		case nt_BREAK:
-			if(top<0) puts("break not in loop");
-			else{puts("break");
+			if(top<0) {//puts("break not in loop");
+						i=i;}
+			else{//puts("break");
 				fprintf(target_file, "JMP L%d\n",break2[top]);}
 			break;
 		case nt_CONTINUE:
-			if(top<0) puts("continue not in loop");
-			else{puts("continue");
+			if(top<0) {//puts("continue not in loop");
+						i=i;}
+			else{//puts("continue");
 				fprintf(target_file, "JMP L%d\n",cont1[top]);}
 			break;
 		case nt_FUNC://-------------------------------------------------------------------
-			puts("function");
+			//puts("function");
 			regtemp=reg;
-			while(reg!=-1)
-				fprintf(target_file, "PUSH R%d\n",reg--);
+			while(reg!=-1){
+				fprintf(target_file, "PUSH R%d--save.reg\n",reg);
+				reg--;}
 			atemp=t->arglist;
 			while(atemp){
 				i=getReg();
 				j=codeGen(atemp,target_file);
 				fprintf(target_file, "MOV R%d,R%d\n",i,j);
-				fprintf(target_file, "PUSH R%d\n",i);
 				freeReg();
+				fprintf(target_file, "PUSH R%d--arg\n",i);
 				freeReg();
 				atemp=atemp->down;}
 			/*
@@ -618,10 +634,11 @@ int codeGen(struct tnode *t,FILE *target_file){
 			*/
 			i=getReg();
 			fprintf(target_file, "MOV R%d,\"\"\n",i);
-			fprintf(target_file, "PUSH R%d\n",i);
+			fprintf(target_file, "PUSH R%d--for.ret\n",i);
 			freeReg();
 			fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
-			fprintf(target_file, "MOV R%d, [SP]\n",regtemp+1);
+
+			fprintf(target_file, "MOV R%d, SP--ret\n",regtemp+1);
 			/*
 			ttemp=t->arglist;
 			while(ttemp){
@@ -631,30 +648,38 @@ int codeGen(struct tnode *t,FILE *target_file){
 				ttemp=ttemp->down;}
 			*/
 			atemp=t->arglist;
+			i=getReg();
 			while(atemp){
-				fprintf(target_file, "POP R%d\n",regtemp+2);
+				fprintf(target_file, "POP R%d--args\n",i);
 				atemp=atemp->down;}
-			while(regtemp--!=-1){
-				fprintf(target_file, "POP R%d\n",++reg);}
-			reg++;
+			freeReg();
+			while(regtemp!=-1){
+				regtemp--;
+				reg++;
+				fprintf(target_file, "POP R%d--old.regs\n",reg);}
+			i=getReg();
 			//argtemp--;
+			return i;
 			break;
 		case nt_RET:
-			puts("ret");
+			//puts("ret");
 			ltemp=lhead;
 			i=getReg();
 			while(ltemp!=NULL){
-				fprintf(target_file, "POP R%d\n",i);
+				if(ltemp->binding>0)
+					fprintf(target_file, "POP R%d--locals\n",i);
 				ltemp=ltemp->next;}
 			freeReg();
-			i=codeGen(t->down,target_file);
 			j=getReg();
+			i=codeGen(t->down,target_file);
 			fprintf(target_file, "MOV R%d,BP\n",j);
 			fprintf(target_file, "SUB R%d,2\n",j);
 			fprintf(target_file, "MOV [R%d],R%d\n",j,i);
 			freeReg();//--------------------------------
+			freeReg();
+			j=getReg();
 			fprintf(target_file, "MOV BP,[SP]\n");
-			fprintf(target_file, "POP R%d\n",j);
+			fprintf(target_file, "POP R%d--bp\n",j);
 			freeReg();
 			fprintf(target_file, "RET\n");
 			break;
@@ -674,23 +699,27 @@ int codeGen(struct tnode *t,FILE *target_file){
 			fprintf(target_file, "CALL 0\n");
 			break;
 		default:
-			puts("\tNO CODE-GEN MATCHING FOUND\n");
+			//puts("\tNO CODE-GEN MATCHING FOUND\n");
 			exit(1);	
 			}}
 void funcGen(struct Gsymbol *g, FILE *target_file){
 	fprintf(target_file, "F%d:\n",g->flabel);
 	fprintf(target_file, "PUSH BP\n");
 	fprintf(target_file, "MOV BP, SP\n");
+	/*
 	if(g->flabel==1000){
 		fprintf(target_file, "F1001:\n");
+		//fprintf(target_file, "MOV BP, SP\n");
 		//Brkp(target_file);
 		}
+	*/
 	struct Lsymbol *temp=lhead;
 	int i;
 	i=getReg();
 	fprintf(target_file, "MOV R%d,\"\"\n",i);
 	while(temp){
-		fprintf(target_file, "PUSH R%d\n",i);
+		if(temp->binding>0)
+			fprintf(target_file, "PUSH R%d--locals\n",i);
 		temp=temp->next;}
 	freeReg();}
 
@@ -702,6 +731,27 @@ void Write(int reg,FILE* target_file,int ret){
 	fprintf(target_file, "MOV R%d, -2\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
 	fprintf(target_file, "PUSH R%d\n",reg);
+	fprintf(target_file, "MOV R%d,\"\"\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	freeReg();
+	fprintf(target_file, "CALL 0\n");
+	fprintf(target_file, "POP R%d\n",ret);
+	t=getReg();
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	fprintf(target_file, "POP R%d\n",t);
+	freeReg();}
+void LWrite(int reg,FILE* target_file,int ret){
+	int t;
+	t=getReg();
+	fprintf(target_file, "MOV R%d, \"Write\"\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "MOV R%d, -2\n",t);
+	fprintf(target_file, "PUSH R%d\n",t);
+	fprintf(target_file, "MOV R%d,[R%d]\n",t,reg);
+	fprintf(target_file, "PUSH R%d\n",t);
 	fprintf(target_file, "MOV R%d,\"\"\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
@@ -783,32 +833,32 @@ int evaluate(struct tnode *t){
 	switch(t->nt)
 	{
 		case nt_NODE:
-		puts("node");
+		//puts("node");
 			evaluate(t->left);
 			evaluate(t->right);
 			break;
 		case nt_PLUS:
-		puts("plus");
+		//puts("plus");
 			return evaluate(t->left)+evaluate(t->right);
 			break;
 		case nt_MUL:
-		puts("mul");
+		//puts("mul");
 			return evaluate(t->left)*evaluate(t->right);
 			break;
 		case nt_MINUS:
-		puts("minus");
+		//puts("minus");
 			return evaluate(t->left)-evaluate(t->right);
 			break;
 		case nt_DIV:
-		puts("div");
+		//puts("div");
 			return evaluate(t->left)/evaluate(t->right);
 			break;
 		case nt_NUM:
-		puts("num");
+		//puts("num");
 			return t->num;
 			break;
 		case nt_ID:
-		puts("id");
+		//puts("id");
 				return val[*(t->str)-'a'];
 		/*	if(val[*(t->str)-'a']!=NULL)
 			else
@@ -819,39 +869,39 @@ int evaluate(struct tnode *t){
 		*/
 			break;
 		case nt_READ:
-		puts("read");
+		//puts("read");
 			scanf("%d",&val[*(t->down->str)-'a']);
 			break;
 		case nt_WRITE:
-		puts("write");
+		//puts("write");
 			printf("%d\n",evaluate(t->down));
 			break;
 		case nt_ASGN:
-		puts("asgn");
+		//puts("asgn");
 			val[*(t->left->str)-'a']=evaluate(t->right);
 			break;
 		case nt_LT:
-		puts("lt");
+		//puts("lt");
 			return evaluate(t->left)<evaluate(t->right);
 			break;
 		case nt_LE:
-		puts("le");
+		//puts("le");
 			return evaluate(t->left)<=evaluate(t->right);
 			break;
 		case nt_GT:
-		puts("gt");
+		//puts("gt");
 			return evaluate(t->left)>evaluate(t->right);
 			break;
 		case nt_GE:
-		puts("ge");
+		//puts("ge");
 			return evaluate(t->left)>=evaluate(t->right);
 			break;
 		case nt_EE:
-		puts("ee");
+		//puts("ee");
 			return evaluate(t->left)==evaluate(t->right);
 			break;
 		case nt_NE:
-		puts("ne");
+		//puts("ne");
 			return evaluate(t->left)!=evaluate(t->right);
 			break;		
 		case nt_IF:
