@@ -1,28 +1,40 @@
-decl
-	int sum(int a,int b);
-enddecl;
-
-int sum(int a,int b){
-	decl
-	enddecl;
-	
-	begin
-		return a+b;
-	end;
+type
+i{
+	int val;
+	i next;
 }
+endtype
+
+decl
+	i b;
+	int a[10];
+enddecl
 
 int main()
 {
 	decl
-		int a,b;
-	enddecl;
+		int i;
+	enddecl
+	
 	begin
-		a=100;
-		b=43;
-		brkp;
-		a=sum(a,b);
+/*		initialize();
+		a=alloc();
 		write(a);
-		brkp;
+		free(a);
+		write(a);
+		a=alloc();
+		write(a);
+*/
+
+		read(a[1]);
+		write(a[1]);
+		write("loop");
+		i=0;
+		while(i<11)do
+			write(a[i]);
+			i=i+1;
+		endwhile;
+		
 		return 0;
-	end	;
+	end
 }

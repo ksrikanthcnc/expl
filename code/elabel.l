@@ -92,6 +92,9 @@ int search(char *l){
 	struct label* temp;
 	temp=head;
 	while(temp){
+		if(temp->l==NULL){
+			printf("Function number (starts from 0) :%s\tnot defined, but called :(\n",l);
+			exit(1);}
 		if(strcmp(concat(temp->l,"\n"),l)==0)
 			return temp->line;
 		else

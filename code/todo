@@ -1,6 +1,8 @@
 --
 ++
 
+AND OR NOT
+
 replace install with genrty
 	lookup
 	.y gentry
@@ -15,13 +17,52 @@ a[1]
 		p
 		
 		
-		
-LLookup for
-	ptr
-	sptr
-	aptr
-	read
-		
 deallocate
 
 void return type
+
+global
+	int *ret
+define
+	int *ret(present int ret)
+
+
+
+arr[i]-----------use down
+
+global tuple t(int a)
+local a
+
+
+* in tuple
+
+type = NULL
+
+
+return last and only one
+
+brkp==breakpoint
+
+
+identifier -> (letter)(letter | digit)*
+
+
+copy full tuple ie tuple a = tuple x
+
+
+$$body  	past problem	check now
+
+
+write(function
+
+
+local declarations of structs)
+
+
+asgn for arr in local
+
+
+
+
+
+

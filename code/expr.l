@@ -24,9 +24,9 @@
 "--"			{return DEC;}
 "||"			{return OR;}
 "&&"			{return AND;}
-"main"			{return MAIN;}
 "return"		{return RETURN;}
 "brkp"			{return BRKP;}
+"breakpoint"			{return BRKP;}
 "exit"			{return EXIT;}
 "if"			{return IF;}
 "then"			{return THEN;}
@@ -45,16 +45,22 @@
 "continue"		{return CONTINUE;}
 "decl"			{return DECL;}
 "enddecl"		{return ENDDECL;}
-"int"			{return INT;}
-"str"			{return STR;}
-["][^"\n]*["]	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]*[']	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-[0-9]+			{yylval = createtree(t_INT,atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
-[a-z]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
-[(),\[\];&{}]	{return *yytext;}
+"tuple"			{return TUPLE;}
+"type"			{return TYPE;}
+"endtype"		{return ENDTYPE;}
+"int main"		{return MAIN;}
+"initialize"	{return INIT;}
+"alloc"			{return ALLOC;}
+"free"			{return FREE;}
+
+["][^"\n]*["]	{yylval = createtree(TLookup("str"),NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']	{yylval = createtree(TLookup("str"),NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+[0-9]+			{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
+[a-zA-Z0-9]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
+[(),\[\];&{}.]	{return *yytext;}
 [ \t]			{}
 [\n]			{line++;}
-.				{printf("unknown character:%c\n",*yytext);exit(1);}
+.				{printf("unknown character:'%c' line:'%d'\n",*yytext,line);exit(1);}
 
 %%
 int yywrap(void){
