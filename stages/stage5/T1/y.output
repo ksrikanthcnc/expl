@@ -1,0 +1,460 @@
+Nonterminals useless in grammar
+
+   id
+
+
+Terminals unused in grammar
+
+   STRING
+   PLUS
+   MINUS
+   DIV
+   MOD
+   EQ
+   INC
+   DEC
+   BEG
+   END
+   READ
+   WRITE
+   IF
+   THEN
+   ELSE
+   ENDIF
+   WHILE
+   DO
+   ENDWHILE
+   BREAK
+   CONTINUE
+   REPEAT
+   UNTIL
+   LT
+   LE
+   GT
+   GE
+   EE
+   NE
+   '&'
+
+
+Rules useless in grammar
+
+   20 id: ID
+   21   | ID '[' NUM ']'
+   22   | ID '[' NUM ']' '[' NUM ']'
+   23   | MUL id
+   24   | '&' id
+
+
+Grammar
+
+    0 $accept: start $end
+
+    1 start: Declarations
+
+    2 Declarations: DECL DeclList ENDDECL ';'
+    3             | DECL ENDDECL ';'
+
+    4 DeclList: DeclList Decl
+    5         | Decl
+
+    6 Decl: Type Varlist ';'
+
+    7 Type: INT
+    8     | STR
+
+    9 Varlist: Varlist ',' Gid
+   10        | Gid
+
+   11 Gid: ID
+   12    | ID '[' NUM ']'
+   13    | ID '[' NUM ']' '[' NUM ']'
+   14    | MUL ID
+   15    | ID '(' ParamList ')'
+
+   16 ParamList: ParamList ',' Param
+   17          | Param
+   18          | %empty
+
+   19 Param: Type ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'&' (38)
+'(' (40) 15
+')' (41) 15
+',' (44) 9 16
+';' (59) 2 3 6
+'[' (91) 12 13
+']' (93) 12 13
+error (256)
+NUM (258) 12 13
+ID (259) 11 12 13 14 15 19
+STRING (260)
+PLUS (261)
+MINUS (262)
+MUL (263) 14
+DIV (264)
+MOD (265)
+EQ (266)
+INC (267)
+DEC (268)
+BEG (269)
+END (270)
+READ (271)
+WRITE (272)
+IF (273)
+THEN (274)
+ELSE (275)
+ENDIF (276)
+WHILE (277)
+DO (278)
+ENDWHILE (279)
+BREAK (280)
+CONTINUE (281)
+REPEAT (282)
+UNTIL (283)
+DECL (284) 2 3
+ENDDECL (285) 2 3
+INT (286) 7
+STR (287) 8
+LT (288)
+LE (289)
+GT (290)
+GE (291)
+EE (292)
+NE (293)
+
+
+Nonterminals, with rules where they appear
+
+$accept (46)
+    on left: 0
+start (47)
+    on left: 1, on right: 0
+Declarations (48)
+    on left: 2 3, on right: 1
+DeclList (49)
+    on left: 4 5, on right: 2 4
+Decl (50)
+    on left: 6, on right: 4 5
+Type (51)
+    on left: 7 8, on right: 6 19
+Varlist (52)
+    on left: 9 10, on right: 6 9
+Gid (53)
+    on left: 11 12 13 14 15, on right: 9 10
+ParamList (54)
+    on left: 16 17 18, on right: 15 16
+Param (55)
+    on left: 19, on right: 16 17
+
+
+State 0
+
+    0 $accept: . start $end
+
+    DECL  shift, and go to state 1
+
+    start         go to state 2
+    Declarations  go to state 3
+
+
+State 1
+
+    2 Declarations: DECL . DeclList ENDDECL ';'
+    3             | DECL . ENDDECL ';'
+
+    ENDDECL  shift, and go to state 4
+    INT      shift, and go to state 5
+    STR      shift, and go to state 6
+
+    DeclList  go to state 7
+    Decl      go to state 8
+    Type      go to state 9
+
+
+State 2
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 10
+
+
+State 3
+
+    1 start: Declarations .
+
+    $default  reduce using rule 1 (start)
+
+
+State 4
+
+    3 Declarations: DECL ENDDECL . ';'
+
+    ';'  shift, and go to state 11
+
+
+State 5
+
+    7 Type: INT .
+
+    $default  reduce using rule 7 (Type)
+
+
+State 6
+
+    8 Type: STR .
+
+    $default  reduce using rule 8 (Type)
+
+
+State 7
+
+    2 Declarations: DECL DeclList . ENDDECL ';'
+    4 DeclList: DeclList . Decl
+
+    ENDDECL  shift, and go to state 12
+    INT      shift, and go to state 5
+    STR      shift, and go to state 6
+
+    Decl  go to state 13
+    Type  go to state 9
+
+
+State 8
+
+    5 DeclList: Decl .
+
+    $default  reduce using rule 5 (DeclList)
+
+
+State 9
+
+    6 Decl: Type . Varlist ';'
+
+    ID   shift, and go to state 14
+    MUL  shift, and go to state 15
+
+    Varlist  go to state 16
+    Gid      go to state 17
+
+
+State 10
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+State 11
+
+    3 Declarations: DECL ENDDECL ';' .
+
+    $default  reduce using rule 3 (Declarations)
+
+
+State 12
+
+    2 Declarations: DECL DeclList ENDDECL . ';'
+
+    ';'  shift, and go to state 18
+
+
+State 13
+
+    4 DeclList: DeclList Decl .
+
+    $default  reduce using rule 4 (DeclList)
+
+
+State 14
+
+   11 Gid: ID .
+   12    | ID . '[' NUM ']'
+   13    | ID . '[' NUM ']' '[' NUM ']'
+   15    | ID . '(' ParamList ')'
+
+    '['  shift, and go to state 19
+    '('  shift, and go to state 20
+
+    $default  reduce using rule 11 (Gid)
+
+
+State 15
+
+   14 Gid: MUL . ID
+
+    ID  shift, and go to state 21
+
+
+State 16
+
+    6 Decl: Type Varlist . ';'
+    9 Varlist: Varlist . ',' Gid
+
+    ';'  shift, and go to state 22
+    ','  shift, and go to state 23
+
+
+State 17
+
+   10 Varlist: Gid .
+
+    $default  reduce using rule 10 (Varlist)
+
+
+State 18
+
+    2 Declarations: DECL DeclList ENDDECL ';' .
+
+    $default  reduce using rule 2 (Declarations)
+
+
+State 19
+
+   12 Gid: ID '[' . NUM ']'
+   13    | ID '[' . NUM ']' '[' NUM ']'
+
+    NUM  shift, and go to state 24
+
+
+State 20
+
+   15 Gid: ID '(' . ParamList ')'
+
+    INT  shift, and go to state 5
+    STR  shift, and go to state 6
+
+    $default  reduce using rule 18 (ParamList)
+
+    Type       go to state 25
+    ParamList  go to state 26
+    Param      go to state 27
+
+
+State 21
+
+   14 Gid: MUL ID .
+
+    $default  reduce using rule 14 (Gid)
+
+
+State 22
+
+    6 Decl: Type Varlist ';' .
+
+    $default  reduce using rule 6 (Decl)
+
+
+State 23
+
+    9 Varlist: Varlist ',' . Gid
+
+    ID   shift, and go to state 14
+    MUL  shift, and go to state 15
+
+    Gid  go to state 28
+
+
+State 24
+
+   12 Gid: ID '[' NUM . ']'
+   13    | ID '[' NUM . ']' '[' NUM ']'
+
+    ']'  shift, and go to state 29
+
+
+State 25
+
+   19 Param: Type . ID
+
+    ID  shift, and go to state 30
+
+
+State 26
+
+   15 Gid: ID '(' ParamList . ')'
+   16 ParamList: ParamList . ',' Param
+
+    ','  shift, and go to state 31
+    ')'  shift, and go to state 32
+
+
+State 27
+
+   17 ParamList: Param .
+
+    $default  reduce using rule 17 (ParamList)
+
+
+State 28
+
+    9 Varlist: Varlist ',' Gid .
+
+    $default  reduce using rule 9 (Varlist)
+
+
+State 29
+
+   12 Gid: ID '[' NUM ']' .
+   13    | ID '[' NUM ']' . '[' NUM ']'
+
+    '['  shift, and go to state 33
+
+    $default  reduce using rule 12 (Gid)
+
+
+State 30
+
+   19 Param: Type ID .
+
+    $default  reduce using rule 19 (Param)
+
+
+State 31
+
+   16 ParamList: ParamList ',' . Param
+
+    INT  shift, and go to state 5
+    STR  shift, and go to state 6
+
+    Type   go to state 25
+    Param  go to state 34
+
+
+State 32
+
+   15 Gid: ID '(' ParamList ')' .
+
+    $default  reduce using rule 15 (Gid)
+
+
+State 33
+
+   13 Gid: ID '[' NUM ']' '[' . NUM ']'
+
+    NUM  shift, and go to state 35
+
+
+State 34
+
+   16 ParamList: ParamList ',' Param .
+
+    $default  reduce using rule 16 (ParamList)
+
+
+State 35
+
+   13 Gid: ID '[' NUM ']' '[' NUM . ']'
+
+    ']'  shift, and go to state 36
+
+
+State 36
+
+   13 Gid: ID '[' NUM ']' '[' NUM ']' .
+
+    $default  reduce using rule 13 (Gid)

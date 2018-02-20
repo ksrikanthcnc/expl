@@ -1,0 +1,33 @@
+MOV R1, SP
+MOV R2, 5
+SUB R1, R2
+MOV R2, "Write"
+MOV R1, [R1]
+EQ R1, R2
+JZ R1, 64
+MOV R1, SP
+MOV R2, 4
+SUB R1, R2
+MOV R2, [R1] //argument 1 at SP - 4
+ADD R1, 1
+MOV R3, [R1] //argument 2 at SP - 3
+ADD R1, 1
+MOV R4, [R1] //argument 3 at SP - 2
+MOV R5, 5 //System call number 5 for Write
+PUSH R5
+PUSH R4 //R4 contains [SP - 4] = -2
+PUSH R2 //R2 contains [SP - 3] = 4096
+PUSH R3 //R3 contains [SP - 2] = blank
+PUSH R5 // space for return value
+INT 7
+POP R1 //Pop and save return value
+POP R2 //Pop and discard
+POP R2 //Pop and discard
+POP R2 //Pop and discard
+POP R2 //Pop and discard
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], R1
+RET
+

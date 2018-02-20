@@ -1,0 +1,26 @@
+type
+node{
+	int val;
+	node next;
+}
+endtype
+
+decl
+	node n,t;
+enddecl
+
+int main()
+{
+	decl
+//		node n,t;
+		int i;
+	enddecl
+	
+	begin
+		initialize();
+		n=alloc();
+		n.val=143;
+		write(n[0]);
+		return 0;
+	end
+}

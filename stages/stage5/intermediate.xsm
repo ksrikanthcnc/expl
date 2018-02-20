@@ -1,0 +1,20 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+MOV SP,4095
+MOV BP,4096
+PUSH R0
+CALL F1000
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0

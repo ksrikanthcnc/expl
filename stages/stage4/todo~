@@ -1,0 +1,18 @@
+--
+++
+
+replace install with genrty
+	lookup
+	.y gentry
+
+return type for plus 
+
+
+a[1]
+*a should work
+
+*&&p
+		*
+		&
+		&
+		p

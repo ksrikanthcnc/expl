@@ -1,0 +1,4 @@
+decl
+str abc,def();
+int n,fact(int b);
+enddecl;

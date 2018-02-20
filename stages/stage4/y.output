@@ -1,0 +1,1613 @@
+Terminals unused in grammar
+
+   INC
+   DEC
+
+
+Grammar
+
+    0 $accept: start $end
+
+    1 start: Declarations main
+
+    2 Declarations: DECL DeclList ENDDECL ';'
+    3             | DECL ENDDECL ';'
+
+    4 DeclList: DeclList Decl
+    5         | Decl
+
+    6 Decl: Type Varlist ';'
+
+    7 Type: INT
+    8     | STR
+
+    9 Varlist: Varlist ',' declid
+   10        | declid
+
+   11 declid: ID
+   12       | ID '[' NUM ']'
+   13       | ID '[' NUM ']' '[' NUM ']'
+   14       | MUL ID
+
+   15 main: BEG Slist END ';'
+   16     | BEG END
+
+   17 Slist: Slist Stmt
+   18      | Stmt
+
+   19 Stmt: READ '(' id ')' ';'
+   20     | WRITE '(' Arth ')' ';'
+   21     | WRITE STRING ';'
+   22     | id EQ Arth ';'
+   23     | IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   24     | IF '(' Bool ')' THEN Slist ENDIF ';'
+   25     | WHILE '(' Bool ')' DO Slist ENDWHILE ';'
+   26     | REPEAT Slist UNTIL '(' Bool ')' ';'
+   27     | DO Slist WHILE '(' Bool ')' ';'
+   28     | BREAK ';'
+   29     | CONTINUE ';'
+
+   30 Arth: Arth PLUS Arth
+   31     | Arth MINUS Arth
+   32     | Arth MUL Arth
+   33     | Arth DIV Arth
+   34     | Arth MOD Arth
+   35     | '(' Arth ')'
+   36     | NUM
+   37     | STRING
+   38     | id
+
+   39 Bool: Arth LT Arth
+   40     | Arth LE Arth
+   41     | Arth GT Arth
+   42     | Arth GE Arth
+   43     | Arth EE Arth
+   44     | Arth NE Arth
+
+   45 id: ID
+   46   | ID '[' NUM ']'
+   47   | ID '[' NUM ']' '[' NUM ']'
+   48   | MUL id
+   49   | '&' id
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'&' (38) 49
+'(' (40) 19 20 23 24 25 26 27 35
+')' (41) 19 20 23 24 25 26 27 35
+',' (44) 9
+';' (59) 2 3 6 15 19 20 21 22 23 24 25 26 27 28 29
+'[' (91) 12 13 46 47
+']' (93) 12 13 46 47
+error (256)
+NUM (258) 12 13 36 46 47
+ID (259) 11 12 13 14 45 46 47
+STRING (260) 21 37
+PLUS (261) 30
+MINUS (262) 31
+MUL (263) 14 32 48
+DIV (264) 33
+MOD (265) 34
+EQ (266) 22
+INC (267)
+DEC (268)
+BEG (269) 15 16
+END (270) 15 16
+READ (271) 19
+WRITE (272) 20 21
+IF (273) 23 24
+THEN (274) 23 24
+ELSE (275) 23
+ENDIF (276) 23 24
+WHILE (277) 25 27
+DO (278) 25 27
+ENDWHILE (279) 25
+BREAK (280) 28
+CONTINUE (281) 29
+REPEAT (282) 26
+UNTIL (283) 26
+DECL (284) 2 3
+ENDDECL (285) 2 3
+INT (286) 7
+STR (287) 8
+LT (288) 39
+LE (289) 40
+GT (290) 41
+GE (291) 42
+EE (292) 43
+NE (293) 44
+
+
+Nonterminals, with rules where they appear
+
+$accept (46)
+    on left: 0
+start (47)
+    on left: 1, on right: 0
+Declarations (48)
+    on left: 2 3, on right: 1
+DeclList (49)
+    on left: 4 5, on right: 2 4
+Decl (50)
+    on left: 6, on right: 4 5
+Type (51)
+    on left: 7 8, on right: 6
+Varlist (52)
+    on left: 9 10, on right: 6 9
+declid (53)
+    on left: 11 12 13 14, on right: 9 10
+main (54)
+    on left: 15 16, on right: 1
+Slist (55)
+    on left: 17 18, on right: 15 17 23 24 25 26 27
+Stmt (56)
+    on left: 19 20 21 22 23 24 25 26 27 28 29, on right: 17 18
+Arth (57)
+    on left: 30 31 32 33 34 35 36 37 38, on right: 20 22 30 31 32 33
+    34 35 39 40 41 42 43 44
+Bool (58)
+    on left: 39 40 41 42 43 44, on right: 23 24 25 26 27
+id (59)
+    on left: 45 46 47 48 49, on right: 19 22 38 48 49
+
+
+State 0
+
+    0 $accept: . start $end
+
+    DECL  shift, and go to state 1
+
+    start         go to state 2
+    Declarations  go to state 3
+
+
+State 1
+
+    2 Declarations: DECL . DeclList ENDDECL ';'
+    3             | DECL . ENDDECL ';'
+
+    ENDDECL  shift, and go to state 4
+    INT      shift, and go to state 5
+    STR      shift, and go to state 6
+
+    DeclList  go to state 7
+    Decl      go to state 8
+    Type      go to state 9
+
+
+State 2
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 10
+
+
+State 3
+
+    1 start: Declarations . main
+
+    BEG  shift, and go to state 11
+
+    main  go to state 12
+
+
+State 4
+
+    3 Declarations: DECL ENDDECL . ';'
+
+    ';'  shift, and go to state 13
+
+
+State 5
+
+    7 Type: INT .
+
+    $default  reduce using rule 7 (Type)
+
+
+State 6
+
+    8 Type: STR .
+
+    $default  reduce using rule 8 (Type)
+
+
+State 7
+
+    2 Declarations: DECL DeclList . ENDDECL ';'
+    4 DeclList: DeclList . Decl
+
+    ENDDECL  shift, and go to state 14
+    INT      shift, and go to state 5
+    STR      shift, and go to state 6
+
+    Decl  go to state 15
+    Type  go to state 9
+
+
+State 8
+
+    5 DeclList: Decl .
+
+    $default  reduce using rule 5 (DeclList)
+
+
+State 9
+
+    6 Decl: Type . Varlist ';'
+
+    ID   shift, and go to state 16
+    MUL  shift, and go to state 17
+
+    Varlist  go to state 18
+    declid   go to state 19
+
+
+State 10
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+State 11
+
+   15 main: BEG . Slist END ';'
+   16     | BEG . END
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    END       shift, and go to state 22
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 32
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 12
+
+    1 start: Declarations main .
+
+    $default  reduce using rule 1 (start)
+
+
+State 13
+
+    3 Declarations: DECL ENDDECL ';' .
+
+    $default  reduce using rule 3 (Declarations)
+
+
+State 14
+
+    2 Declarations: DECL DeclList ENDDECL . ';'
+
+    ';'  shift, and go to state 35
+
+
+State 15
+
+    4 DeclList: DeclList Decl .
+
+    $default  reduce using rule 4 (DeclList)
+
+
+State 16
+
+   11 declid: ID .
+   12       | ID . '[' NUM ']'
+   13       | ID . '[' NUM ']' '[' NUM ']'
+
+    '['  shift, and go to state 36
+
+    $default  reduce using rule 11 (declid)
+
+
+State 17
+
+   14 declid: MUL . ID
+
+    ID  shift, and go to state 37
+
+
+State 18
+
+    6 Decl: Type Varlist . ';'
+    9 Varlist: Varlist . ',' declid
+
+    ';'  shift, and go to state 38
+    ','  shift, and go to state 39
+
+
+State 19
+
+   10 Varlist: declid .
+
+    $default  reduce using rule 10 (Varlist)
+
+
+State 20
+
+   45 id: ID .
+   46   | ID . '[' NUM ']'
+   47   | ID . '[' NUM ']' '[' NUM ']'
+
+    '['  shift, and go to state 40
+
+    $default  reduce using rule 45 (id)
+
+
+State 21
+
+   48 id: MUL . id
+
+    ID   shift, and go to state 20
+    MUL  shift, and go to state 21
+    '&'  shift, and go to state 31
+
+    id  go to state 41
+
+
+State 22
+
+   16 main: BEG END .
+
+    $default  reduce using rule 16 (main)
+
+
+State 23
+
+   19 Stmt: READ . '(' id ')' ';'
+
+    '('  shift, and go to state 42
+
+
+State 24
+
+   20 Stmt: WRITE . '(' Arth ')' ';'
+   21     | WRITE . STRING ';'
+
+    STRING  shift, and go to state 43
+    '('     shift, and go to state 44
+
+
+State 25
+
+   23 Stmt: IF . '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   24     | IF . '(' Bool ')' THEN Slist ENDIF ';'
+
+    '('  shift, and go to state 45
+
+
+State 26
+
+   25 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
+
+    '('  shift, and go to state 46
+
+
+State 27
+
+   27 Stmt: DO . Slist WHILE '(' Bool ')' ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 47
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 28
+
+   28 Stmt: BREAK . ';'
+
+    ';'  shift, and go to state 48
+
+
+State 29
+
+   29 Stmt: CONTINUE . ';'
+
+    ';'  shift, and go to state 49
+
+
+State 30
+
+   26 Stmt: REPEAT . Slist UNTIL '(' Bool ')' ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 50
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 31
+
+   49 id: '&' . id
+
+    ID   shift, and go to state 20
+    MUL  shift, and go to state 21
+    '&'  shift, and go to state 31
+
+    id  go to state 51
+
+
+State 32
+
+   15 main: BEG Slist . END ';'
+   17 Slist: Slist . Stmt
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    END       shift, and go to state 52
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 33
+
+   18 Slist: Stmt .
+
+    $default  reduce using rule 18 (Slist)
+
+
+State 34
+
+   22 Stmt: id . EQ Arth ';'
+
+    EQ  shift, and go to state 54
+
+
+State 35
+
+    2 Declarations: DECL DeclList ENDDECL ';' .
+
+    $default  reduce using rule 2 (Declarations)
+
+
+State 36
+
+   12 declid: ID '[' . NUM ']'
+   13       | ID '[' . NUM ']' '[' NUM ']'
+
+    NUM  shift, and go to state 55
+
+
+State 37
+
+   14 declid: MUL ID .
+
+    $default  reduce using rule 14 (declid)
+
+
+State 38
+
+    6 Decl: Type Varlist ';' .
+
+    $default  reduce using rule 6 (Decl)
+
+
+State 39
+
+    9 Varlist: Varlist ',' . declid
+
+    ID   shift, and go to state 16
+    MUL  shift, and go to state 17
+
+    declid  go to state 56
+
+
+State 40
+
+   46 id: ID '[' . NUM ']'
+   47   | ID '[' . NUM ']' '[' NUM ']'
+
+    NUM  shift, and go to state 57
+
+
+State 41
+
+   48 id: MUL id .
+
+    $default  reduce using rule 48 (id)
+
+
+State 42
+
+   19 Stmt: READ '(' . id ')' ';'
+
+    ID   shift, and go to state 20
+    MUL  shift, and go to state 21
+    '&'  shift, and go to state 31
+
+    id  go to state 58
+
+
+State 43
+
+   21 Stmt: WRITE STRING . ';'
+
+    ';'  shift, and go to state 59
+
+
+State 44
+
+   20 Stmt: WRITE '(' . Arth ')' ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 63
+    id    go to state 64
+
+
+State 45
+
+   23 Stmt: IF '(' . Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   24     | IF '(' . Bool ')' THEN Slist ENDIF ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 65
+    Bool  go to state 66
+    id    go to state 64
+
+
+State 46
+
+   25 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 65
+    Bool  go to state 67
+    id    go to state 64
+
+
+State 47
+
+   17 Slist: Slist . Stmt
+   27 Stmt: DO Slist . WHILE '(' Bool ')' ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 68
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 48
+
+   28 Stmt: BREAK ';' .
+
+    $default  reduce using rule 28 (Stmt)
+
+
+State 49
+
+   29 Stmt: CONTINUE ';' .
+
+    $default  reduce using rule 29 (Stmt)
+
+
+State 50
+
+   17 Slist: Slist . Stmt
+   26 Stmt: REPEAT Slist . UNTIL '(' Bool ')' ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    UNTIL     shift, and go to state 69
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 51
+
+   49 id: '&' id .
+
+    $default  reduce using rule 49 (id)
+
+
+State 52
+
+   15 main: BEG Slist END . ';'
+
+    ';'  shift, and go to state 70
+
+
+State 53
+
+   17 Slist: Slist Stmt .
+
+    $default  reduce using rule 17 (Slist)
+
+
+State 54
+
+   22 Stmt: id EQ . Arth ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 71
+    id    go to state 64
+
+
+State 55
+
+   12 declid: ID '[' NUM . ']'
+   13       | ID '[' NUM . ']' '[' NUM ']'
+
+    ']'  shift, and go to state 72
+
+
+State 56
+
+    9 Varlist: Varlist ',' declid .
+
+    $default  reduce using rule 9 (Varlist)
+
+
+State 57
+
+   46 id: ID '[' NUM . ']'
+   47   | ID '[' NUM . ']' '[' NUM ']'
+
+    ']'  shift, and go to state 73
+
+
+State 58
+
+   19 Stmt: READ '(' id . ')' ';'
+
+    ')'  shift, and go to state 74
+
+
+State 59
+
+   21 Stmt: WRITE STRING ';' .
+
+    $default  reduce using rule 21 (Stmt)
+
+
+State 60
+
+   36 Arth: NUM .
+
+    $default  reduce using rule 36 (Arth)
+
+
+State 61
+
+   37 Arth: STRING .
+
+    $default  reduce using rule 37 (Arth)
+
+
+State 62
+
+   35 Arth: '(' . Arth ')'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 75
+    id    go to state 64
+
+
+State 63
+
+   20 Stmt: WRITE '(' Arth . ')' ';'
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+    ')'    shift, and go to state 81
+
+
+State 64
+
+   38 Arth: id .
+
+    $default  reduce using rule 38 (Arth)
+
+
+State 65
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   39 Bool: Arth . LT Arth
+   40     | Arth . LE Arth
+   41     | Arth . GT Arth
+   42     | Arth . GE Arth
+   43     | Arth . EE Arth
+   44     | Arth . NE Arth
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+    LT     shift, and go to state 82
+    LE     shift, and go to state 83
+    GT     shift, and go to state 84
+    GE     shift, and go to state 85
+    EE     shift, and go to state 86
+    NE     shift, and go to state 87
+
+
+State 66
+
+   23 Stmt: IF '(' Bool . ')' THEN Slist ELSE Slist ENDIF ';'
+   24     | IF '(' Bool . ')' THEN Slist ENDIF ';'
+
+    ')'  shift, and go to state 88
+
+
+State 67
+
+   25 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
+
+    ')'  shift, and go to state 89
+
+
+State 68
+
+   25 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
+   27     | DO Slist WHILE . '(' Bool ')' ';'
+
+    '('  shift, and go to state 90
+
+
+State 69
+
+   26 Stmt: REPEAT Slist UNTIL . '(' Bool ')' ';'
+
+    '('  shift, and go to state 91
+
+
+State 70
+
+   15 main: BEG Slist END ';' .
+
+    $default  reduce using rule 15 (main)
+
+
+State 71
+
+   22 Stmt: id EQ Arth . ';'
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+    ';'    shift, and go to state 92
+
+
+State 72
+
+   12 declid: ID '[' NUM ']' .
+   13       | ID '[' NUM ']' . '[' NUM ']'
+
+    '['  shift, and go to state 93
+
+    $default  reduce using rule 12 (declid)
+
+
+State 73
+
+   46 id: ID '[' NUM ']' .
+   47   | ID '[' NUM ']' . '[' NUM ']'
+
+    '['  shift, and go to state 94
+
+    $default  reduce using rule 46 (id)
+
+
+State 74
+
+   19 Stmt: READ '(' id ')' . ';'
+
+    ';'  shift, and go to state 95
+
+
+State 75
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   35     | '(' Arth . ')'
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+    ')'    shift, and go to state 96
+
+
+State 76
+
+   30 Arth: Arth PLUS . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 97
+    id    go to state 64
+
+
+State 77
+
+   31 Arth: Arth MINUS . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 98
+    id    go to state 64
+
+
+State 78
+
+   32 Arth: Arth MUL . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 99
+    id    go to state 64
+
+
+State 79
+
+   33 Arth: Arth DIV . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 100
+    id    go to state 64
+
+
+State 80
+
+   34 Arth: Arth MOD . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 101
+    id    go to state 64
+
+
+State 81
+
+   20 Stmt: WRITE '(' Arth ')' . ';'
+
+    ';'  shift, and go to state 102
+
+
+State 82
+
+   39 Bool: Arth LT . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 103
+    id    go to state 64
+
+
+State 83
+
+   40 Bool: Arth LE . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 104
+    id    go to state 64
+
+
+State 84
+
+   41 Bool: Arth GT . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 105
+    id    go to state 64
+
+
+State 85
+
+   42 Bool: Arth GE . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 106
+    id    go to state 64
+
+
+State 86
+
+   43 Bool: Arth EE . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 107
+    id    go to state 64
+
+
+State 87
+
+   44 Bool: Arth NE . Arth
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 108
+    id    go to state 64
+
+
+State 88
+
+   23 Stmt: IF '(' Bool ')' . THEN Slist ELSE Slist ENDIF ';'
+   24     | IF '(' Bool ')' . THEN Slist ENDIF ';'
+
+    THEN  shift, and go to state 109
+
+
+State 89
+
+   25 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
+
+    DO  shift, and go to state 110
+
+
+State 90
+
+   25 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
+   27     | DO Slist WHILE '(' . Bool ')' ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 65
+    Bool  go to state 111
+    id    go to state 64
+
+
+State 91
+
+   26 Stmt: REPEAT Slist UNTIL '(' . Bool ')' ';'
+
+    NUM     shift, and go to state 60
+    ID      shift, and go to state 20
+    STRING  shift, and go to state 61
+    MUL     shift, and go to state 21
+    '('     shift, and go to state 62
+    '&'     shift, and go to state 31
+
+    Arth  go to state 65
+    Bool  go to state 112
+    id    go to state 64
+
+
+State 92
+
+   22 Stmt: id EQ Arth ';' .
+
+    $default  reduce using rule 22 (Stmt)
+
+
+State 93
+
+   13 declid: ID '[' NUM ']' '[' . NUM ']'
+
+    NUM  shift, and go to state 113
+
+
+State 94
+
+   47 id: ID '[' NUM ']' '[' . NUM ']'
+
+    NUM  shift, and go to state 114
+
+
+State 95
+
+   19 Stmt: READ '(' id ')' ';' .
+
+    $default  reduce using rule 19 (Stmt)
+
+
+State 96
+
+   35 Arth: '(' Arth ')' .
+
+    $default  reduce using rule 35 (Arth)
+
+
+State 97
+
+   30 Arth: Arth . PLUS Arth
+   30     | Arth PLUS Arth .
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+
+    MUL  shift, and go to state 78
+    DIV  shift, and go to state 79
+    MOD  shift, and go to state 80
+
+    $default  reduce using rule 30 (Arth)
+
+
+State 98
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   31     | Arth MINUS Arth .
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+
+    MUL  shift, and go to state 78
+    DIV  shift, and go to state 79
+    MOD  shift, and go to state 80
+
+    $default  reduce using rule 31 (Arth)
+
+
+State 99
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   32     | Arth MUL Arth .
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+
+    $default  reduce using rule 32 (Arth)
+
+
+State 100
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   33     | Arth DIV Arth .
+   34     | Arth . MOD Arth
+
+    $default  reduce using rule 33 (Arth)
+
+
+State 101
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   34     | Arth MOD Arth .
+
+    $default  reduce using rule 34 (Arth)
+
+
+State 102
+
+   20 Stmt: WRITE '(' Arth ')' ';' .
+
+    $default  reduce using rule 20 (Stmt)
+
+
+State 103
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   39 Bool: Arth LT Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 39 (Bool)
+
+
+State 104
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   40 Bool: Arth LE Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 40 (Bool)
+
+
+State 105
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   41 Bool: Arth GT Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 41 (Bool)
+
+
+State 106
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   42 Bool: Arth GE Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 42 (Bool)
+
+
+State 107
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   43 Bool: Arth EE Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 43 (Bool)
+
+
+State 108
+
+   30 Arth: Arth . PLUS Arth
+   31     | Arth . MINUS Arth
+   32     | Arth . MUL Arth
+   33     | Arth . DIV Arth
+   34     | Arth . MOD Arth
+   44 Bool: Arth NE Arth .
+
+    PLUS   shift, and go to state 76
+    MINUS  shift, and go to state 77
+    MUL    shift, and go to state 78
+    DIV    shift, and go to state 79
+    MOD    shift, and go to state 80
+
+    $default  reduce using rule 44 (Bool)
+
+
+State 109
+
+   23 Stmt: IF '(' Bool ')' THEN . Slist ELSE Slist ENDIF ';'
+   24     | IF '(' Bool ')' THEN . Slist ENDIF ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 115
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 110
+
+   25 Stmt: WHILE '(' Bool ')' DO . Slist ENDWHILE ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 116
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 111
+
+   25 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
+   27     | DO Slist WHILE '(' Bool . ')' ';'
+
+    ')'  shift, and go to state 117
+
+
+State 112
+
+   26 Stmt: REPEAT Slist UNTIL '(' Bool . ')' ';'
+
+    ')'  shift, and go to state 118
+
+
+State 113
+
+   13 declid: ID '[' NUM ']' '[' NUM . ']'
+
+    ']'  shift, and go to state 119
+
+
+State 114
+
+   47 id: ID '[' NUM ']' '[' NUM . ']'
+
+    ']'  shift, and go to state 120
+
+
+State 115
+
+   17 Slist: Slist . Stmt
+   23 Stmt: IF '(' Bool ')' THEN Slist . ELSE Slist ENDIF ';'
+   24     | IF '(' Bool ')' THEN Slist . ENDIF ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    ELSE      shift, and go to state 121
+    ENDIF     shift, and go to state 122
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 116
+
+   17 Slist: Slist . Stmt
+   25 Stmt: WHILE '(' Bool ')' DO Slist . ENDWHILE ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    ENDWHILE  shift, and go to state 123
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 117
+
+   25 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
+   27     | DO Slist WHILE '(' Bool ')' . ';'
+
+    DO   shift, and go to state 110
+    ';'  shift, and go to state 124
+
+
+State 118
+
+   26 Stmt: REPEAT Slist UNTIL '(' Bool ')' . ';'
+
+    ';'  shift, and go to state 125
+
+
+State 119
+
+   13 declid: ID '[' NUM ']' '[' NUM ']' .
+
+    $default  reduce using rule 13 (declid)
+
+
+State 120
+
+   47 id: ID '[' NUM ']' '[' NUM ']' .
+
+    $default  reduce using rule 47 (id)
+
+
+State 121
+
+   23 Stmt: IF '(' Bool ')' THEN Slist ELSE . Slist ENDIF ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Slist  go to state 126
+    Stmt   go to state 33
+    id     go to state 34
+
+
+State 122
+
+   24 Stmt: IF '(' Bool ')' THEN Slist ENDIF . ';'
+
+    ';'  shift, and go to state 127
+
+
+State 123
+
+   25 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE . ';'
+
+    ';'  shift, and go to state 128
+
+
+State 124
+
+   27 Stmt: DO Slist WHILE '(' Bool ')' ';' .
+
+    $default  reduce using rule 27 (Stmt)
+
+
+State 125
+
+   26 Stmt: REPEAT Slist UNTIL '(' Bool ')' ';' .
+
+    $default  reduce using rule 26 (Stmt)
+
+
+State 126
+
+   17 Slist: Slist . Stmt
+   23 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist . ENDIF ';'
+
+    ID        shift, and go to state 20
+    MUL       shift, and go to state 21
+    READ      shift, and go to state 23
+    WRITE     shift, and go to state 24
+    IF        shift, and go to state 25
+    ENDIF     shift, and go to state 129
+    WHILE     shift, and go to state 26
+    DO        shift, and go to state 27
+    BREAK     shift, and go to state 28
+    CONTINUE  shift, and go to state 29
+    REPEAT    shift, and go to state 30
+    '&'       shift, and go to state 31
+
+    Stmt  go to state 53
+    id    go to state 34
+
+
+State 127
+
+   24 Stmt: IF '(' Bool ')' THEN Slist ENDIF ';' .
+
+    $default  reduce using rule 24 (Stmt)
+
+
+State 128
+
+   25 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE ';' .
+
+    $default  reduce using rule 25 (Stmt)
+
+
+State 129
+
+   23 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF . ';'
+
+    ';'  shift, and go to state 130
+
+
+State 130
+
+   23 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';' .
+
+    $default  reduce using rule 23 (Stmt)

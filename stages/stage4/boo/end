@@ -1,0 +1,1078 @@
+exprtree.c~:	temp->type = 'i';
+exprtree.c~:	temp->num = n;
+exprtree.c~://	temp->id = ;
+exprtree.c~://	temp->func = ;
+exprtree.c~:	temp->left = NULL;
+exprtree.c~:	temp->down = NULL;
+exprtree.c~:	temp->right = NULL;
+exprtree.c~:	//printf("Num	%d\n",temp->num);
+exprtree.c~:	temp->type = 'c';
+exprtree.c~://	temp->num = ;
+exprtree.c~:	temp->id=id;
+exprtree.c~://	temp->func = ;
+exprtree.c~:	temp->left = NULL;
+exprtree.c~:	temp->down = NULL;
+exprtree.c~:	temp->right = NULL;
+exprtree.c~:	//printf("ID	%c\n",temp->id);
+exprtree.c~:	if(l->type!='b' && r->type!='b')
+exprtree.c~:		{if(strcmp(c,"+")==0 || strcmp(c,"-")==0 || strcmp(c,"*")==0 || strcmp(c,"/")==0 || strcmp(c,"=")==0)
+exprtree.c~:			temp->type='a';
+exprtree.c~:			temp->type='b';}
+exprtree.c~:	{	puts("type mismatch-arth-op");
+exprtree.c~:		printf("left:%c\n",l->type);
+exprtree.c~:		printf("right:%c\n",r->type);
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~:	temp->func = c;
+exprtree.c~:	temp->left = l;
+exprtree.c~:	temp->down = NULL;
+exprtree.c~:	temp->right = r;
+exprtree.c~:	//printf("Node	%s\n",temp->func);
+exprtree.c~:	temp->type = 'f';
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~:	temp->func = c;
+exprtree.c~://	temp->left = ;
+exprtree.c~:	temp->down = t;
+exprtree.c~://	temp->right = ;
+exprtree.c~:	//printf("Func	%s\n",temp->func);
+exprtree.c~:	temp->type = 's';
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~:	temp->func = s;
+exprtree.c~:	temp->left = l;
+exprtree.c~://	temp->down = ;
+exprtree.c~:	temp->right = r;
+exprtree.c~:	//printf("Tree--%s\n",temp->func);
+exprtree.c~:	temp->type = 's';
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~:	temp->func = s;
+exprtree.c~:	temp->left = l;
+exprtree.c~:	temp->down = d;
+exprtree.c~:	temp->right = r;
+exprtree.c~:	//printf("Tree--%s\n",temp->func);
+exprtree.c~:	temp->type = 'n';
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~://	temp->func = ;
+exprtree.c~:	temp->left = l;
+exprtree.c~:	temp->down=NULL;
+exprtree.c~:	temp->right = r;
+exprtree.c~:	//printf("Tree--NODE\n");
+exprtree.c~:	temp->type = 'f';
+exprtree.c~://	temp->num = ;
+exprtree.c~://	temp->id = ;
+exprtree.c~:	temp->func = str;
+exprtree.c~:	temp->left = NULL;
+exprtree.c~:	temp->down=NULL;
+exprtree.c~:	temp->right = NULL;
+exprtree.c~:	//printf("Tree--NODE\n");
+exprtree.c~:		printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",temp->name,temp->type,temp->size);
+exprtree.c~:		if(strcmp(temp->name,name)==0){
+exprtree.c~:		temp=temp->next;
+exprtree.c~:	printf("Install-ing...");
+exprtree.c~:	tail->name=name;
+exprtree.c~:	tail->type=type;
+exprtree.c~:	tail->size=size;
+exprtree.c~:	temp->next=NULL;
+exprtree.c~:	tail->next=temp;
+exprtree.c~:	printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",tail->name,tail->type,tail->size);
+exprtree.c~:	printf("Install-ed\n");
+exprtree.c~:	while(in-->0)
+exprtree.c~:	switch(t->type){
+exprtree.c~:			printf("int	%d\n",t->num);
+exprtree.c~:			return t->num;
+exprtree.c~:			printf("char	%c\t(val=%d)\n",t->id,var[t->id-'a']);
+exprtree.c~:			return var[t->id-'a'];
+exprtree.c~:			printf("bool	%s\n",t->func);
+exprtree.c~:			if(strcmp((t->func),"<")==0){return evaluate(t->left)<evaluate(t->right)?1:0;}
+exprtree.c~:			if(strcmp((t->func),">")==0){return evaluate(t->left)>evaluate(t->right)?1:0;}
+exprtree.c~:			if(strcmp((t->func),"<=")==0){return evaluate(t->left)<=evaluate(t->right)?1:0;}	
+exprtree.c~:			if(strcmp((t->func),">=")==0){return evaluate(t->left)>=evaluate(t->right)?1:0;}	
+exprtree.c~:			if(strcmp((t->func),"!=")==0){return evaluate(t->left)!=evaluate(t->right)?1:0;}		
+exprtree.c~:			if(strcmp((t->func),"==")==0){return evaluate(t->left)==evaluate(t->right)?1:0;}
+exprtree.c~:			printf("operater-boo\n");
+exprtree.c~:			evaluate(t->left);
+exprtree.c~:			evaluate(t->right);
+exprtree.c~:			printf("op	%s\n",t->func);
+exprtree.c~:			if(strcmp((t->func),"+")==0){return evaluate(t->left) + evaluate(t->right);}
+exprtree.c~:			if(strcmp((t->func),"-")==0){return evaluate(t->left) - evaluate(t->right);}
+exprtree.c~:			if(strcmp((t->func),"*")==0){return evaluate(t->left) * evaluate(t->right);}
+exprtree.c~:			if(strcmp((t->func),"/")==0){return evaluate(t->left) / evaluate(t->right);}
+exprtree.c~:			if(strcmp((t->func),"=")==0){printf("\t%c\n",t->left->id);var[t->left->id-'a'] = evaluate(t->right);return;}
+exprtree.c~:			printf("arithmetic-boo\n");
+exprtree.c~:			if(strcmp(t->func,"read")==0){
+exprtree.c~:				printf("Read to '%c'\n",t->down->id);
+exprtree.c~:				scanf("%d",&var[t->down->id-'a']);
+exprtree.c~:			if(strcmp(t->func,"write")==0){
+exprtree.c~:				printf("%d\n",evaluate(t->down));}
+exprtree.c~:			if(strcmp(t->func,"if")==0){
+exprtree.c~:				if(evaluate(t->left)){
+exprtree.c~:					evaluate(t->right);}
+exprtree.c~:			else if(strcmp(t->func,"ifelse")==0){
+exprtree.c~:				if(evaluate(t->left)){
+exprtree.c~:					evaluate(t->down);}
+exprtree.c~:					evaluate(t->right);}
+exprtree.c~:			else if(strcmp(t->func,"while")==0){
+exprtree.c~:				while(evaluate(t->left)){
+exprtree.c~:					evaluate(t->right);}
+exprtree.c~:			printf("type	%c\n",t->type);
+expr.c~:int top=-1;
+expr.c~:	reg--;
+expr.c~:	switch(t->type){
+expr.c~:			//puts("read-int");
+expr.c~:			fprintf(target_file, "MOV R%d, %d\n", regno,t->num);
+expr.c~:			//puts("read-ed-int");
+expr.c~:			//puts("read-char");
+expr.c~:			fprintf(target_file, "MOV R%d, [%d]\n", regno,4096+(t->id-'a'));
+expr.c~:			//puts("read-ed-char");
+expr.c~:			r1=codeGen(t->left);
+expr.c~:			r2=codeGen(t->right);
+expr.c~:			if(strcmp((t->func),"<")==0){fprintf(target_file,"LT R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),">")==0){fprintf(target_file,"GT R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"<=")==0){fprintf(target_file,"LE R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),">=")==0){fprintf(target_file,"GE R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"!=")==0){fprintf(target_file,"NE R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"==")==0){fprintf(target_file,"EQ R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			//puts("left-ing");
+expr.c~:			codeGen(t->left);
+expr.c~:			codeGen(t->right);
+expr.c~:			r2=codeGen(t->right);
+expr.c~:			if(strcmp((t->func),"=")==0){fprintf(target_file,"MOV [%d], R%d\n",4096+(t->left->id-'a'),r2);freeReg();return;}
+expr.c~:			r1=codeGen(t->left);
+expr.c~:			if(strcmp((t->func),"+")==0){fprintf(target_file,"ADD R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"-")==0){fprintf(target_file,"SUB R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"*")==0){fprintf(target_file,"MUL R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp((t->func),"/")==0){fprintf(target_file,"DIV R%d, R%d\n",r1,r2);freeReg();return r1;}
+expr.c~:			if(strcmp(t->func,"read")==0){
+expr.c~:				Read(4096+(t->down->id-'a'),ret);
+expr.c~:				//puts("read-ed");
+expr.c~:			if(strcmp(t->func,"write")==0){
+expr.c~:				Write(codeGen(t->down),ret);
+expr.c~:			if(strcmp(t->func,"break")==0){
+expr.c~:			if(strcmp(t->func,"continue")==0){
+expr.c~:			if(strcmp(t->func,"while")==0){
+expr.c~:				result=codeGen(t->left);
+expr.c~:				codeGen(t->right);
+expr.c~:				top--;
+expr.c~:				//puts("while-ed");
+expr.c~:			if(strcmp(t->func,"if")==0){
+expr.c~:				result=codeGen(t->left);
+expr.c~:				codeGen(t->right);
+expr.c~:				//puts("if-ed");
+expr.c~:			if(strcmp(t->func,"ifelse")==0){
+expr.c~:				result=codeGen(t->left);
+expr.c~:				codeGen(t->down);
+expr.c~:				codeGen(t->right);
+expr.c~:				//puts("ifelse-ed");
+expr.c~:			//puts("codeGen-boo");
+expr.c~:	fprintf(target_file, "MOV R%d, -2\n",t);
+expr.c~:	fprintf(target_file, "MOV R%d, -1\n",t);
+expr.c~:	fprintf(target_file, "BRKP--DEBUG\n");
+expr.c~:	reg=-1;
+exprtree.l~:[0-9]+		{yylval = makeLeafNum(atoi(yytext)); return NUM;}
+exprtree.l~:"-"			{return MINUS;}
+Binary file a.out matches
+exp.l:[a-z]+		{yylval=createtree(0,nodetype_ID,type_int,yytext,NULL,NULL,NULL); return ID;}
+exp.l:[0-9]+		{number = atoi(yytext); yylval = createtree(number,nodetype_LEAF,type_int,NULL,NULL,NULL,NULL); return NUM;}
+exp.l:"-"			{return MINUS;}
+exp.l:"--"		{return DEC;}
+symboltable.c:		if(strcmp(name,temp->name)==0)
+symboltable.c:		temp=temp->next;
+symboltable.c:	new->name=(char *)malloc(sizeof(name));
+symboltable.c:	strcpy(new->name,name);
+symboltable.c:	new->type=type;
+symboltable.c:	new->size=size;
+symboltable.c:	new->binding=varadrs;
+symboltable.c:	new->next=Ghead;
+symboltable.c:		printf("%s %d %d %d\n",temp->name,temp->type,temp->size,temp->binding );
+symboltable.c:		temp=temp->next;
+labels.c:		num=num*10+(s[i]-'0');
+lex.yy.c:/* First, we deal with  platform-specific or compiler-specific issues. */
+lex.yy.c:/* C99 systems have <inttypes.h>. Non-C99 systems may or may not. */
+lex.yy.c:#define INT8_MIN               (-128)
+lex.yy.c:#define INT16_MIN              (-32767-1)
+lex.yy.c:#define INT32_MIN              (-2147483647-1)
+lex.yy.c:/* The "const" storage-class-modifier is valid. */
+lex.yy.c:/* Returned upon end-of-file. */
+lex.yy.c: * we want to instead treat it as an 8-bit unsigned char, hence the
+lex.yy.c: * but we do it the disgusting crufty way forced on us by the ()-less
+lex.yy.c:#define YY_START (((yy_start) - 1) / 2)
+lex.yy.c:/* On IA-64, the buffer size is 16k, not 8k.
+lex.yy.c:		(yy_c_buf_p) = yy_cp = yy_bp + yyless_macro_arg - YY_MORE_ADJ; \
+lex.yy.c:	/* Whether we "own" the buffer - i.e., we know we created it,
+lex.yy.c:	 * possible backing-up.
+lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
+lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
+lex.yy.c:#define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
+lex.yy.c: * corresponding action - sets up yytext.
+lex.yy.c:	yyleng = (size_t) (yy_cp - yy_bp); \
+lex.yy.c:/* Special case for "unistd.h", since it is non-ANSI. We include it way
+lex.yy.c:   These are made visible to non-reentrant scanners for convenience. */
+lex.yy.c:/* On IA-64, the buffer size is 16k, not 8k */
+lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
+lex.yy.c:/* No semi-colon after return; correct usage is to write "yyterminate();" -
+lex.yy.c:/* Number of entries by which start-condition stack grows. */
+lex.yy.c:/* Default declaration of generated scanner - a define so the user can
+lex.yy.c:	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
+lex.yy.c:							entry[num].adrs=(linecnt*2)+2048-8;
+lex.yy.c:		int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
+lex.yy.c:		if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
+lex.yy.c:			 * back-up) that will match for the new input source.
+lex.yy.c:			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_input_file = yyin;
+lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
+lex.yy.c:		 * end-of-buffer state).  Contrast this with the test
+lex.yy.c:		if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+lex.yy.c:					 * YY_NULL, it'll still work - another
+lex.yy.c:				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
+lex.yy.c:			"fatal flex scanner internal error--no action found" );
+lex.yy.c:/* yy_get_next_buffer - try to read in a new buffer
+lex.yy.c: *	EOB_ACT_LAST_MATCH -
+lex.yy.c: *	EOB_ACT_CONTINUE_SCAN - continue scanning from current position
+lex.yy.c: *	EOB_ACT_END_OF_FILE - end of file
+lex.yy.c:    	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+lex.yy.c:	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
+lex.yy.c:		"fatal flex scanner internal error--end of buffer missed" );
+lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_fill_buffer == 0 )
+lex.yy.c:		if ( (yy_c_buf_p) - (yytext_ptr) - YY_MORE_ADJ == 1 )
+lex.yy.c:	number_to_move = (yy_size_t) ((yy_c_buf_p) - (yytext_ptr)) - 1;
+lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_EOF_PENDING )
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars) = 0;
+lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
+lex.yy.c:			{ /* Not enough room in the buffer - grow it. */
+lex.yy.c:				(int) ((yy_c_buf_p) - b->yy_ch_buf);
+lex.yy.c:			if ( b->yy_is_our_buffer )
+lex.yy.c:				yy_size_t new_size = b->yy_buf_size * 2;
+lex.yy.c:					b->yy_buf_size += b->yy_buf_size / 8;
+lex.yy.c:					b->yy_buf_size *= 2;
+lex.yy.c:				b->yy_ch_buf = (char *)
+lex.yy.c:					yyrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+lex.yy.c:				b->yy_ch_buf = 0;
+lex.yy.c:			if ( ! b->yy_ch_buf )
+lex.yy.c:				"fatal error - scanner input buffer overflow" );
+lex.yy.c:			(yy_c_buf_p) = &b->yy_ch_buf[yy_c_buf_p_offset];
+lex.yy.c:			num_to_read = YY_CURRENT_BUFFER_LVALUE->yy_buf_size -
+lex.yy.c:						number_to_move - 1;
+lex.yy.c:		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status =
+lex.yy.c:	if ((int) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+lex.yy.c:		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] = YY_END_OF_BUFFER_CHAR;
+lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] = YY_END_OF_BUFFER_CHAR;
+lex.yy.c:	(yytext_ptr) = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[0];
+lex.yy.c:/* yy_get_previous_state - get the state just before the EOB char was reached */
+lex.yy.c:/* yy_try_NUL_trans - try to make a transition on the NUL character
+lex.yy.c:	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
+lex.yy.c:		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
+lex.yy.c:					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
+lex.yy.c:				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
+lex.yy.c:		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+lex.yy.c:			*--dest = *--source;
+lex.yy.c:		yy_cp += (int) (dest - source);
+lex.yy.c:		yy_bp += (int) (dest - source);
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
+lex.yy.c:			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
+lex.yy.c:		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
+lex.yy.c:			YY_FATAL_ERROR( "flex scanner push-back overflow" );
+lex.yy.c:	*--yy_cp = (char) c;
+lex.yy.c:		if ( (yy_c_buf_p) < &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+lex.yy.c:			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
+lex.yy.c:	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+lex.yy.c:    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+lex.yy.c:	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
+lex.yy.c:	yyin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
+lex.yy.c:	b->yy_buf_size = (yy_size_t)size;
+lex.yy.c:	 * we need to put in 2 end-of-buffer characters.
+lex.yy.c:	b->yy_ch_buf = (char *) yyalloc(b->yy_buf_size + 2  );
+lex.yy.c:	if ( ! b->yy_ch_buf )
+lex.yy.c:	b->yy_is_our_buffer = 1;
+lex.yy.c:	if ( b->yy_is_our_buffer )
+lex.yy.c:		yyfree((void *) b->yy_ch_buf  );
+lex.yy.c:	b->yy_input_file = file;
+lex.yy.c:	b->yy_fill_buffer = 1;
+lex.yy.c:        b->yy_bs_lineno = 1;
+lex.yy.c:        b->yy_bs_column = 0;
+lex.yy.c:        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+lex.yy.c:	b->yy_n_chars = 0;
+lex.yy.c:	/* We always need two end-of-buffer characters.  The first causes
+lex.yy.c:	 * a transition to the end-of-buffer state.  The second causes
+lex.yy.c:	b->yy_ch_buf[0] = YY_END_OF_BUFFER_CHAR;
+lex.yy.c:	b->yy_ch_buf[1] = YY_END_OF_BUFFER_CHAR;
+lex.yy.c:	b->yy_buf_pos = &b->yy_ch_buf[0];
+lex.yy.c:	b->yy_at_bol = 1;
+lex.yy.c:	b->yy_buffer_status = YY_BUFFER_NEW;
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
+lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+lex.yy.c:		--(yy_buffer_stack_top);
+lex.yy.c:	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1){
+lex.yy.c:/** Setup the input buffer state to scan directly from a user-specified character buffer.
+lex.yy.c:	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
+lex.yy.c:	     base[size-1] != YY_END_OF_BUFFER_CHAR )
+lex.yy.c:	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
+lex.yy.c:	b->yy_buf_pos = b->yy_ch_buf = base;
+lex.yy.c:	b->yy_is_our_buffer = 0;
+lex.yy.c:	b->yy_input_file = 0;
+lex.yy.c:	b->yy_n_chars = b->yy_buf_size;
+lex.yy.c:	b->yy_is_interactive = 0;
+lex.yy.c:	b->yy_at_bol = 1;
+lex.yy.c:	b->yy_fill_buffer = 0;
+lex.yy.c:	b->yy_buffer_status = YY_BUFFER_NEW;
+lex.yy.c: * @param yystr a NUL-terminated string to scan
+lex.yy.c:	b->yy_is_our_buffer = 1;
+lex.yy.c:        /* Initialization is the same as for the non-reentrant scanner.
+lex.yy.c:/* yylex_destroy is for both reentrant and non-reentrant scanners. */
+lex.yy.c:    /* Reset the globals. This is important in a non-reentrant scanner so the next time
+exprtree.y~:			|E MINUS E  {$$ = makeOperatorNode("-",$1,$3);}
+exprtree.y~:	if(t->type=='c'){
+exprtree.y~:		puts("type mismatch-CHAR");
+exprtree.y~:		printf("type:%c\n",t->type);
+exprtree.y~:		printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",temp->name,temp->type,temp->size);
+exprtree.y~:		temp=temp->next;
+exprtree.h~:a	arth	+,-,*,/,=
+exprtree.h~:-
+sri/exprtree.l:[0-9]+		{yylval = makeLeafNum(atoi(yytext)); return NUM;}
+sri/exprtree.l:[a-z]+		{yylval = makeLeafID(*yytext);return ID;}
+sri/exprtree.l:"-"			{return MINUS;}
+sri/label.l:[L][1-9]+":"	{
+sri/label.l:					lin--;
+sri/label.l:					present=present->next;
+sri/label.l:					//puts("---");
+sri/label.l:[L][1-9]+[^:]	{
+sri/label.l:		if(strcmp(concat(temp->l,"\n"),l)==0)
+sri/label.l:			return temp->line;
+sri/label.l:			temp=temp->next;
+sri/label.l:	str=malloc(sizeof(l)-1);
+sri/label.l:	strncpy(str,l,strlen(l)-1);
+sri/label.l:	present->l=str;
+sri/label.l:	present->line=2056+2*(lin-8);
+sri/label.l:	present->next=temp;
+sri/label.l:	temp->next=NULL;
+sri/label.l:    char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the null-terminator
+sri/label.l:		printf("%d:%s\n",a->line,a->l);
+sri/label.l:		a=a->next;
+sri/y.tab.c:/* Bison implementation for Yacc-like parsers in C
+sri/y.tab.c:   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+sri/y.tab.c:   simplifying the original so-called "semantic" parser.  */
+sri/y.tab.c:#define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
+sri/y.tab.c:#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
+sri/y.tab.c:/* Suppress unused-variable warnings by "using" E.  */
+sri/y.tab.c:    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
+sri/y.tab.c:    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+sri/y.tab.c:   /* Pacify GCC's 'empty if-body' warning.  */
+sri/y.tab.c:       to allow for a few compiler-allocated temporary stack slots.  */
+sri/y.tab.c:# define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
+sri/y.tab.c:        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+sri/y.tab.c:        Stack = &yyptr->Stack_alloc;                                    \
+sri/y.tab.c:/* YYFINAL -- State number of the termination state.  */
+sri/y.tab.c:/* YYLAST -- Last index in YYTABLE.  */
+sri/y.tab.c:/* YYNTOKENS -- Number of terminals.  */
+sri/y.tab.c:/* YYNNTS -- Number of nonterminals.  */
+sri/y.tab.c:/* YYNRULES -- Number of rules.  */
+sri/y.tab.c:/* YYNSTATES -- Number of states.  */
+sri/y.tab.c:/* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+sri/y.tab.c:   by yylex, with out-of-bounds checking.  */
+sri/y.tab.c:/* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
+sri/y.tab.c:   as returned by yylex, without out-of-bounds checking.  */
+sri/y.tab.c:  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+sri/y.tab.c:/* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
+sri/y.tab.c:/* YYTOKNUM[NUM] -- (External) token number corresponding to the
+sri/y.tab.c:#define YYPACT_NINF -31
+sri/y.tab.c:  (!!((Yystate) == (-31)))
+sri/y.tab.c:#define YYTABLE_NINF -1
+sri/y.tab.c:  (!!((Yytable_value) == (-1)))
+sri/y.tab.c:  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+sri/y.tab.c:     STATE-NUM.  */
+sri/y.tab.c:     -19,    24,    19,     4,     5,   -31,   -31,    27,   -31,    35,
+sri/y.tab.c:     -31,   167,   -31,   -31,    14,   -31,   -31,     3,    53,    28,
+sri/y.tab.c:      32,    33,    34,    36,   225,    41,    47,   225,   184,   -31,
+sri/y.tab.c:     -31,   -31,    67,     6,   -31,    71,     6,     6,     6,   242,
+sri/y.tab.c:     -31,   -31,    -3,    58,   -31,   -31,   -31,   -31,     6,   140,
+sri/y.tab.c:      63,    40,    73,    84,    65,    66,   -31,   101,     6,     6,
+sri/y.tab.c:       6,     6,     6,     6,     6,     6,     6,     6,   -31,    68,
+sri/y.tab.c:      69,   107,    80,     6,     6,   -31,    -4,    -4,   -31,   -31,
+sri/y.tab.c:     267,   267,   267,   267,   267,   267,   -31,   -31,   225,   225,
+sri/y.tab.c:     112,   129,   154,   196,   -12,    94,   225,    95,    96,   -31,
+sri/y.tab.c:     -31,   213,   -31,   -31,    97,   -31
+sri/y.tab.c:  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+sri/y.tab.c:  /* YYPGOTO[NTERM-NUM].  */
+sri/y.tab.c:     -31,   -31,   -31,   -22,   -28,   -30,   -31,   -31,   126,   -31,
+sri/y.tab.c:     -31
+sri/y.tab.c:  /* YYDEFGOTO[NTERM-NUM].  */
+sri/y.tab.c:      -1,     2,    12,    28,    29,    49,     3,     7,     8,     9,
+sri/y.tab.c:  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+sri/y.tab.c:      26,    27,    58,    59,    60,    61,     0,    -1,    -1,    -1,
+sri/y.tab.c:      -1,    -1,    -1
+sri/y.tab.c:      10,    11,    12,    13,    14,    15,    -1,    -1,     4,    -1,
+sri/y.tab.c:      -1,    -1,    -1,    -1,    -1,    -1,    37,    -1,    -1,    -1,
+sri/y.tab.c:      -1,     4,    18,    19,    20,    35,    22,    23,    24,    25,
+sri/y.tab.c:      -1,    27,    28,    29,    17,    18,    19,    20,     4,    -1,
+sri/y.tab.c:      -1,    24,    25,    -1,    27,    28,    29,    -1,    -1,    -1,
+sri/y.tab.c:       4,    17,    18,    19,    20,    -1,    -1,    -1,    24,    25,
+sri/y.tab.c:      -1,    27,    28,    29,    18,    19,    20,     4,    -1,    -1,
+sri/y.tab.c:      24,    25,    26,    27,    28,    29,    -1,    -1,    -1,     4,
+sri/y.tab.c:      -1,    18,    19,    20,    -1,    -1,    23,    24,    25,    -1,
+sri/y.tab.c:      27,    28,    29,    18,    19,    20,     4,    -1,    -1,    24,
+sri/y.tab.c:      25,    -1,    27,    28,    29,    -1,    -1,    -1,    -1,    -1,
+sri/y.tab.c:      18,    19,    20,    -1,    -1,    -1,    24,    25,    -1,    27,
+sri/y.tab.c:      28,    29,     5,     6,     7,     8,    -1,    10,    11,    12,
+sri/y.tab.c:  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+sri/y.tab.c:     symbol of state STATE-NUM.  */
+sri/y.tab.c:  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+sri/y.tab.c:  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+sri/y.tab.c:#define YYEMPTY         (-2)
+sri/y.tab.c:/*----------------------------------------.
+sri/y.tab.c:`----------------------------------------*/
+sri/y.tab.c:/*--------------------------------.
+sri/y.tab.c:`--------------------------------*/
+sri/y.tab.c:/*------------------------------------------------------------------.
+sri/y.tab.c:| yy_stack_print -- Print the state stack from its BOTTOM up to its |
+sri/y.tab.c:`------------------------------------------------------------------*/
+sri/y.tab.c:/*------------------------------------------------.
+sri/y.tab.c:`------------------------------------------------*/
+sri/y.tab.c:             yyrule - 1, yylno);
+sri/y.tab.c:                       yystos[yyssp[yyi + 1 - yynrhs]],
+sri/y.tab.c:                       &(yyvsp[(yyi + 1) - (yynrhs)])
+sri/y.tab.c:/* YYINITDEPTH -- initial size of the parser's stacks.  */
+sri/y.tab.c:/* YYMAXDEPTH -- maximum size the stacks can grow to (effective only
+sri/y.tab.c:   if the built-in stack extension method is used).
+sri/y.tab.c:   evaluated with infinite-precision integer arithmetic.  */
+sri/y.tab.c:  return yyd - 1;
+sri/y.tab.c:   heuristic is that double-quoting is unnecessary unless the string
+sri/y.tab.c:   backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
+sri/y.tab.c:  return yystpcpy (yyres, yystr) - yyres;
+sri/y.tab.c:     - If this state is a consistent state with a default action, then
+sri/y.tab.c:     - The only way there can be no lookahead present (in yychar) is if
+sri/y.tab.c:     - Don't assume there isn't a lookahead just because this state is a
+sri/y.tab.c:       previous inconsistent state, consistent state with a non-default
+sri/y.tab.c:     - Of course, the expected token list depends on states to have
+sri/y.tab.c:          /* Start YYX at -YYN if negative to avoid negative indexes in
+sri/y.tab.c:             YYCHECK.  In other words, skip the first -YYN actions for
+sri/y.tab.c:          int yyxbegin = yyn < 0 ? -yyn : 0;
+sri/y.tab.c:          int yychecklim = YYLAST - yyn + 1;
+sri/y.tab.c:/*-----------------------------------------------.
+sri/y.tab.c:`-----------------------------------------------*/
+sri/y.tab.c:/*----------.
+sri/y.tab.c:`----------*/
+sri/y.tab.c:#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
+sri/y.tab.c:/*------------------------------------------------------------.
+sri/y.tab.c:| yynewstate -- Push a new state, which is found in yystate.  |
+sri/y.tab.c:`------------------------------------------------------------*/
+sri/y.tab.c:  if (yyss + yystacksize - 1 <= yyssp)
+sri/y.tab.c:      YYSIZE_T yysize = yyssp - yyss + 1;
+sri/y.tab.c:      yyssp = yyss + yysize - 1;
+sri/y.tab.c:      yyvsp = yyvs + yysize - 1;
+sri/y.tab.c:      if (yyss + yystacksize - 1 <= yyssp)
+sri/y.tab.c:/*-----------.
+sri/y.tab.c:`-----------*/
+sri/y.tab.c:      yyn = -yyn;
+sri/y.tab.c:    yyerrstatus--;
+sri/y.tab.c:/*-----------------------------------------------------------.
+sri/y.tab.c:| yydefault -- do the default action for the current state.  |
+sri/y.tab.c:`-----------------------------------------------------------*/
+sri/y.tab.c:/*-----------------------------.
+sri/y.tab.c:| yyreduce -- Do a reduction.  |
+sri/y.tab.c:`-----------------------------*/
+sri/y.tab.c:  yyval = yyvsp[1-yylen];
+sri/y.tab.c:    {(yyval)=(yyvsp[-2]);}
+sri/y.tab.c:    {(yyval)= createTree((yyvsp[-1]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeFunc("read",(yyvsp[-2]));}
+sri/y.tab.c:    {(yyval) = makeFunc("write",(yyvsp[-2]));}
+sri/y.tab.c:    {opc((yyvsp[-3]));(yyval) = makeOperatorNode("=",(yyvsp[-3]),(yyvsp[-1]));}
+sri/y.tab.c:    {(yyval)=threeTree((yyvsp[-7]),(yyvsp[-4]),(yyvsp[-2]),"ifelse");}
+sri/y.tab.c:    {(yyval)=twoTree((yyvsp[-5]),(yyvsp[-2]),"if");}
+sri/y.tab.c:    {(yyval)=twoTree((yyvsp[-5]),(yyvsp[-2]),"while");}
+sri/y.tab.c:    {(yyval)=twoTree((yyvsp[-2]),(yyvsp[-5]),"while");}
+sri/y.tab.c:    {(yyval)=twoTree((yyvsp[-2]),(yyvsp[-5]),"while");}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("+",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("-",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("*",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("/",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = (yyvsp[-1]);}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("<",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode(">",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("<=",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode(">=",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("!=",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:    {(yyval) = makeOperatorNode("==",(yyvsp[-2]),(yyvsp[0]));}
+sri/y.tab.c:  YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
+sri/y.tab.c:  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
+sri/y.tab.c:    yystate = yydefgoto[yyn - YYNTOKENS];
+sri/y.tab.c:/*--------------------------------------.
+sri/y.tab.c:| yyerrlab -- here on detecting error.  |
+sri/y.tab.c:`--------------------------------------*/
+sri/y.tab.c:/*---------------------------------------------------.
+sri/y.tab.c:| yyerrorlab -- error raised explicitly by YYERROR.  |
+sri/y.tab.c:`---------------------------------------------------*/
+sri/y.tab.c:/*-------------------------------------------------------------.
+sri/y.tab.c:| yyerrlab1 -- common code for both syntax error and YYERROR.  |
+sri/y.tab.c:`-------------------------------------------------------------*/
+sri/y.tab.c:/*-------------------------------------.
+sri/y.tab.c:| yyacceptlab -- YYACCEPT comes here.  |
+sri/y.tab.c:`-------------------------------------*/
+sri/y.tab.c:/*-----------------------------------.
+sri/y.tab.c:| yyabortlab -- YYABORT comes here.  |
+sri/y.tab.c:`-----------------------------------*/
+sri/y.tab.c:/*-------------------------------------------------.
+sri/y.tab.c:| yyexhaustedlab -- memory exhaustion comes here.  |
+sri/y.tab.c:`-------------------------------------------------*/
+sri/y.tab.c:	if(t->type=='c'){
+sri/y.tab.c:		puts("type mismatch-CHAR");
+sri/y.tab.c:		printf("type:%c\n",t->type);
+sri/y.tab.c:		printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",temp->name,temp->type,temp->size);
+sri/y.tab.c:		temp=temp->next;
+sri/exprtree.h:a	arth	+,-,*,/,=
+sri/exprtree.h:-
+sri/exprtree.l~:[0-9]+		{yylval = makeLeafNum(atoi(yytext)); return NUM;}
+sri/exprtree.l~:[a-z]+		{yylval = makeLeafID(*yytext);return ID;}
+sri/exprtree.l~:"-"			{return MINUS;}
+Binary file sri/a.out matches
+sri/lex.yy.c:/* First, we deal with  platform-specific or compiler-specific issues. */
+sri/lex.yy.c:/* C99 systems have <inttypes.h>. Non-C99 systems may or may not. */
+sri/lex.yy.c:#define INT8_MIN               (-128)
+sri/lex.yy.c:#define INT16_MIN              (-32767-1)
+sri/lex.yy.c:#define INT32_MIN              (-2147483647-1)
+sri/lex.yy.c:/* The "const" storage-class-modifier is valid. */
+sri/lex.yy.c:/* Returned upon end-of-file. */
+sri/lex.yy.c: * we want to instead treat it as an 8-bit unsigned char, hence the
+sri/lex.yy.c: * but we do it the disgusting crufty way forced on us by the ()-less
+sri/lex.yy.c:#define YY_START (((yy_start) - 1) / 2)
+sri/lex.yy.c:/* On IA-64, the buffer size is 16k, not 8k.
+sri/lex.yy.c:		(yy_c_buf_p) = yy_cp = yy_bp + yyless_macro_arg - YY_MORE_ADJ; \
+sri/lex.yy.c:	/* Whether we "own" the buffer - i.e., we know we created it,
+sri/lex.yy.c:	 * possible backing-up.
+sri/lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
+sri/lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
+sri/lex.yy.c:#define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
+sri/lex.yy.c: * corresponding action - sets up yytext.
+sri/lex.yy.c:	yyleng = (size_t) (yy_cp - yy_bp); \
+sri/lex.yy.c:/* Special case for "unistd.h", since it is non-ANSI. We include it way
+sri/lex.yy.c:   These are made visible to non-reentrant scanners for convenience. */
+sri/lex.yy.c:/* On IA-64, the buffer size is 16k, not 8k */
+sri/lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
+sri/lex.yy.c:/* No semi-colon after return; correct usage is to write "yyterminate();" -
+sri/lex.yy.c:/* Number of entries by which start-condition stack grows. */
+sri/lex.yy.c:/* Default declaration of generated scanner - a define so the user can
+sri/lex.yy.c:	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
+sri/lex.yy.c:		int yy_amount_of_matched_text = (int) (yy_cp - (yytext_ptr)) - 1;
+sri/lex.yy.c:		if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_NEW )
+sri/lex.yy.c:			 * back-up) that will match for the new input source.
+sri/lex.yy.c:			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+sri/lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_input_file = yyin;
+sri/lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
+sri/lex.yy.c:		 * end-of-buffer state).  Contrast this with the test
+sri/lex.yy.c:		if ( (yy_c_buf_p) <= &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+sri/lex.yy.c:					 * YY_NULL, it'll still work - another
+sri/lex.yy.c:				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)];
+sri/lex.yy.c:			"fatal flex scanner internal error--no action found" );
+sri/lex.yy.c:/* yy_get_next_buffer - try to read in a new buffer
+sri/lex.yy.c: *	EOB_ACT_LAST_MATCH -
+sri/lex.yy.c: *	EOB_ACT_CONTINUE_SCAN - continue scanning from current position
+sri/lex.yy.c: *	EOB_ACT_END_OF_FILE - end of file
+sri/lex.yy.c:    	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+sri/lex.yy.c:	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
+sri/lex.yy.c:		"fatal flex scanner internal error--end of buffer missed" );
+sri/lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_fill_buffer == 0 )
+sri/lex.yy.c:		if ( (yy_c_buf_p) - (yytext_ptr) - YY_MORE_ADJ == 1 )
+sri/lex.yy.c:	number_to_move = (yy_size_t) ((yy_c_buf_p) - (yytext_ptr)) - 1;
+sri/lex.yy.c:	if ( YY_CURRENT_BUFFER_LVALUE->yy_buffer_status == YY_BUFFER_EOF_PENDING )
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars) = 0;
+sri/lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
+sri/lex.yy.c:			{ /* Not enough room in the buffer - grow it. */
+sri/lex.yy.c:				(int) ((yy_c_buf_p) - b->yy_ch_buf);
+sri/lex.yy.c:			if ( b->yy_is_our_buffer )
+sri/lex.yy.c:				yy_size_t new_size = b->yy_buf_size * 2;
+sri/lex.yy.c:					b->yy_buf_size += b->yy_buf_size / 8;
+sri/lex.yy.c:					b->yy_buf_size *= 2;
+sri/lex.yy.c:				b->yy_ch_buf = (char *)
+sri/lex.yy.c:					yyrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+sri/lex.yy.c:				b->yy_ch_buf = 0;
+sri/lex.yy.c:			if ( ! b->yy_ch_buf )
+sri/lex.yy.c:				"fatal error - scanner input buffer overflow" );
+sri/lex.yy.c:			(yy_c_buf_p) = &b->yy_ch_buf[yy_c_buf_p_offset];
+sri/lex.yy.c:			num_to_read = YY_CURRENT_BUFFER_LVALUE->yy_buf_size -
+sri/lex.yy.c:						number_to_move - 1;
+sri/lex.yy.c:		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+sri/lex.yy.c:			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status =
+sri/lex.yy.c:	if ((int) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+sri/lex.yy.c:		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+sri/lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] = YY_END_OF_BUFFER_CHAR;
+sri/lex.yy.c:	YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] = YY_END_OF_BUFFER_CHAR;
+sri/lex.yy.c:	(yytext_ptr) = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[0];
+sri/lex.yy.c:/* yy_get_previous_state - get the state just before the EOB char was reached */
+sri/lex.yy.c:/* yy_try_NUL_trans - try to make a transition on the NUL character
+sri/lex.yy.c:	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
+sri/lex.yy.c:		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
+sri/lex.yy.c:					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
+sri/lex.yy.c:				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
+sri/lex.yy.c:		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
+sri/lex.yy.c:			*--dest = *--source;
+sri/lex.yy.c:		yy_cp += (int) (dest - source);
+sri/lex.yy.c:		yy_bp += (int) (dest - source);
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
+sri/lex.yy.c:			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
+sri/lex.yy.c:		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
+sri/lex.yy.c:			YY_FATAL_ERROR( "flex scanner push-back overflow" );
+sri/lex.yy.c:	*--yy_cp = (char) c;
+sri/lex.yy.c:		if ( (yy_c_buf_p) < &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars)] )
+sri/lex.yy.c:			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
+sri/lex.yy.c:	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+sri/lex.yy.c:    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+sri/lex.yy.c:	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
+sri/lex.yy.c:	yyin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
+sri/lex.yy.c:	b->yy_buf_size = (yy_size_t)size;
+sri/lex.yy.c:	 * we need to put in 2 end-of-buffer characters.
+sri/lex.yy.c:	b->yy_ch_buf = (char *) yyalloc(b->yy_buf_size + 2  );
+sri/lex.yy.c:	if ( ! b->yy_ch_buf )
+sri/lex.yy.c:	b->yy_is_our_buffer = 1;
+sri/lex.yy.c:	if ( b->yy_is_our_buffer )
+sri/lex.yy.c:		yyfree((void *) b->yy_ch_buf  );
+sri/lex.yy.c:	b->yy_input_file = file;
+sri/lex.yy.c:	b->yy_fill_buffer = 1;
+sri/lex.yy.c:        b->yy_bs_lineno = 1;
+sri/lex.yy.c:        b->yy_bs_column = 0;
+sri/lex.yy.c:        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+sri/lex.yy.c:	b->yy_n_chars = 0;
+sri/lex.yy.c:	/* We always need two end-of-buffer characters.  The first causes
+sri/lex.yy.c:	 * a transition to the end-of-buffer state.  The second causes
+sri/lex.yy.c:	b->yy_ch_buf[0] = YY_END_OF_BUFFER_CHAR;
+sri/lex.yy.c:	b->yy_ch_buf[1] = YY_END_OF_BUFFER_CHAR;
+sri/lex.yy.c:	b->yy_buf_pos = &b->yy_ch_buf[0];
+sri/lex.yy.c:	b->yy_at_bol = 1;
+sri/lex.yy.c:	b->yy_buffer_status = YY_BUFFER_NEW;
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_buf_pos = (yy_c_buf_p);
+sri/lex.yy.c:		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
+sri/lex.yy.c:		--(yy_buffer_stack_top);
+sri/lex.yy.c:	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1){
+sri/lex.yy.c:/** Setup the input buffer state to scan directly from a user-specified character buffer.
+sri/lex.yy.c:	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
+sri/lex.yy.c:	     base[size-1] != YY_END_OF_BUFFER_CHAR )
+sri/lex.yy.c:	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
+sri/lex.yy.c:	b->yy_buf_pos = b->yy_ch_buf = base;
+sri/lex.yy.c:	b->yy_is_our_buffer = 0;
+sri/lex.yy.c:	b->yy_input_file = 0;
+sri/lex.yy.c:	b->yy_n_chars = b->yy_buf_size;
+sri/lex.yy.c:	b->yy_is_interactive = 0;
+sri/lex.yy.c:	b->yy_at_bol = 1;
+sri/lex.yy.c:	b->yy_fill_buffer = 0;
+sri/lex.yy.c:	b->yy_buffer_status = YY_BUFFER_NEW;
+sri/lex.yy.c: * @param yystr a NUL-terminated string to scan
+sri/lex.yy.c:	b->yy_is_our_buffer = 1;
+sri/lex.yy.c:        /* Initialization is the same as for the non-reentrant scanner.
+sri/lex.yy.c:/* yylex_destroy is for both reentrant and non-reentrant scanners. */
+sri/lex.yy.c:    /* Reset the globals. This is important in a non-reentrant scanner so the next time
+sri/expr.c:int top=-1;
+sri/expr.c:	reg--;
+sri/expr.c:	switch(t->type){
+sri/expr.c:			//puts("read-int");
+sri/expr.c:			fprintf(target_file, "MOV R%d, %d\n", regno,t->num);
+sri/expr.c:			//puts("read-ed-int");
+sri/expr.c:			//puts("read-char");
+sri/expr.c:			fprintf(target_file, "MOV R%d, [%d]\n", regno,4096+(t->id-'a'));
+sri/expr.c:			//puts("read-ed-char");
+sri/expr.c:			r1=codeGen(t->left);
+sri/expr.c:			r2=codeGen(t->right);
+sri/expr.c:			if(strcmp((t->func),"<")==0){fprintf(target_file,"LT R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),">")==0){fprintf(target_file,"GT R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"<=")==0){fprintf(target_file,"LE R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),">=")==0){fprintf(target_file,"GE R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"!=")==0){fprintf(target_file,"NE R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"==")==0){fprintf(target_file,"EQ R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			//puts("left-ing");
+sri/expr.c:			codeGen(t->left);
+sri/expr.c:			codeGen(t->right);
+sri/expr.c:			r2=codeGen(t->right);
+sri/expr.c:			if(strcmp((t->func),"=")==0){fprintf(target_file,"MOV [%d], R%d\n",4096+(t->left->id-'a'),r2);freeReg();return;}
+sri/expr.c:			r1=codeGen(t->left);
+sri/expr.c:			if(strcmp((t->func),"+")==0){fprintf(target_file,"ADD R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"-")==0){fprintf(target_file,"SUB R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"*")==0){fprintf(target_file,"MUL R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp((t->func),"/")==0){fprintf(target_file,"DIV R%d, R%d\n",r1,r2);freeReg();return r1;}
+sri/expr.c:			if(strcmp(t->func,"read")==0){
+sri/expr.c:				Read(4096+(t->down->id-'a'),ret);
+sri/expr.c:				//puts("read-ed");
+sri/expr.c:			if(strcmp(t->func,"write")==0){
+sri/expr.c:				Write(codeGen(t->down),ret);
+sri/expr.c:			if(strcmp(t->func,"break")==0){
+sri/expr.c:			if(strcmp(t->func,"continue")==0){
+sri/expr.c:			if(strcmp(t->func,"while")==0){
+sri/expr.c:				result=codeGen(t->left);
+sri/expr.c:				codeGen(t->right);
+sri/expr.c:				top--;
+sri/expr.c:				//puts("while-ed");
+sri/expr.c:			if(strcmp(t->func,"if")==0){
+sri/expr.c:				result=codeGen(t->left);
+sri/expr.c:				codeGen(t->right);
+sri/expr.c:				//puts("if-ed");
+sri/expr.c:			if(strcmp(t->func,"ifelse")==0){
+sri/expr.c:				result=codeGen(t->left);
+sri/expr.c:				codeGen(t->down);
+sri/expr.c:				codeGen(t->right);
+sri/expr.c:				//puts("ifelse-ed");
+sri/expr.c:			//puts("codeGen-boo");
+sri/expr.c:	fprintf(target_file, "MOV R%d, -2\n",t);
+sri/expr.c:	fprintf(target_file, "MOV R%d, -1\n",t);
+sri/expr.c:	fprintf(target_file, "BRKP--DEBUG\n");
+sri/expr.c:	reg=-1;
+sri/exprtree.y:			|E MINUS E  {$$ = makeOperatorNode("-",$1,$3);}
+sri/exprtree.y:	if(t->type=='c'){
+sri/exprtree.y:		puts("type mismatch-CHAR");
+sri/exprtree.y:		printf("type:%c\n",t->type);
+sri/exprtree.y:		printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",temp->name,temp->type,temp->size);
+sri/exprtree.y:		temp=temp->next;
+sri/x.xsm:MOV R2, -1
+sri/x.xsm:MOV R3, -2
+sri/exprtree.c:	temp->type = 'i';
+sri/exprtree.c:	temp->num = n;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c://	temp->func = ;
+sri/exprtree.c:	temp->left = NULL;
+sri/exprtree.c:	temp->down = NULL;
+sri/exprtree.c:	temp->right = NULL;
+sri/exprtree.c:	//printf("Num	%d\n",temp->num);
+sri/exprtree.c:	temp->type = 'c';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c:	temp->id=id;
+sri/exprtree.c://	temp->func = ;
+sri/exprtree.c:	temp->left = NULL;
+sri/exprtree.c:	temp->down = NULL;
+sri/exprtree.c:	temp->right = NULL;
+sri/exprtree.c:	//printf("ID	%c\n",temp->id);
+sri/exprtree.c:	if(l->type!='b' && r->type!='b')
+sri/exprtree.c:		{if(strcmp(c,"+")==0 || strcmp(c,"-")==0 || strcmp(c,"*")==0 || strcmp(c,"/")==0 || strcmp(c,"=")==0)
+sri/exprtree.c:			temp->type='a';
+sri/exprtree.c:			temp->type='b';}
+sri/exprtree.c:	{	puts("type mismatch-arth-op");
+sri/exprtree.c:		printf("left:%c\n",l->type);
+sri/exprtree.c:		printf("right:%c\n",r->type);
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c:	temp->func = c;
+sri/exprtree.c:	temp->left = l;
+sri/exprtree.c:	temp->down = NULL;
+sri/exprtree.c:	temp->right = r;
+sri/exprtree.c:	//printf("Node	%s\n",temp->func);
+sri/exprtree.c:	temp->type = 'f';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c:	temp->func = c;
+sri/exprtree.c://	temp->left = ;
+sri/exprtree.c:	temp->down = t;
+sri/exprtree.c://	temp->right = ;
+sri/exprtree.c:	//printf("Func	%s\n",temp->func);
+sri/exprtree.c:	temp->type = 's';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c:	temp->func = s;
+sri/exprtree.c:	temp->left = l;
+sri/exprtree.c://	temp->down = ;
+sri/exprtree.c:	temp->right = r;
+sri/exprtree.c:	//printf("Tree--%s\n",temp->func);
+sri/exprtree.c:	temp->type = 's';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c:	temp->func = s;
+sri/exprtree.c:	temp->left = l;
+sri/exprtree.c:	temp->down = d;
+sri/exprtree.c:	temp->right = r;
+sri/exprtree.c:	//printf("Tree--%s\n",temp->func);
+sri/exprtree.c:	temp->type = 'n';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c://	temp->func = ;
+sri/exprtree.c:	temp->left = l;
+sri/exprtree.c:	temp->down=NULL;
+sri/exprtree.c:	temp->right = r;
+sri/exprtree.c:	//printf("Tree--NODE\n");
+sri/exprtree.c:	temp->type = 'f';
+sri/exprtree.c://	temp->num = ;
+sri/exprtree.c://	temp->id = ;
+sri/exprtree.c:	temp->func = str;
+sri/exprtree.c:	temp->left = NULL;
+sri/exprtree.c:	temp->down=NULL;
+sri/exprtree.c:	temp->right = NULL;
+sri/exprtree.c:	//printf("Tree--NODE\n");
+sri/exprtree.c:		printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",temp->name,temp->type,temp->size);
+sri/exprtree.c:		if(strcmp(temp->name,name)==0){
+sri/exprtree.c:		temp=temp->next;
+sri/exprtree.c:	printf("Install-ing...");
+sri/exprtree.c:	tail->name=name;
+sri/exprtree.c:	tail->type=type;
+sri/exprtree.c:	tail->size=size;
+sri/exprtree.c:	temp->next=NULL;
+sri/exprtree.c:	tail->next=temp;
+sri/exprtree.c:	printf("name:'%s'\ttype:'%s'\tsize:'%d'\n",tail->name,tail->type,tail->size);
+sri/exprtree.c:	printf("Install-ed\n");
+sri/exprtree.c:	while(in-->0)
+sri/exprtree.c:	switch(t->type){
+sri/exprtree.c:			printf("int	%d\n",t->num);
+sri/exprtree.c:			return t->num;
+sri/exprtree.c:			printf("char	%c\t(val=%d)\n",t->id,var[t->id-'a']);
+sri/exprtree.c:			return var[t->id-'a'];
+sri/exprtree.c:			printf("bool	%s\n",t->func);
+sri/exprtree.c:			if(strcmp((t->func),"<")==0){return evaluate(t->left)<evaluate(t->right)?1:0;}
+sri/exprtree.c:			if(strcmp((t->func),">")==0){return evaluate(t->left)>evaluate(t->right)?1:0;}
+sri/exprtree.c:			if(strcmp((t->func),"<=")==0){return evaluate(t->left)<=evaluate(t->right)?1:0;}	
+sri/exprtree.c:			if(strcmp((t->func),">=")==0){return evaluate(t->left)>=evaluate(t->right)?1:0;}	
+sri/exprtree.c:			if(strcmp((t->func),"!=")==0){return evaluate(t->left)!=evaluate(t->right)?1:0;}		
+sri/exprtree.c:			if(strcmp((t->func),"==")==0){return evaluate(t->left)==evaluate(t->right)?1:0;}
+sri/exprtree.c:			printf("operater-boo\n");
+sri/exprtree.c:			evaluate(t->left);
+sri/exprtree.c:			evaluate(t->right);
+sri/exprtree.c:			printf("op	%s\n",t->func);
+sri/exprtree.c:			if(strcmp((t->func),"+")==0){return evaluate(t->left) + evaluate(t->right);}
+sri/exprtree.c:			if(strcmp((t->func),"-")==0){return evaluate(t->left) - evaluate(t->right);}
+sri/exprtree.c:			if(strcmp((t->func),"*")==0){return evaluate(t->left) * evaluate(t->right);}
+sri/exprtree.c:			if(strcmp((t->func),"/")==0){return evaluate(t->left) / evaluate(t->right);}
+sri/exprtree.c:			if(strcmp((t->func),"=")==0){printf("\t%c\n",t->left->id);var[t->left->id-'a'] = evaluate(t->right);return;}
+sri/exprtree.c:			printf("arithmetic-boo\n");
+sri/exprtree.c:			if(strcmp(t->func,"read")==0){
+sri/exprtree.c:				printf("Read to '%c'\n",t->down->id);
+sri/exprtree.c:				scanf("%d",&var[t->down->id-'a']);
+sri/exprtree.c:			if(strcmp(t->func,"write")==0){
+sri/exprtree.c:				printf("%d\n",evaluate(t->down));}
+sri/exprtree.c:			if(strcmp(t->func,"if")==0){
+sri/exprtree.c:				if(evaluate(t->left)){
+sri/exprtree.c:					evaluate(t->right);}
+sri/exprtree.c:			else if(strcmp(t->func,"ifelse")==0){
+sri/exprtree.c:				if(evaluate(t->left)){
+sri/exprtree.c:					evaluate(t->down);}
+sri/exprtree.c:					evaluate(t->right);}
+sri/exprtree.c:			else if(strcmp(t->func,"while")==0){
+sri/exprtree.c:				while(evaluate(t->left)){
+sri/exprtree.c:					evaluate(t->right);}
+sri/exprtree.c:			printf("type	%c\n",t->type);
+sri/y.xsm:MOV R2, -1
+sri/y.xsm:MOV R3, -2
+sri/y.tab.h:/* Bison interface for Yacc-like parsers in C
+sri/y.tab.h:   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+abstracttree.c:		case nodetype_PLUS:	if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->nodetype!=nodetype_ID||(r->type!=type_int&&r->type!=type_bool))
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c:			if(l->type!=type_bool)
+abstracttree.c:			if(l->type!=type_bool)
+abstracttree.c:	temp->val=val;
+abstracttree.c:	temp->type=type;
+abstracttree.c:	temp->nodetype=nodetype;
+abstracttree.c:		temp->varname=(char *)malloc(sizeof(c));
+abstracttree.c:		strcpy(temp->varname,c);
+abstracttree.c:		temp->varname=NULL;
+abstracttree.c:	temp->Gentry=NULL;
+abstracttree.c:	temp->left=l;
+abstracttree.c:	temp->right=r;
+abstracttree.c:	temp->end=d;
+abstracttree.c:	switch(t->nodetype)
+abstracttree.c:			abst_evaluate(t->left);
+abstracttree.c:			abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)+abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)*abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)-abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)/abst_evaluate(t->right);
+abstracttree.c:			return t->val;
+abstracttree.c:			if(val[*(t->varname)-'a']!=NULL)
+abstracttree.c:				return *val[*(t->varname)-'a'];
+abstracttree.c:			if(val[*(t->left->varname)-'a']==NULL)
+abstracttree.c:				val[*(t->left->varname)-'a']=malloc(sizeof(int*));
+abstracttree.c:			scanf("%d",val[*(t->left->varname)-'a']);
+abstracttree.c:			printf("%d\n",abst_evaluate(t->left));
+abstracttree.c:			if(val[*(t->left->varname)-'a']==NULL)
+abstracttree.c:				val[*(t->left->varname)-'a']=malloc(sizeof(int*));
+abstracttree.c:			*val[*(t->left->varname)-'a']=abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)<abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)<=abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)>abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)>=abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)==abst_evaluate(t->right);
+abstracttree.c:			return abst_evaluate(t->left)!=abst_evaluate(t->right);
+abstracttree.c:			if(abst_evaluate(t->left))
+abstracttree.c:				abst_evaluate(t->right);
+abstracttree.c:			else if(t->end!=NULL)
+abstracttree.c:				abst_evaluate(t->end);
+abstracttree.c:			while(abst_evaluate(t->left))
+abstracttree.c:				abst_evaluate(t->right);
+abstracttree.c~:		case nodetype_PLUS:	if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->nodetype!=nodetype_ID||(r->type!=type_int&&r->type!=type_bool))
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_int||r->type!=type_int)
+abstracttree.c~:			if(l->type!=type_bool)
+abstracttree.c~:			if(l->type!=type_bool)
+abstracttree.c~:	temp->val=val;
+abstracttree.c~:	temp->type=type;
+abstracttree.c~:	temp->nodetype=nodetype;
+abstracttree.c~:		temp->varname=(char *)malloc(sizeof(c));
+abstracttree.c~:		strcpy(temp->varname,c);
+abstracttree.c~:		temp->varname=NULL;
+abstracttree.c~:	temp->Gentry=NULL;
+abstracttree.c~:	temp->left=l;
+abstracttree.c~:	temp->right=r;
+abstracttree.c~:	temp->end=p3;
+abstracttree.c~:	switch(t->nodetype)
+abstracttree.c~:			abst_evaluate(t->left);
+abstracttree.c~:			abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)+abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)*abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)-abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)/abst_evaluate(t->right);
+abstracttree.c~:			return t->val;
+abstracttree.c~:			if(val[*(t->varname)-'a']!=NULL)
+abstracttree.c~:				return *val[*(t->varname)-'a'];
+abstracttree.c~:			if(val[*(t->left->varname)-'a']==NULL)
+abstracttree.c~:				val[*(t->left->varname)-'a']=malloc(sizeof(int*));
+abstracttree.c~:			scanf("%d",val[*(t->left->varname)-'a']);
+abstracttree.c~:			printf("%d\n",abst_evaluate(t->left));
+abstracttree.c~:			if(val[*(t->left->varname)-'a']==NULL)
+abstracttree.c~:				val[*(t->left->varname)-'a']=malloc(sizeof(int*));
+abstracttree.c~:			*val[*(t->left->varname)-'a']=abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)<abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)<=abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)>abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)>=abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)==abst_evaluate(t->right);
+abstracttree.c~:			return abst_evaluate(t->left)!=abst_evaluate(t->right);
+abstracttree.c~:			if(abst_evaluate(t->left))
+abstracttree.c~:				abst_evaluate(t->right);
+abstracttree.c~:			else if(t->end!=NULL)
+abstracttree.c~:				abst_evaluate(t->end);
+abstracttree.c~:			while(abst_evaluate(t->left))
+abstracttree.c~:				abst_evaluate(t->right);
+intermediate.xsm:MOV R1,-1
+intermediate.xsm:MOV R1,-2
+intermediate.l:[L]([0-9])+			{if(pass==2) {num=findline(yytext+1);fprintf(output,"%d",entry[num].adrs);}}
+intermediate.l:[L]([0-9])+[' ']*[:][\n]  {if (pass==1){	
+intermediate.l:							entry[num].adrs=(linecnt*2)+2048-8;
+exp.y~:									tempst=Lookup($3->varname);
+exp.y~:									{yyerror("undefined Variable");printf("%s\n",$3->varname );exit(1);}
+exp.y~:									else $3->Gentry=tempst;
+exp.y~:									tempst=Lookup($3->varname);
+exp.y~:									{yyerror("undefined Variable");printf("%s\n",$3->varname );exit(1);}
+exp.y~:									else $3->Gentry=tempst;
+exp.y~:									tempst=Lookup($1->varname);
+exp.y~:									{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y~:									else $1->Gentry=tempst;
+exp.y~:												tempst=Lookup($1->varname);
+exp.y~:												{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y~:												else $1->Gentry=tempst;
+exp.y~:								tempst=Lookup($1->varname);
+exp.y~:								{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y~:								else {$1->Gentry=tempst; $1->type=tempst->type;}
+exp.y~:								tempst=Lookup($1->varname);
+exp.y~:								{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y~:								else {$1->Gentry=tempst; 
+exp.y~:										if(tempst->type==type_int)
+exp.y~:											$1->type=type_arrint;
+exp.y~:										else if(tempst->type==type_char)
+exp.y~:											$1->type=type_str;
+exp.y~:								$$ = createtree(0,nodetype_ARRID,$1->type,NULL,$1,$3,NULL);
+exp.y~:VarList :	VarList ',' ID 		{Install($3->varname,type,1);}
+exp.y~:		|	ID 					{Install($1->varname,type,1);}
+exp.y~:												Install($3->varname,type_arrint,$5->val);
+exp.y~:												Install($3->varname,type_str,$5->val);	
+exp.y~:										Install($1->varname,type_arrint,$3->val);
+exp.y~:										Install($1->varname,type_str,$3->val);
+codegen.c:int count=-1,lcount=-1;
+codegen.c:	if(count!=-1)
+codegen.c:		count--;
+codegen.c:	fprintf(fp,"MOV R%d,-1\n",i);
+codegen.c:	fprintf(fp,"MOV R%d,-2\n",i);
+codegen.c:	switch(t->nodetype)
+codegen.c:			codegen(t->left,fp);
+codegen.c:			codegen(t->right,fp);
+codegen.c:			fprintf(fp, "MOV R%d,%d\n",i,t->val);
+codegen.c:			fprintf(fp, "MOV R%d,[%d]\n",i,t->Gentry->binding);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			scan((t->left->Gentry)->binding,fp,nodetype_READ);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			i=codegen(t->right,fp);
+codegen.c:			fprintf(fp,"MOV [%d],R%d\n",t->left->Gentry->binding,i );
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			i=codegen(t->left,fp);
+codegen.c:			codegen(t->right,fp);
+codegen.c:			if(t->end!=NULL)
+codegen.c:				codegen(t->end,fp);
+codegen.c:			k=codegen(t->left,fp);
+codegen.c:			codegen(t->right,fp);
+codegen.c:			fprintf(fp,"MOV R%d,%d\n",i,t->left->Gentry->binding );
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			fprintf(fp,"MOV R%d,%d\n",i,t->left->Gentry->binding );
+codegen.c:			j=codegen(t->right,fp);
+codegen.c:			j=codegen(t->end,fp);
+codegen.c:			fprintf(fp,"MOV R%d,%d\n",i,t->left->Gentry->binding);
+codegen.c:			j=codegen(t->right,fp);
+exp.y:									tempst=Lookup($3->varname);
+exp.y:									{yyerror("undefined Variable");printf("%s\n",$3->varname );exit(1);}
+exp.y:									else $3->Gentry=tempst;
+exp.y:									tempst=Lookup($3->varname);
+exp.y:									{yyerror("undefined Variable");printf("%s\n",$3->varname );exit(1);}
+exp.y:									else $3->Gentry=tempst;
+exp.y:									tempst=Lookup($1->varname);
+exp.y:									{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y:									else $1->Gentry=tempst;
+exp.y:												tempst=Lookup($1->varname);
+exp.y:												{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y:												else $1->Gentry=tempst;
+exp.y:								tempst=Lookup($1->varname);
+exp.y:								{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y:								else {$1->Gentry=tempst; $1->type=tempst->type;}
+exp.y:								tempst=Lookup($1->varname);
+exp.y:								{yyerror("undefined Variable");printf("%s\n",$1->varname );exit(1);}
+exp.y:								else {$1->Gentry=tempst; 
+exp.y:										if(tempst->type==type_int)
+exp.y:											$1->type=type_arrint;
+exp.y:										else if(tempst->type==type_char)
+exp.y:											$1->type=type_str;
+exp.y:								$$ = createtree(0,nodetype_ARRID,$1->type,NULL,$1,$3,NULL);
+exp.y:VarList :	VarList ',' ID 		{Install($3->varname,type,1);}
+exp.y:		|	ID 					{Install($1->varname,type,1);}
+exp.y:												Install($3->varname,type_arrint,$5->val);
+exp.y:												Install($3->varname,type_str,$5->val);	
+exp.y:										Install($1->varname,type_arrint,$3->val);
+exp.y:										Install($1->varname,type_str,$3->val);
+output.xsm:MOV R0,-1
+output.xsm:MOV R0,-1
+output.xsm:MOV R0,-1
+output.xsm:MOV R3,-2
+output.xsm:MOV R3,-2
+output.xsm:MOV R3,-2
+output.xsm:MOV R3,-2

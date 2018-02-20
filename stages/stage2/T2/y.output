@@ -1,0 +1,449 @@
+Grammar
+
+    0 $accept: start $end
+
+    1 start: BEG Slist END ';'
+    2      | BEG END ';'
+
+    3 Slist: Slist Stmt
+    4      | Stmt
+
+    5 Stmt: InputStmt
+    6     | OutputStmt
+    7     | AsgStmt
+
+    8 InputStmt: READ '(' ID ')' ';'
+
+    9 OutputStmt: WRITE '(' E ')' ';'
+
+   10 AsgStmt: ID EQ E ';'
+
+   11 E: E PLUS E
+   12  | E MINUS E
+   13  | E MUL E
+   14  | E DIV E
+   15  | '(' E ')'
+   16  | ID
+   17  | NUM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 8 9 15
+')' (41) 8 9 15
+';' (59) 1 2 8 9 10
+error (256)
+NUM (258) 17
+PLUS (259) 11
+MINUS (260) 12
+MUL (261) 13
+DIV (262) 14
+EQ (263) 10
+BEG (264) 1 2
+END (265) 1 2
+READ (266) 8
+WRITE (267) 9
+ID (268) 8 10 16
+
+
+Nonterminals, with rules where they appear
+
+$accept (17)
+    on left: 0
+start (18)
+    on left: 1 2, on right: 0
+Slist (19)
+    on left: 3 4, on right: 1 3
+Stmt (20)
+    on left: 5 6 7, on right: 3 4
+InputStmt (21)
+    on left: 8, on right: 5
+OutputStmt (22)
+    on left: 9, on right: 6
+AsgStmt (23)
+    on left: 10, on right: 7
+E (24)
+    on left: 11 12 13 14 15 16 17, on right: 9 10 11 12 13 14 15
+
+
+State 0
+
+    0 $accept: . start $end
+
+    BEG  shift, and go to state 1
+
+    start  go to state 2
+
+
+State 1
+
+    1 start: BEG . Slist END ';'
+    2      | BEG . END ';'
+
+    END    shift, and go to state 3
+    READ   shift, and go to state 4
+    WRITE  shift, and go to state 5
+    ID     shift, and go to state 6
+
+    Slist       go to state 7
+    Stmt        go to state 8
+    InputStmt   go to state 9
+    OutputStmt  go to state 10
+    AsgStmt     go to state 11
+
+
+State 2
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 12
+
+
+State 3
+
+    2 start: BEG END . ';'
+
+    ';'  shift, and go to state 13
+
+
+State 4
+
+    8 InputStmt: READ . '(' ID ')' ';'
+
+    '('  shift, and go to state 14
+
+
+State 5
+
+    9 OutputStmt: WRITE . '(' E ')' ';'
+
+    '('  shift, and go to state 15
+
+
+State 6
+
+   10 AsgStmt: ID . EQ E ';'
+
+    EQ  shift, and go to state 16
+
+
+State 7
+
+    1 start: BEG Slist . END ';'
+    3 Slist: Slist . Stmt
+
+    END    shift, and go to state 17
+    READ   shift, and go to state 4
+    WRITE  shift, and go to state 5
+    ID     shift, and go to state 6
+
+    Stmt        go to state 18
+    InputStmt   go to state 9
+    OutputStmt  go to state 10
+    AsgStmt     go to state 11
+
+
+State 8
+
+    4 Slist: Stmt .
+
+    $default  reduce using rule 4 (Slist)
+
+
+State 9
+
+    5 Stmt: InputStmt .
+
+    $default  reduce using rule 5 (Stmt)
+
+
+State 10
+
+    6 Stmt: OutputStmt .
+
+    $default  reduce using rule 6 (Stmt)
+
+
+State 11
+
+    7 Stmt: AsgStmt .
+
+    $default  reduce using rule 7 (Stmt)
+
+
+State 12
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+State 13
+
+    2 start: BEG END ';' .
+
+    $default  reduce using rule 2 (start)
+
+
+State 14
+
+    8 InputStmt: READ '(' . ID ')' ';'
+
+    ID  shift, and go to state 19
+
+
+State 15
+
+    9 OutputStmt: WRITE '(' . E ')' ';'
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 23
+
+
+State 16
+
+   10 AsgStmt: ID EQ . E ';'
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 24
+
+
+State 17
+
+    1 start: BEG Slist END . ';'
+
+    ';'  shift, and go to state 25
+
+
+State 18
+
+    3 Slist: Slist Stmt .
+
+    $default  reduce using rule 3 (Slist)
+
+
+State 19
+
+    8 InputStmt: READ '(' ID . ')' ';'
+
+    ')'  shift, and go to state 26
+
+
+State 20
+
+   17 E: NUM .
+
+    $default  reduce using rule 17 (E)
+
+
+State 21
+
+   16 E: ID .
+
+    $default  reduce using rule 16 (E)
+
+
+State 22
+
+   15 E: '(' . E ')'
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 27
+
+
+State 23
+
+    9 OutputStmt: WRITE '(' E . ')' ';'
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   13  | E . MUL E
+   14  | E . DIV E
+
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+    MUL    shift, and go to state 30
+    DIV    shift, and go to state 31
+    ')'    shift, and go to state 32
+
+
+State 24
+
+   10 AsgStmt: ID EQ E . ';'
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   13  | E . MUL E
+   14  | E . DIV E
+
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+    MUL    shift, and go to state 30
+    DIV    shift, and go to state 31
+    ';'    shift, and go to state 33
+
+
+State 25
+
+    1 start: BEG Slist END ';' .
+
+    $default  reduce using rule 1 (start)
+
+
+State 26
+
+    8 InputStmt: READ '(' ID ')' . ';'
+
+    ';'  shift, and go to state 34
+
+
+State 27
+
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   13  | E . MUL E
+   14  | E . DIV E
+   15  | '(' E . ')'
+
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+    MUL    shift, and go to state 30
+    DIV    shift, and go to state 31
+    ')'    shift, and go to state 35
+
+
+State 28
+
+   11 E: E PLUS . E
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 36
+
+
+State 29
+
+   12 E: E MINUS . E
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 37
+
+
+State 30
+
+   13 E: E MUL . E
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 38
+
+
+State 31
+
+   14 E: E DIV . E
+
+    NUM  shift, and go to state 20
+    ID   shift, and go to state 21
+    '('  shift, and go to state 22
+
+    E  go to state 39
+
+
+State 32
+
+    9 OutputStmt: WRITE '(' E ')' . ';'
+
+    ';'  shift, and go to state 40
+
+
+State 33
+
+   10 AsgStmt: ID EQ E ';' .
+
+    $default  reduce using rule 10 (AsgStmt)
+
+
+State 34
+
+    8 InputStmt: READ '(' ID ')' ';' .
+
+    $default  reduce using rule 8 (InputStmt)
+
+
+State 35
+
+   15 E: '(' E ')' .
+
+    $default  reduce using rule 15 (E)
+
+
+State 36
+
+   11 E: E . PLUS E
+   11  | E PLUS E .
+   12  | E . MINUS E
+   13  | E . MUL E
+   14  | E . DIV E
+
+    MUL  shift, and go to state 30
+    DIV  shift, and go to state 31
+
+    $default  reduce using rule 11 (E)
+
+
+State 37
+
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   12  | E MINUS E .
+   13  | E . MUL E
+   14  | E . DIV E
+
+    MUL  shift, and go to state 30
+    DIV  shift, and go to state 31
+
+    $default  reduce using rule 12 (E)
+
+
+State 38
+
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   13  | E . MUL E
+   13  | E MUL E .
+   14  | E . DIV E
+
+    $default  reduce using rule 13 (E)
+
+
+State 39
+
+   11 E: E . PLUS E
+   12  | E . MINUS E
+   13  | E . MUL E
+   14  | E . DIV E
+   14  | E DIV E .
+
+    $default  reduce using rule 14 (E)
+
+
+State 40
+
+    9 OutputStmt: WRITE '(' E ')' ';' .
+
+    $default  reduce using rule 9 (OutputStmt)

@@ -1,0 +1,215 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+MOV SP,4095
+MOV BP,4096
+PUSH R0
+CALL 2298
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0
+
+PUSH BP
+MOV BP,SP--act.rec
+MOV R0,"" --blank
+PUSH R0--locals
+MOV R1,BP
+ADD R1,-3
+MOV R0,[R1]
+MOV R1,0
+EQ R0,R1
+JZ R0,2128
+MOV R1,BP
+ADD R1,-4
+MOV R0,[R1]
+MOV R1,0
+EQ R0,R1
+JZ R0,2128
+POP R0--locals
+MOV R1,0
+MOV R0,BP
+SUB R0,2--(BP-2)
+MOV [R0],R1--sav.result
+MOV BP,[SP]
+POP R0--bp
+RET
+
+
+MOV R1,BP
+ADD R1,-4
+MOV R0,[R1]
+MOV R1,0
+GT R0,R1
+JZ R0,2212
+MOV R0,BP
+ADD R0,1
+PUSH R0--save.reg
+MOV R1,0
+MOV R0,R1
+PUSH R0--arg
+PUSH R0--save.reg
+MOV R1,0
+MOV R0,R1
+PUSH R0--arg
+MOV R2,BP
+ADD R2,-3
+MOV R1,[R2]
+MOV R3,BP
+ADD R3,-4
+MOV R2,[R3]
+ADD R1,R2
+MOV R0,R1
+PUSH R0--arg
+MOV R0,""
+PUSH R0--for.ret
+CALL 2080
+POP R1--result
+POP R19--args
+POP R19--args
+POP R0--old.regs
+MOV R0,R1
+PUSH R0--arg
+MOV R0,""
+PUSH R0--for.ret
+CALL 2080
+POP R1--result
+POP R19--args
+POP R19--args
+POP R0--old.regs
+MOV [R0],R1
+
+MOV R1,BP
+ADD R1,-4
+MOV R0,[R1]
+MOV R1,0
+EQ R0,R1
+JZ R0,2278
+MOV R0,BP
+ADD R0,1
+MOV R1,1
+PUSH R1--save.reg
+PUSH R0--save.reg
+MOV R2,BP
+ADD R2,-4
+MOV R1,[R2]
+MOV R0,R1
+PUSH R0--arg
+MOV R2,BP
+ADD R2,-3
+MOV R1,[R2]
+MOV R2,1
+SUB R1,R2
+MOV R0,R1
+PUSH R0--arg
+MOV R0,""
+PUSH R0--for.ret
+CALL 2080
+POP R2--result
+POP R19--args
+POP R19--args
+POP R0--old.regs
+POP R1--old.regs
+ADD R1,R2
+MOV [R0],R1
+
+POP R0--locals
+MOV R2,BP
+ADD R2,1
+MOV R1,[R2]
+MOV R0,BP
+SUB R0,2--(BP-2)
+MOV [R0],R1--sav.result
+MOV BP,[SP]
+POP R0--bp
+RET
+
+PUSH BP
+MOV BP,SP--act.rec
+MOV R0,"" --blank
+PUSH R0--locals
+PUSH R0--locals
+PUSH R0--locals
+MOV R1,BP
+ADD R1,2
+MOV R2, "Read"
+PUSH R2
+MOV R2, -1
+PUSH R2--(-1)
+MOV R2, R1
+PUSH R2--reg.addr
+MOV R2, ""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R0--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R1,BP
+ADD R1,3
+MOV R2, "Read"
+PUSH R2
+MOV R2, -1
+PUSH R2--(-1)
+MOV R2, R1
+PUSH R2--reg.addr
+MOV R2, ""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R0--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R2,BP
+ADD R2,3
+MOV R1,[R2]
+MOV R0,R1
+PUSH R0--arg
+MOV R2,BP
+ADD R2,2
+MOV R1,[R2]
+MOV R0,R1
+PUSH R0--arg
+MOV R0,""
+PUSH R0--for.ret
+CALL 2080
+POP R0--result
+POP R19--args
+POP R19--args
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0--locals
+POP R0--locals
+POP R0--locals
+MOV R1,0
+MOV R0,BP
+SUB R0,2--(BP-2)
+MOV [R0],R1--sav.result
+MOV BP,[SP]
+POP R0--bp
+RET

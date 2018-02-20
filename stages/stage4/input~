@@ -1,0 +1,10 @@
+decl
+int a,b
+enddecl;
+
+begin
+a=1;
+b=2;
+write(a);
+write(b);
+end;
