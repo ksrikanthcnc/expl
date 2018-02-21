@@ -3,11 +3,11 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#define YYSTYPE tnode *
-	#include "expr.h"
+	//#include "expr.h"
 	#include "expr.c"
 	#include "lex.yy.c"
 
-	yydebug=0;
+	int yydebug=0;
 	//int yylex(void);
 	//void yyerror(char const *s);
 	FILE *yyin;
@@ -49,7 +49,7 @@
 	TDeclBlock	:TYPE TStructs ENDTYPE					{tprint();};
 	TStructs	:TStructs TStruct
 				|TStruct;
-	TStruct		:ID {TInstall($1->str,NULL,NULL);}
+	TStruct		:ID {TInstall($1->str,0,NULL);}
 					'{' {fhead=NULL;fieldindex=0;typesize=0;}
 						TFields  '}' {TLookup($1->str)->fields=fhead;TLookup($1->str)->size=typesize;}
 				;
@@ -212,18 +212,18 @@
 	Lid			:ID				{binding+=1;LInstall($1->str,type);};
 //-------------------------------------------------------------------------main
 	MainBlock 	:MAIN {	binding=0;}
-							'(' ')' '{' {	funcname="main";
-											lhead=NULL;
-											binding=0;
-											type=TLookup("int");}
-										LDeclBlock {lprint();initflag=allocflag=0;}
-													Body '}'
+						'(' ')' '{' {	funcname="main";
+										lhead=NULL;
+										binding=0;
+										GLookup("main")->type=TLookup("int");}
+									LDeclBlock {lprint();initflag=allocflag=0;}
+												Body '}'
 				;
 //-------------------------------------------------------------------------body
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	Body		:BEG Slist RETURN Expr ';' END 	{//$$=$2;
-												struct tnode *ret=createtree(GLookup(funcname)->type,NULL,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
-												struct tnode *body=createtree(TLookup("void"),NULL,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
+												struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
+												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
 												if(allocflag>0 && initflag==0){
@@ -231,60 +231,61 @@
 												codeGen(body);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
 												printf("################################################################################################\n");}
-				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(GLookup(funcname)->type,NULL,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
+				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(ret);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
-												printf("################################################################################################\n");}
-
-	Slist		:Slist Stmt				{$$=createtree(TLookup("void"),NULL,NULL,nt_NODE,$1,NULL,$2,NULL,NULL,NULL);}
+												printf("################################################################################################\n");};
+	Slist		:Slist Stmt				{$$=createtree(TLookup("void"),0,NULL,nt_NODE,$1,NULL,$2,NULL,NULL,NULL);}
 				|Stmt					{$$=$1;};
-	Stmt		:READ '(' id ')' ';'								{$$=createtree(TLookup("void"),NULL,NULL,nt_READ,NULL,$3,NULL,NULL,NULL,NULL);}
-				|WRITE '(' Expr ')' ';'								{$$=createtree(TLookup("void"),NULL,NULL,nt_WRITE,NULL,$3,NULL,NULL,NULL,NULL);}
-				|WRITE STRING ';'									{$$=createtree(TLookup("void"),NULL,NULL,nt_WRITE,NULL,$2,NULL,NULL,NULL,NULL);}
-				|id EQ Expr ';'										{$$=createtree(TLookup("void"),NULL,NULL,nt_ASGN,$1,NULL,$3,NULL,NULL,NULL);}
-				|IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'	{$$=createtree(TLookup("void"),NULL,NULL,nt_IFELSE,$3,$6,$8,NULL,NULL,NULL);}
-				|IF '(' Bool ')' THEN Slist ENDIF ';'				{$$=createtree(TLookup("void"),NULL,NULL,nt_IF,$3,NULL,$6,NULL,NULL,NULL);}
-				|WHILE '(' Bool ')' DO Slist ENDWHILE ';'			{$$=createtree(TLookup("void"),NULL,NULL,nt_WHILE,$3,NULL,$6,NULL,NULL,NULL);}
-				|REPEAT Slist UNTIL '(' Bool ')' ';'				{$$=createtree(TLookup("void"),NULL,NULL,nt_WHILE,$5,NULL,$2,NULL,NULL,NULL);}
-				|DO Slist WHILE '(' Bool ')' ';'					{$$=createtree(TLookup("void"),NULL,NULL,nt_WHILE,$5,NULL,$2,NULL,NULL,NULL);}
-				|BREAK ';'											{$$=createtree(TLookup("void"),NULL,NULL,nt_BREAK,NULL,NULL,NULL,NULL,NULL,NULL);}
-				|CONTINUE ';'										{$$=createtree(TLookup("void"),NULL,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
-				|BRKP ';'											{$$=createtree(TLookup("void"),NULL,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
-				|EXIT ';'											{$$=createtree(TLookup("void"),NULL,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
-				|INIT '(' ')' ';'									{$$=createtree(TLookup("void"),NULL,NULL,nt_INIT,NULL,NULL,NULL,NULL,NULL,NULL);initflag++;}
+	Stmt		:READ '(' id ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_READ,NULL,$3,NULL,NULL,NULL,NULL);}
+				|WRITE '(' Expr ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,$3,NULL,NULL,NULL,NULL);}
+				|WRITE STRING ';'									{$$=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,$2,NULL,NULL,NULL,NULL);}
+				|id EQ Expr ';'										{$$=createtree(TLookup("void"),0,NULL,nt_ASGN,$1,NULL,$3,NULL,NULL,NULL);}
+				|IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'	{$$=createtree(TLookup("void"),0,NULL,nt_IFELSE,$3,$6,$8,NULL,NULL,NULL);}
+				|IF '(' Bool ')' THEN Slist ENDIF ';'				{$$=createtree(TLookup("void"),0,NULL,nt_IF,$3,NULL,$6,NULL,NULL,NULL);}
+				|WHILE '(' Bool ')' DO Slist ENDWHILE ';'			{$$=createtree(TLookup("void"),0,NULL,nt_WHILE,$3,NULL,$6,NULL,NULL,NULL);}
+				|REPEAT Slist UNTIL '(' Bool ')' ';'				{$$=createtree(TLookup("void"),0,NULL,nt_WHILE,$5,NULL,$2,NULL,NULL,NULL);}
+				|DO Slist WHILE '(' Bool ')' ';'					{$$=createtree(TLookup("void"),0,NULL,nt_WHILE,$5,NULL,$2,NULL,NULL,NULL);}
+				|BREAK ';'											{$$=createtree(TLookup("void"),0,NULL,nt_BREAK,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|CONTINUE ';'										{$$=createtree(TLookup("void"),0,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|BRKP ';'											{$$=createtree(TLookup("void"),0,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|EXIT ';'											{$$=createtree(TLookup("void"),0,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|INIT '(' ')' ';'									{$$=createtree(TLookup("void"),0,NULL,nt_INIT,NULL,NULL,NULL,NULL,NULL,NULL);initflag++;}
 				|id EQ ALLOC '(' ')' ';'							{$$=createtree(TLookup("void"),8/*GetSize(TLookup($1->str))*/,NULL,nt_ALLOC,NULL,$1,NULL,NULL,NULL,NULL);allocflag++;}//---------------------------------
-				|FREE '(' id ')' ';'								{$$=createtree(TLookup("void"),NULL,NULL,nt_FREE,NULL,$3,NULL,NULL,NULL,NULL);}
+				|FREE '(' id ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_FREE,NULL,$3,NULL,NULL,NULL,NULL);}
 				;
-	Expr		:Expr PLUS Expr			{$$=createtree(TLookup("int"),NULL,NULL,nt_PLUS,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr MINUS Expr		{$$=createtree(TLookup("int"),NULL,NULL,nt_MINUS,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr MUL Expr			{$$=createtree(TLookup("int"),NULL,NULL,nt_MUL,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr DIV Expr			{$$=createtree(TLookup("int"),NULL,NULL,nt_DIV,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr MOD Expr			{$$=createtree(TLookup("int"),NULL,NULL,nt_MOD,$1,NULL,$3,NULL,NULL,NULL);}
+	Expr		:Expr PLUS Expr			{$$=createtree(TLookup("int"),0,NULL,nt_PLUS,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr MINUS Expr		{$$=createtree(TLookup("int"),0,NULL,nt_MINUS,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr MUL Expr			{$$=createtree(TLookup("int"),0,NULL,nt_MUL,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr DIV Expr			{$$=createtree(TLookup("int"),0,NULL,nt_DIV,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr MOD Expr			{$$=createtree(TLookup("int"),0,NULL,nt_MOD,$1,NULL,$3,NULL,NULL,NULL);}
 				|'(' Expr ')'			{$$=$2;}
 				|NUM					{$$=$1;}
 				|STRING					{$$=$1;}
 				|id						{$$=$1;}
-				|ID '(' ')'				{checkid($1);$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
+				|ID '(' ')'				{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
 				|ID '(' ArgList ')'		{checkid($1);
-										$$=createtree(GLookup($1->str)->type,NULL,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
+										$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
 	ArgList		:ArgList ',' Expr		{$3->down=$1;$$=$3;}
 				|Expr					{$$=$1;};
-	Bool		:Expr LT Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr LE Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_LE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr GT Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_GT,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr GE Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_GE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr EE Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_EE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr NE Expr			{$$ =createtree(TLookup("bool"),NULL,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);};
+	Bool		:Expr LT Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr LE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_LE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr GT Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_GT,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr GE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_GE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr EE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_EE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr NE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);};
 //-------------------------------------------------------------------------id
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
-	id			:ID							{checkid($1);$$=createtree(TLookup($1->str),NULL,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
-				|ID '[' Expr ']'			{checkid($1);$$=createtree(TLookup($1->str),$3->num,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+	id			:ID							{checkid($1);
+
+											$$=createtree(LLookup($1->str)->type==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+				|ID '[' Expr ']'			{checkid($1);$$=createtree(LLookup($1->str)->type==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				/*|ID '[' NUM ']' '[' NUM ']'	{checkid($1);
 											$$=createtree(TLookup($1->str),(GLookup($1->str)->arr)*($3->num)+($6->num),$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}*/
-				|MUL id						{$$=createtree(TLookup($2->str),$2->num,$2->str,nt_SPTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
-				|'&' id						{$$=createtree(TLookup($2->str),$2->num,$2->str,nt_APTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
+				|MUL id						{$$=createtree(GLookup($2->str)->type,$2->num,$2->str,nt_SPTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
+				|'&' id						{$$=createtree(GLookup($2->str)->type,$2->num,$2->str,nt_APTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
 				/*|ID'.'ID					{checkid1($1,$3);
 											struct  Paramstruct *ptemp=GLookup($1->str)->paramlist;
 											int t,count=0;
@@ -295,14 +296,13 @@
 												ptemp=ptemp->next;}
 											$$=createtree(t,GLookup($1->str)->size-count,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);}*/
 				|Field						{$$=$1;};
-				
 	Field		:Field '.' ID 				{$$->t=$3->t;}//--------------------------------------------------------
 				|ID '.' ID					{checkid($1);
 											checkidid($1,$3);
 											struct Typetable *ttemp=TLookup($1->str);
 											struct Fieldlist *ftemp=FLookup(ttemp,$3->str);
-											struct tnode *arr=createtree(TLookup($3->str),ftemp->fieldIndex,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
-											$$=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_ID,NULL,arr,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+											struct tnode *field=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
+											$$=createtree(field->t,0,$3->str,nt_USER,NULL,field,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				;
 %%
 
@@ -312,7 +312,7 @@ void checkid(struct tnode *t){
 		exit(1);}}
 void checkidid(struct tnode *t1,struct tnode *t3){
 	struct Gsymbol *gtemp=GLookup(t1->str);
-	struct Lsymbol *ltemp=GLookup(t1->str);
+	struct Lsymbol *ltemp=LLookup(t1->str);
 	if(gtemp==NULL && ltemp==NULL){
 		printf("line:'%d'\tUndeclared type:'%s'\n",line,t1->str);
 		exit(1);}
@@ -402,18 +402,17 @@ void lprint(){
 	void s(char *s){printf("~~~%s~~~\n",s);}*/
 int main(void){
 	ghead=NULL;
-	FILE *fp=fopen("/home/srikanth/workspace/xsm_expl/stage6/input","r");
+	FILE *fp=fopen("input","r");
 	if(fp)
 		yyin=fp;
 	else{
 		printf("Input file error\n");
 		exit(1);}
-	target_file=fopen("intermediate.xsm","w+");
+	target_file=fopen("intermediate.xsm","w+");//comment for consoling
 	GInstall("main",TLookup("int"),0);
 	GLookup("main")->flabel=1000;
 	TypeTableCreate();
 	yyparse();
-
 	//print();
 	return 0;}
 //

@@ -1,3 +1,6 @@
 {
-	"window.restoreWindows": "all"
+	"window.restoreWindows": "all",
+	"files.associations": {
+		"expr.h": "c"
+	}
 }

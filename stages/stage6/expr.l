@@ -54,10 +54,10 @@
 "alloc"			{return ALLOC;}
 "free"			{return FREE;}
 
-["][^"\n]*["]	{yylval = createtree(TLookup("str"),NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]*[']	{yylval = createtree(TLookup("str"),NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+["][^"\n]*["]	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
 [0-9]+			{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
-[a-zA-Z0-9]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
+[a-zA-Z0-9]+			{yylval = createtree(NULL,0,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
 [(),\[\];&{}.]	{return *yytext;}
 [ \t]			{}
 [\n]			{line++;}

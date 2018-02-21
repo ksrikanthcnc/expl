@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #define brkp	raise(SIGINT);
 //#define boo 	printf("\t\t\t\tERROR:\t(File:%s\tfunc:%s\tLine:%d)\n",__FILE__,__func__,__LINE__);
@@ -19,6 +22,8 @@
 	#define t_TUPPTR 11
 	*/
 //------------------nt_
+//NULL=0;
+
 	#define nt_NUM 36
 	#define nt_ID 1
 	#define nt_PLUS 2
@@ -60,11 +65,13 @@
 	#define nt_INIT 39
 	#define nt_ALLOC 40
 	#define nt_FREE 41
+	#define nt_USER 42
 
 int val[26];
 int line=1;
 char *funcname;
-FILE *target_file;
+FILE *target_file;//comment for consoling
+int tabs=0,tabtemp;
 //char *target_file="stdout";
 
 union Constant{
@@ -77,8 +84,8 @@ typedef struct tnode {
 	char *str;
 	int nt;
 	union Constant value;
-	struct tnode *left,*right,*down;
-	struct Gsymbol *Gentry,*arglist;
+	struct tnode *left,*right,*down,*arglist;
+	struct Gsymbol *Gentry;
 	struct Lsymbol *Lentry;
 }tnode;
 
@@ -103,7 +110,7 @@ struct Paramstruct{
 	struct Typetable *type;
 	struct Paramstruct* next;
 }*phead;
-void Pinstall(char* name,struct Typetable *type);
+void PInstall(char* name,struct Typetable *type);
 struct Paramstruct* PLookup(char *name);
 
 struct Lsymbol{
@@ -129,9 +136,9 @@ struct Fieldlist{
   struct Fieldlist *next;  //pointer to the next field
 }*fhead;
 void TypeTableCreate();
-struct Typetable* TInstall(char *name,int size, struct Fieldlist *fields);
+void TInstall(char *name,int size, struct Fieldlist *fields);
 struct Typetable* TLookup(char *name);
-struct Fieldlist* FInstall(char *name,int fieldIndex,struct Typetable *type);
+void FInstall(char *name,int fieldIndex,struct Typetable *type);
 struct Fieldlist* FLookup(struct Typetable *type, char *name);
 int GetSize (struct Typetable * type);
 
@@ -146,7 +153,7 @@ struct Typetable *Tnode;
 struct Fieldlist *fnode;
 
 
-int generate();
+void generate();
 int gerReg();
 void freeReg();
 int getLabel();
@@ -159,13 +166,27 @@ void ReadReg(int reg_addr,int ret);
 void Halt();
 void Brkp();
 void Debug(int i);
+void init(int ret);
+void SDebug(char *func);
+void alloc_to(int size,int i);
+void freee(int reg_addr);
 
-void mismatch(int n, int l, int r);
+void mismatch(int n, struct Typetable *l, struct Typetable *r);
 
 int evaluate(struct tnode * t);
+
+void fetch_local_loc_to(struct tnode *t,int i);
 /*
 void debg(struct Gsymbol * g);
 void debt(struct tnode * t);
 */
 
+
+void checkid(struct tnode *t);
+void checkidid(struct tnode *t1,struct tnode *t3);
+void yyerror(char const *s);
+void func(struct Paramstruct* phead);
+void tprint();
+void gprint();
+void lprint();
 
