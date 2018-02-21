@@ -2090,13 +2090,13 @@ yyreduce:
 #line 281 "expr.y" /* yacc.c:1646  */
     {checkid((yyvsp[0]));
 
-											(yyval)=createtree(LLookup((yyvsp[0])->str)->type==NULL?GLookup((yyvsp[0])->str)->type:LLookup((yyvsp[0])->str)->type,0,(yyvsp[0])->str,nt_ID,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[0])->str));}
+											(yyval)=createtree(LLookup((yyvsp[0])->str)==NULL?GLookup((yyvsp[0])->str)->type:LLookup((yyvsp[0])->str)->type,0,(yyvsp[0])->str,nt_ID,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[0])->str));}
 #line 2095 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
 #line 284 "expr.y" /* yacc.c:1646  */
-    {checkid((yyvsp[-3]));(yyval)=createtree(LLookup((yyvsp[-3])->str)->type==NULL?GLookup((yyvsp[-3])->str)->type:LLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_ARR,NULL,(yyvsp[-1]),NULL,GLookup((yyvsp[-3])->str),NULL,LLookup((yyvsp[-3])->str));}
+    {checkid((yyvsp[-3]));(yyval)=createtree(LLookup((yyvsp[-3])->str)==NULL?GLookup((yyvsp[-3])->str)->type:LLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_ARR,NULL,(yyvsp[-1]),NULL,GLookup((yyvsp[-3])->str),NULL,LLookup((yyvsp[-3])->str));}
 #line 2101 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2421,12 +2421,12 @@ void gprint(){
 			printf("%d.name:'%s'\ttype:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->type->name,gtemp->size,gtemp->binding,gtemp->arr);
 		if(gtemp->paramlist){
 			ptemp=gtemp->paramlist;
-			printf("\tContent of tuple...\n");
+			printf("\tContent of type...\n");
 			while(ptemp){
 				printf("\tname:'%s'\ttype:'%s'\n",ptemp->name,ptemp->type->name);
-				ptemp=ptemp->next;}}}
+				ptemp=ptemp->next;}}
 			if(gtemp->paramlist)
-				printf("\n");
+				printf("\n");}
 		gtemp=gtemp->next;}
 	gtemp=ghead;
 	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");

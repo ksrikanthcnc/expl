@@ -1,0 +1,63 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+MOV SP,4096 --start
+MOV BP,4097 --start
+PUSH R0 --ret.val
+CALL 2080
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0
+
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1,[4096] --Gid.fetch
+MOV R2,4096 --Gphy.loc
+ADD R2,R1 --Gbase+off
+MOV R3, "Read"
+PUSH R3
+MOV R3, -1
+PUSH R3--(-1)
+MOV R3, R2
+PUSH R3--reg.addr
+MOV R3, ""
+PUSH R3--blank
+PUSH R3--blank
+CALL 0
+POP R2--ret
+POP R3--disc
+POP R3--disc
+POP R3--disc
+POP R3--disc
+MOV R1,[4096] --Gid.fetch
+MOV R3, "Write"
+PUSH R3--"write"
+MOV R3, -2
+PUSH R3--(-2)
+PUSH R1--data
+MOV R3,""
+PUSH R3--blank
+PUSH R3--blank
+CALL 0
+POP R2--ret
+POP R3--disc
+POP R3--disc
+POP R3--disc
+POP R3--disc
+MOV R2,0 --num
+MOV R1,BP
+SUB R1,2 --(BP-2)
+MOV [R1],R2 --sav.result
+MOV BP,[SP] --old.bp
+POP R1 --bp
+RET

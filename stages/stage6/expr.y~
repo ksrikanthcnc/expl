@@ -280,8 +280,8 @@
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	id			:ID							{checkid($1);
 
-											$$=createtree(LLookup($1->str)->type==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
-				|ID '[' Expr ']'			{checkid($1);$$=createtree(LLookup($1->str)->type==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+											$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+				|ID '[' Expr ']'			{checkid($1);$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				/*|ID '[' NUM ']' '[' NUM ']'	{checkid($1);
 											$$=createtree(TLookup($1->str),(GLookup($1->str)->arr)*($3->num)+($6->num),$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}*/
 				|MUL id						{$$=createtree(GLookup($2->str)->type,$2->num,$2->str,nt_SPTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
@@ -360,12 +360,12 @@ void gprint(){
 			printf("%d.name:'%s'\ttype:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->type->name,gtemp->size,gtemp->binding,gtemp->arr);
 		if(gtemp->paramlist){
 			ptemp=gtemp->paramlist;
-			printf("\tContent of tuple...\n");
+			printf("\tContent of type...\n");
 			while(ptemp){
 				printf("\tname:'%s'\ttype:'%s'\n",ptemp->name,ptemp->type->name);
-				ptemp=ptemp->next;}}}
+				ptemp=ptemp->next;}}
 			if(gtemp->paramlist)
-				printf("\n");
+				printf("\n");}
 		gtemp=gtemp->next;}
 	gtemp=ghead;
 	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
