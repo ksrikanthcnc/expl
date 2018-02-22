@@ -65,12 +65,13 @@
 	#define nt_INIT 39
 	#define nt_ALLOC 40
 	#define nt_FREE 41
-//	#define nt_USER 42
+	#define nt_USER 42
 
 int val[26];
 int line=1;
 char *funcname;
-FILE *target_file;
+FILE *target_file;//comment for consoling
+int tabs=0,tabtemp;
 //char *target_file="stdout";
 
 union Constant{
@@ -135,9 +136,9 @@ struct Fieldlist{
   struct Fieldlist *next;  //pointer to the next field
 }*fhead;
 void TypeTableCreate();
-struct Typetable* TInstall(char *name,int size, struct Fieldlist *fields);
+void TInstall(char *name,int size, struct Fieldlist *fields);
 struct Typetable* TLookup(char *name);
-struct Fieldlist* FInstall(char *name,int fieldIndex,struct Typetable *type);
+void FInstall(char *name,int fieldIndex,struct Typetable *type);
 struct Fieldlist* FLookup(struct Typetable *type, char *name);
 int GetSize (struct Typetable * type);
 
@@ -152,7 +153,7 @@ struct Typetable *Tnode;
 struct Fieldlist *fnode;
 
 
-int generate();
+void generate();
 int gerReg();
 void freeReg();
 int getLabel();

@@ -16,25 +16,24 @@
 	struct Typetable *type,*temptype,*t;
 	char *tuplename;
 %}
-
-%token NUM ID STRING
-%token PLUS MINUS MUL DIV MOD EQ
-%token INC DEC
-%token BEG END
-%token READ WRITE
-%token IF THEN ELSE ENDIF
-%token WHILE DO ENDWHILE
-%token BREAK CONTINUE
-%token REPEAT UNTIL
-%token TYPE ENDTYPE DECL ENDDECL
-%token INT STR TUPLE
-%token MAIN RETURN BRKP EXIT
-%token AND OR
-%token INIT ALLOC FREE
-%left PLUS MINUS
-%left MUL DIV MOD
-%nonassoc LT LE GT GE EE NE
-
+//tokens
+	%token NUM ID STRING
+	%token PLUS MINUS MUL DIV MOD EQ
+	%token INC DEC
+	%token BEG END
+	%token READ WRITE
+	%token IF THEN ELSE ENDIF
+	%token WHILE DO ENDWHILE
+	%token BREAK CONTINUE
+	%token REPEAT UNTIL
+	%token TYPE ENDTYPE DECL ENDDECL
+	%token INT STR TUPLE
+	%token MAIN RETURN BRKP EXIT
+	%token AND OR
+	%token INIT ALLOC FREE
+	%left PLUS MINUS
+	%left MUL DIV MOD
+	%nonassoc LT LE GT GE EE NE
 %%
 //-------------------------------------------------------------------------start
 	start		:Program;
@@ -99,9 +98,13 @@
 											GLookup($2->str)->tuplename=strdup(tuplename);};*/
 	GidList		:GidList ',' Gid
 				|Gid;
-	Gid			:ID										{GInstall($1->str,type,GetSize(type));}
+	Gid			:ID										{if(strcmp(type->name,"void")==0 || strcmp(type->name,"null")==0){
+															printf("line:'%d'\tSorry, you cant declare that type...!\n",line);
+															exit(1);}
+														else
+															GInstall($1->str,type,1);}
 				|ID '[' NUM ']'							{GInstall($1->str,type,$3->num);}
-	//			|ID '[' NUM ']' '[' NUM ']'				{t=type;type=type==t_INT?t_INARR:t_CHARR;GInstall($1->str,type,$3->num*$6->num);type=t;GLookup($1->str)->arr=$3->num;}
+				/*|ID '[' NUM ']' '[' NUM ']'				{t=type;type=type==t_INT?t_INARR:t_CHARR;GInstall($1->str,type,$3->num*$6->num);type=t;GLookup($1->str)->arr=$3->num;}
 				|MUL ID									{	t=type;
 															if(strcmp(type->name,"int")==0)
 																type=TLookup("intptr");
@@ -110,7 +113,7 @@
 															else{
 																printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,$2->str);
 																exit(1);}
-															GInstall($2->str,type,GetSize(type));type=t;}
+															GInstall($2->str,type,GetSize(type));type=t;}*/
 				//ID '(' ParamList ')'
 				|ID '(' {phead=NULL;temptype=type;} 
 						ParamList {type=temptype;}
@@ -226,7 +229,7 @@
 												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
-												if(allocflag>0 && initflag==0){
+												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
 												codeGen(body);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
@@ -266,8 +269,7 @@
 				|STRING					{$$=$1;}
 				|id						{$$=$1;}
 				|ID '(' ')'				{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
-				|ID '(' ArgList ')'		{checkid($1);
-										$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
+				|ID '(' ArgList ')'		{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
 	ArgList		:ArgList ',' Expr		{$3->down=$1;$$=$3;}
 				|Expr					{$$=$1;};
 	Bool		:Expr LT Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
@@ -279,7 +281,6 @@
 //-------------------------------------------------------------------------id
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	id			:ID							{checkid($1);
-
 											$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				|ID '[' Expr ']'			{checkid($1);$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				/*|ID '[' NUM ']' '[' NUM ']'	{checkid($1);
@@ -295,17 +296,18 @@
 												count++;
 												ptemp=ptemp->next;}
 											$$=createtree(t,GLookup($1->str)->size-count,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);}*/
-				|Field						{$$=$1;};
-	Field		:Field '.' ID 				{$$->t=$3->t;}//--------------------------------------------------------
+				|Field						{$$=$1;$$->nt=nt_USERROOT;};
+	Field		:Field '.' ID 				{struct Typetable *ttemp=$1->t;
+											struct Fieldlist *ftemp=FLookup(ttemp,$3->str);
+											$$=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_USERNODE,NULL,$1,NULL,$1->Gentry,NULL,$1->Lentry);}
 				|ID '.' ID					{checkid($1);
 											checkidid($1,$3);
 											struct Typetable *ttemp=TLookup($1->str);
 											struct Fieldlist *ftemp=FLookup(ttemp,$3->str);
-											struct tnode *field=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
-											$$=createtree(field->t,0,$3->str,nt_USER,NULL,field,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+											struct tnode *node=createtree(ttemp,0,$1->str,nt_USERNODE,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
+											$$=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_USERNODE,NULL,node,NULL,GLookup($1->str),NULL,LLookup($1->str));}
 				;
 %%
-
 void checkid(struct tnode *t){
 	if(LLookup(t->str)==NULL && GLookup(t->str)==NULL){
 		printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
@@ -313,19 +315,22 @@ void checkid(struct tnode *t){
 void checkidid(struct tnode *t1,struct tnode *t3){
 	struct Gsymbol *gtemp=GLookup(t1->str);
 	struct Lsymbol *ltemp=LLookup(t1->str);
+	struct Typetable *ttemp;
 	if(gtemp==NULL && ltemp==NULL){
 		printf("line:'%d'\tUndeclared type:'%s'\n",line,t1->str);
 		exit(1);}
-	struct Typetable *ttemp=gtemp->type;
+	if(ltemp==NULL)
+		ttemp=gtemp->type;
+	else
+		ttemp=ltemp->type;
 	struct Fieldlist *ftemp=ttemp->fields;
-	while(ftemp){
-		if(strcmp(ftemp->name,t3->str)==0)
-			return;
-		ftemp=ftemp->next;}
-	printf("line:'%d'\tNo member '%s' in type '%s'\n",line,t3->str,t1->str);
-	exit(1);}
+	if(FLookup(ttemp,t3->str)==NULL){
+		printf("line:'%d'\tNo member '%s' in type '%s'\n",line,t3->str,t1->str);
+		exit(1);}}
 void yyerror(char const *s){
 	printf("yyerror %s\nLine:%d at '%s'\n",s,line,yytext);
+	if(strcmp(yytext,"end")==0)
+		printf("Did you use a return statement...!\n");
 	exit(1);}
 void func(struct Paramstruct* phead){
 	struct Paramstruct* temp=phead;
@@ -408,7 +413,7 @@ int main(void){
 	else{
 		printf("Input file error\n");
 		exit(1);}
-	//target_file=fopen("intermediate.xsm","w+");//comment for consoling
+	target_file=fopen("intermediate.xsm","w+");//comment for consoling
 	GInstall("main",TLookup("int"),0);
 	GLookup("main")->flabel=1000;
 	TypeTableCreate();
@@ -416,3 +421,56 @@ int main(void){
 	//print();
 	return 0;}
 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

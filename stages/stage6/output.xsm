@@ -6,8 +6,8 @@
 0
 0
 0
-MOV SP,4096 --start
-MOV BP,4097 --start
+MOV SP,4109 --start
+MOV BP,4110 --start
 PUSH R0 --ret.val
 CALL 2080
 MOV R0, "Exit"
@@ -21,43 +21,209 @@ CALL 0
 
 PUSH BP --caller.bp
 MOV BP,SP --act.rec
-MOV R1,[4096] --Gid.fetch
-MOV R2,4096 --Gphy.loc
-ADD R2,R1 --Gbase+off
-MOV R3, "Read"
-PUSH R3
-MOV R3, -1
-PUSH R3--(-1)
-MOV R3, R2
-PUSH R3--reg.addr
-MOV R3, ""
-PUSH R3--blank
-PUSH R3--blank
+MOV R0,"" --blank
+PUSH R0 --for.locals
+PUSH R0 --for.locals
+PUSH R0 --for.locals
+MOV R1, "Heapset"
+PUSH R1 --"heapset"
+MOV R1, "" --blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--ret
 CALL 0
-POP R2--ret
-POP R3--disc
-POP R3--disc
-POP R3--disc
-POP R3--disc
-MOV R1,[4096] --Gid.fetch
-MOV R3, "Write"
-PUSH R3--"write"
-MOV R3, -2
-PUSH R3--(-2)
-PUSH R1--data
-MOV R3,""
-PUSH R3--blank
-PUSH R3--blank
+POP R0--ret
+POP R1--disc
+POP R1--disc
+POP R1--disc
+POP R1--disc
+MOV R1, "Alloc"
+PUSH R1 --"alloc"
+MOV R1,R8
+PUSH R1--size
+MOV R1, "" --blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--ret
 CALL 0
-POP R2--ret
-POP R3--disc
-POP R3--disc
-POP R3--disc
-POP R3--disc
-MOV R2,0 --num
-MOV R1,BP
-SUB R1,2 --(BP-2)
-MOV [R1],R2 --sav.result
+POP R0--ret
+POP R1--disc
+POP R1--disc
+POP R1--disc
+POP R1--disc
+MOV R1,BP --BP+?
+ADD R1,1 --L.loc
+MOV [R1],R0 --Lalloc
+MOV R1, "Alloc"
+PUSH R1 --"alloc"
+MOV R1,R8
+PUSH R1--size
+MOV R1, "" --blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--ret
+CALL 0
+POP R0--ret
+POP R1--disc
+POP R1--disc
+POP R1--disc
+POP R1--disc
+MOV R1,BP --BP+?
+ADD R1,2 --L.loc
+MOV [R1],R0 --Lalloc
+MOV R1, "Alloc"
+PUSH R1 --"alloc"
+MOV R1,R8
+PUSH R1--size
+MOV R1, "" --blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--ret
+CALL 0
+POP R0--ret
+POP R1--disc
+POP R1--disc
+POP R1--disc
+POP R1--disc
+MOV R1,BP --BP+?
+ADD R1,3 --L.loc
+MOV [R1],R0 --Lalloc
+MOV R0,BP --BP+?
+ADD R0,1 --L.loc
+MOV R1,BP --BP+?
+ADD R1,1 --L.loc
+MOV R2,[R1] --lroot
+MOV R2,BP --BP+?
+ADD R2,1 --L.loc
+MOV R1,[R1] --suser
+ADD R1,2 --off
+MOV R4,BP --BP+?
+ADD R4,2 --L.loc
+MOV R3,[R4] --Lid.fetch
+MOV [R1],R3 --asgn
+MOV R1,BP --BP+?
+ADD R1,2 --L.loc
+MOV R2,BP --BP+?
+ADD R2,2 --L.loc
+MOV R3,[R2] --lroot
+MOV R3,BP --BP+?
+ADD R3,2 --L.loc
+MOV R2,[R2] --suser
+ADD R2,2 --off
+MOV R5,BP --BP+?
+ADD R5,3 --L.loc
+MOV R4,[R5] --Lid.fetch
+MOV [R2],R4 --asgn
+MOV R2,BP --BP+?
+ADD R2,1 --L.loc
+MOV R3,BP --BP+?
+ADD R3,1 --L.loc
+MOV R4,[R3] --lroot
+MOV R4,BP --BP+?
+ADD R4,1 --L.loc
+MOV R3,[R3] --suser
+ADD R3,1 --off
+MOV R5,321 --num
+MOV [R3],R5 --asgn
+MOV R3,BP --BP+?
+ADD R3,1 --L.loc
+MOV R4,[R3] --lroot
+MOV R4,[R3] --user
+ADD R4,1 --off
+MOV R4,[R4] --fetch
+MOV R5, "Write"
+PUSH R5--"write"
+MOV R5, -2
+PUSH R5--(-2)
+PUSH R4--data
+MOV R5,""
+PUSH R5--blank
+PUSH R5--blank
+CALL 0
+POP R4--ret
+POP R5--disc
+POP R5--disc
+POP R5--disc
+POP R5--disc
+MOV R4,BP --BP+?
+ADD R4,1 --L.loc
+MOV R5,[R4] --lroot
+MOV R5,[R4] --user
+ADD R5,1 --off
+MOV R3,R5 --rluser
+MOV R5, "Read"
+PUSH R5
+MOV R5, -1
+PUSH R5--(-1)
+MOV R5, R3
+PUSH R5--reg.addr
+MOV R5, ""
+PUSH R5--blank
+PUSH R5--blank
+CALL 0
+POP R4--ret
+POP R5--disc
+POP R5--disc
+POP R5--disc
+POP R5--disc
+MOV R6,BP --BP+?
+ADD R6,1 --L.loc
+MOV R7,[R6] --lroot
+MOV R5,[R6] --addr
+ADD R5,2 --addr
+MOV R4,[R5] --addr
+ADD R4,2 --addr
+MOV R5,[R4] --user
+ADD R5,0 --off
+MOV R3,R5 --rluser
+MOV R5, "Read"
+PUSH R5
+MOV R5, -1
+PUSH R5--(-1)
+MOV R5, R3
+PUSH R5--reg.addr
+MOV R5, ""
+PUSH R5--blank
+PUSH R5--blank
+CALL 0
+POP R4--ret
+POP R5--disc
+POP R5--disc
+POP R5--disc
+POP R5--disc
+MOV R5,BP --BP+?
+ADD R5,1 --L.loc
+MOV R6,[R5] --lroot
+MOV R4,[R5] --addr
+ADD R4,2 --addr
+MOV R3,[R4] --addr
+ADD R3,2 --addr
+MOV R4,[R3] --user
+ADD R4,0 --off
+MOV R4,[R4] --fetch
+MOV R5, "Write"
+PUSH R5--"write"
+MOV R5, -2
+PUSH R5--(-2)
+PUSH R4--data
+MOV R5,""
+PUSH R5--blank
+PUSH R5--blank
+CALL 0
+POP R4--ret
+POP R5--disc
+POP R5--disc
+POP R5--disc
+POP R5--disc
+BRKP
+POP R3 --locals
+POP R3 --locals
+POP R3 --locals
+MOV R4,0 --num
+MOV R3,BP
+SUB R3,2 --(BP-2)
+MOV [R3],R4 --sav.result
 MOV BP,[SP] --old.bp
-POP R1 --bp
+POP R3 --bp
 RET

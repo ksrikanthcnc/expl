@@ -1,0 +1,11 @@
+case nt_ALLOC:
+			puts("\t\t\t\t+alloc");
+			if(t->down->Lentry==NULL){
+				i=getReg();
+				alloc_to(t->num,i);
+				fprintf(target_file,"MOV [%d],R%d --Galloc\n",t->down->Gentry->binding+t->down->num,i);}-------------------------------
+			else{
+				
+				
+				
+

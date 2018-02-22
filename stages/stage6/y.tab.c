@@ -481,7 +481,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  49
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  109
+#define YYNRULES  108
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  244
 
@@ -534,17 +534,17 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    40,    40,    41,    42,    43,    44,    45,    46,    49,
-      50,    51,    52,    53,    52,    56,    57,    59,    59,    65,
-      66,    67,    70,    71,    73,    74,    75,    76,   100,   101,
-     102,   103,   105,   115,   116,   115,   120,   121,   120,   135,
-     136,   138,   144,   167,   168,   138,   171,   172,   173,   174,
-     175,   180,   205,   206,   207,   208,   209,   210,   211,   212,
-     214,   215,   219,   214,   224,   234,   240,   241,   242,   243,
-     244,   245,   246,   247,   248,   249,   250,   251,   252,   253,
-     254,   255,   256,   257,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   271,   272,   273,   274,   275,
-     276,   277,   278,   281,   284,   287,   288,   298,   299,   300
+       0,    39,    39,    40,    41,    42,    43,    44,    45,    48,
+      49,    50,    51,    52,    51,    55,    56,    58,    58,    64,
+      65,    66,    69,    70,    72,    73,    74,    75,    99,   100,
+     101,   106,   118,   119,   118,   123,   124,   123,   138,   139,
+     141,   147,   170,   171,   141,   174,   175,   176,   177,   178,
+     183,   208,   209,   210,   211,   212,   213,   214,   215,   217,
+     218,   222,   217,   227,   237,   243,   244,   245,   246,   247,
+     248,   249,   250,   251,   252,   253,   254,   255,   256,   257,
+     258,   259,   260,   262,   263,   264,   265,   266,   267,   268,
+     269,   270,   271,   272,   273,   274,   275,   276,   277,   278,
+     279,   280,   283,   285,   288,   289,   299,   300,   303
 };
 #endif
 
@@ -631,31 +631,31 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,    60,     0,     2,     0,     0,     8,    12,
+       0,     0,     0,    59,     0,     2,     0,     0,     8,    12,
        0,    11,    27,    23,     0,    25,     0,     0,     1,     0,
-       5,     0,     0,    40,     7,     0,     9,    10,    22,    24,
-      30,     0,     0,    29,     0,     0,     4,     0,    39,     6,
-      13,     0,    33,    32,    26,     0,     0,     3,    41,     0,
-       0,    48,    36,    28,    61,    48,     0,    16,    17,    31,
-       0,    34,    47,    48,     0,     0,    14,    15,     0,    50,
-       0,    49,     0,     0,    37,     0,    62,    42,    21,     0,
-      20,    51,    46,    35,     0,    53,     0,     0,    55,     0,
-       0,    18,     0,    38,    59,     0,    58,    52,    54,     0,
-       0,    43,    19,    56,     0,   103,     0,     0,     0,     0,
+       5,     0,     0,    39,     7,     0,     9,    10,    22,    24,
+      30,     0,     0,    29,     0,     0,     4,     0,    38,     6,
+      13,     0,    32,     0,    26,     0,     0,     3,    40,     0,
+       0,    47,    35,    28,    60,    47,     0,    16,    17,    31,
+       0,    33,    46,    47,     0,     0,    14,    15,     0,    49,
+       0,    48,     0,     0,    36,     0,    61,    41,    21,     0,
+      20,    50,    45,    34,     0,    52,     0,     0,    54,     0,
+       0,    18,     0,    37,    58,     0,    57,    51,    53,     0,
+       0,    42,    19,    55,     0,   102,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    67,     0,   107,    63,     0,    57,     0,     0,
-     105,     0,     0,     0,     0,     0,     0,    77,    78,     0,
-      90,   103,    91,     0,     0,    92,    79,    80,     0,     0,
-     106,     0,    66,     0,     0,    44,     0,   109,     0,    70,
+       0,     0,    66,     0,   106,    62,     0,    56,     0,     0,
+     104,     0,     0,     0,     0,     0,     0,    76,    77,     0,
+      89,   102,    90,     0,     0,    91,    78,    79,     0,     0,
+     105,     0,    65,     0,     0,    43,     0,   108,     0,    69,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   108,
-       0,   104,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    93,    96,     0,    89,    84,    85,
-      86,    87,    88,    65,    81,     0,     0,     0,    71,     0,
-      68,    69,    97,    98,    99,   100,   101,   102,     0,     0,
-       0,     0,     0,    94,    83,    64,     0,    45,     0,     0,
-       0,     0,    95,    82,     0,     0,     0,    76,    75,     0,
-      73,    74,     0,    72
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   107,
+       0,   103,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    92,    95,     0,    88,    83,    84,
+      85,    86,    87,    64,    80,     0,     0,     0,    70,     0,
+      67,    68,    96,    97,    98,    99,   100,   101,     0,     0,
+       0,     0,     0,    93,    82,    63,     0,    44,     0,     0,
+       0,     0,    94,    81,     0,     0,     0,    75,    74,     0,
+      72,    73,     0,    71
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -814,14 +814,14 @@ static const yytype_uint8 yyr1[] =
        0,    61,    62,    63,    63,    63,    63,    63,    63,    64,
       65,    65,    67,    68,    66,    69,    69,    71,    70,    72,
       72,    73,    74,    74,    75,    75,    76,    77,    78,    78,
-      79,    79,    79,    80,    81,    79,    82,    83,    79,    84,
-      84,    86,    87,    88,    89,    85,    90,    90,    90,    91,
-      92,    92,    93,    93,    94,    94,    95,    96,    96,    97,
-      99,   100,   101,    98,   102,   102,   103,   103,   104,   104,
+      79,    79,    80,    81,    79,    82,    83,    79,    84,    84,
+      86,    87,    88,    89,    85,    90,    90,    90,    91,    92,
+      92,    93,    93,    94,    94,    95,    96,    96,    97,    99,
+     100,   101,    98,   102,   102,   103,   103,   104,   104,   104,
      104,   104,   104,   104,   104,   104,   104,   104,   104,   104,
-     104,   104,   104,   104,   105,   105,   105,   105,   105,   105,
-     105,   105,   105,   105,   105,   106,   106,   107,   107,   107,
-     107,   107,   107,   108,   108,   108,   108,   108,   109,   109
+     104,   104,   104,   105,   105,   105,   105,   105,   105,   105,
+     105,   105,   105,   105,   106,   106,   107,   107,   107,   107,
+     107,   107,   108,   108,   108,   108,   108,   109,   109
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -830,14 +830,14 @@ static const yytype_uint8 yyr2[] =
        0,     2,     1,     4,     3,     2,     3,     2,     1,     3,
        2,     1,     0,     0,     6,     2,     1,     0,     4,     3,
        1,     1,     3,     2,     2,     1,     3,     1,     3,     1,
-       1,     4,     2,     0,     0,     6,     0,     0,     7,     2,
-       1,     0,     0,     0,     0,    13,     3,     1,     0,     2,
-       1,     2,     3,     2,     2,     1,     3,     3,     1,     1,
-       0,     0,     0,    10,     6,     5,     2,     1,     5,     5,
-       3,     4,    10,     8,     8,     7,     7,     2,     2,     2,
-       2,     4,     6,     5,     3,     3,     3,     3,     3,     3,
-       1,     1,     1,     3,     4,     3,     1,     3,     3,     3,
-       3,     3,     3,     1,     4,     2,     2,     1,     3,     3
+       1,     4,     0,     0,     6,     0,     0,     7,     2,     1,
+       0,     0,     0,     0,    13,     3,     1,     0,     2,     1,
+       2,     3,     2,     2,     1,     3,     3,     1,     1,     0,
+       0,     0,    10,     6,     5,     2,     1,     5,     5,     3,
+       4,    10,     8,     8,     7,     7,     2,     2,     2,     2,
+       4,     6,     5,     3,     3,     3,     3,     3,     3,     1,
+       1,     1,     3,     4,     3,     1,     3,     3,     3,     3,
+       3,     3,     1,     4,     2,     2,     1,     3,     3
 };
 
 
@@ -1514,79 +1514,79 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 41 "expr.y" /* yacc.c:1646  */
+#line 40 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1520 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 42 "expr.y" /* yacc.c:1646  */
+#line 41 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1526 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 43 "expr.y" /* yacc.c:1646  */
+#line 42 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1532 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 44 "expr.y" /* yacc.c:1646  */
+#line 43 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1538 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 45 "expr.y" /* yacc.c:1646  */
+#line 44 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1544 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 46 "expr.y" /* yacc.c:1646  */
+#line 45 "expr.y" /* yacc.c:1646  */
     {printf("Syntax Matched\n");}
 #line 1550 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 49 "expr.y" /* yacc.c:1646  */
+#line 48 "expr.y" /* yacc.c:1646  */
     {tprint();}
 #line 1556 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 52 "expr.y" /* yacc.c:1646  */
+#line 51 "expr.y" /* yacc.c:1646  */
     {TInstall((yyvsp[0])->str,0,NULL);}
 #line 1562 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 53 "expr.y" /* yacc.c:1646  */
+#line 52 "expr.y" /* yacc.c:1646  */
     {fhead=NULL;fieldindex=0;typesize=0;}
 #line 1568 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 54 "expr.y" /* yacc.c:1646  */
+#line 53 "expr.y" /* yacc.c:1646  */
     {TLookup((yyvsp[-5])->str)->fields=fhead;TLookup((yyvsp[-5])->str)->size=typesize;}
 #line 1574 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 56 "expr.y" /* yacc.c:1646  */
+#line 55 "expr.y" /* yacc.c:1646  */
     {}
 #line 1580 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 57 "expr.y" /* yacc.c:1646  */
+#line 56 "expr.y" /* yacc.c:1646  */
     {}
 #line 1586 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 59 "expr.y" /* yacc.c:1646  */
+#line 58 "expr.y" /* yacc.c:1646  */
     {	type=TLookup((yyvsp[0])->str);
 						if(type==NULL){
 							printf("line:'%d'\ttype:'%s' undeclared before this line\n",line,(yyvsp[0])->str);
@@ -1596,43 +1596,43 @@ yyreduce:
     break;
 
   case 21:
-#line 67 "expr.y" /* yacc.c:1646  */
+#line 66 "expr.y" /* yacc.c:1646  */
     {FInstall((yyvsp[0])->str,fieldindex++,type);typesize++;}
 #line 1602 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 70 "expr.y" /* yacc.c:1646  */
+#line 69 "expr.y" /* yacc.c:1646  */
     {generate();gprint();}
 #line 1608 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 71 "expr.y" /* yacc.c:1646  */
+#line 70 "expr.y" /* yacc.c:1646  */
     {generate();printf("No Globals declared!\n");}
 #line 1614 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 73 "expr.y" /* yacc.c:1646  */
+#line 72 "expr.y" /* yacc.c:1646  */
     {}
 #line 1620 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 74 "expr.y" /* yacc.c:1646  */
+#line 73 "expr.y" /* yacc.c:1646  */
     {}
 #line 1626 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 75 "expr.y" /* yacc.c:1646  */
+#line 74 "expr.y" /* yacc.c:1646  */
     {}
 #line 1632 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 76 "expr.y" /* yacc.c:1646  */
+#line 75 "expr.y" /* yacc.c:1646  */
     {	type=TLookup((yyvsp[0])->str);
 												if(type==NULL){
 													printf("line:'%d'\tundeclared type:'%s'\n",line,(yyvsp[0])->str);
@@ -1642,65 +1642,55 @@ yyreduce:
     break;
 
   case 30:
-#line 102 "expr.y" /* yacc.c:1646  */
-    {GInstall((yyvsp[0])->str,type,GetSize(type));}
-#line 1648 "y.tab.c" /* yacc.c:1646  */
+#line 101 "expr.y" /* yacc.c:1646  */
+    {if(strcmp(type->name,"void")==0 || strcmp(type->name,"null")==0){
+															printf("line:'%d'\tSorry, you cant declare that type...!\n",line);
+															exit(1);}
+														else
+															GInstall((yyvsp[0])->str,type,1);}
+#line 1652 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 103 "expr.y" /* yacc.c:1646  */
+#line 106 "expr.y" /* yacc.c:1646  */
     {GInstall((yyvsp[-3])->str,type,(yyvsp[-1])->num);}
-#line 1654 "y.tab.c" /* yacc.c:1646  */
+#line 1658 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 105 "expr.y" /* yacc.c:1646  */
-    {	t=type;
-															if(strcmp(type->name,"int")==0)
-																type=TLookup("intptr");
-															else if(strcmp(type->name,"str")==0)
-																type=TLookup("strptr");
-															else{
-																printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,(yyvsp[0])->str);
-																exit(1);}
-															GInstall((yyvsp[0])->str,type,GetSize(type));type=t;}
-#line 1668 "y.tab.c" /* yacc.c:1646  */
+#line 118 "expr.y" /* yacc.c:1646  */
+    {phead=NULL;temptype=type;}
+#line 1664 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 115 "expr.y" /* yacc.c:1646  */
-    {phead=NULL;temptype=type;}
-#line 1674 "y.tab.c" /* yacc.c:1646  */
+#line 119 "expr.y" /* yacc.c:1646  */
+    {type=temptype;}
+#line 1670 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 116 "expr.y" /* yacc.c:1646  */
-    {type=temptype;}
-#line 1680 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 35:
-#line 117 "expr.y" /* yacc.c:1646  */
+#line 120 "expr.y" /* yacc.c:1646  */
     {	GInstall((yyvsp[-5])->str,type,0);//-------------------------------------------------------
 											GLookup((yyvsp[-5])->str)->paramlist=phead;
 											GLookup((yyvsp[-5])->str)->flabel=flabel++;}
-#line 1688 "y.tab.c" /* yacc.c:1646  */
+#line 1678 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 123 "expr.y" /* yacc.c:1646  */
+    {phead=NULL;temptype=type;}
+#line 1684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 120 "expr.y" /* yacc.c:1646  */
-    {phead=NULL;temptype=type;}
-#line 1694 "y.tab.c" /* yacc.c:1646  */
+#line 124 "expr.y" /* yacc.c:1646  */
+    {type=temptype;}
+#line 1690 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 121 "expr.y" /* yacc.c:1646  */
-    {type=temptype;}
-#line 1700 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 122 "expr.y" /* yacc.c:1646  */
+#line 125 "expr.y" /* yacc.c:1646  */
     {	t=type;
 												if(strcmp(type->name,"int")==0)
 													type=TLookup("intptr");
@@ -1712,22 +1702,22 @@ yyreduce:
 												GInstall((yyvsp[-5])->str,type,0);
 												GLookup((yyvsp[-5])->str)->paramlist=phead;
 												GLookup((yyvsp[-5])->str)->flabel=flabel++;type=t;}
-#line 1716 "y.tab.c" /* yacc.c:1646  */
+#line 1706 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 41:
-#line 138 "expr.y" /* yacc.c:1646  */
+  case 40:
+#line 141 "expr.y" /* yacc.c:1646  */
     {	checkid((yyvsp[-1]));
 								funcname=(yyvsp[-1])->str;
 								binding=-2;
 								lhead=NULL;
 								phead=NULL;
 								equiv=1;}
-#line 1727 "y.tab.c" /* yacc.c:1646  */
+#line 1717 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 144 "expr.y" /* yacc.c:1646  */
+  case 41:
+#line 147 "expr.y" /* yacc.c:1646  */
     {	equiv=0;
 											struct Lsymbol *ltemp;
 											struct Paramstruct *ptemp;
@@ -1751,39 +1741,39 @@ yyreduce:
 														printf("name:'%s'\ttype:'%s'\n",ltemp->name,ltemp->type->name);
 														ltemp=ltemp->next;}}
 												exit(1);}}
-#line 1755 "y.tab.c" /* yacc.c:1646  */
+#line 1745 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 170 "expr.y" /* yacc.c:1646  */
+    {	binding=0;}
+#line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 167 "expr.y" /* yacc.c:1646  */
-    {	binding=0;}
-#line 1761 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 44:
-#line 168 "expr.y" /* yacc.c:1646  */
-    {lprint();initflag=allocflag=0;}
-#line 1767 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 46:
 #line 171 "expr.y" /* yacc.c:1646  */
-    {}
-#line 1773 "y.tab.c" /* yacc.c:1646  */
+    {lprint();initflag=allocflag=0;}
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 175 "expr.y" /* yacc.c:1646  */
+  case 45:
+#line 174 "expr.y" /* yacc.c:1646  */
+    {}
+#line 1763 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 178 "expr.y" /* yacc.c:1646  */
     {if(equiv==1){
 								binding--;
 								LInstall((yyvsp[0])->str,type);}
 							else
 								PInstall((yyvsp[0])->str,type);}
-#line 1783 "y.tab.c" /* yacc.c:1646  */
+#line 1773 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 51:
-#line 180 "expr.y" /* yacc.c:1646  */
+  case 50:
+#line 183 "expr.y" /* yacc.c:1646  */
     {if(equiv==1){
 								binding--;
 								t=type;
@@ -1807,336 +1797,336 @@ yyreduce:
 									exit(1);}
 								PInstall((yyvsp[0])->str,type);
 								type=t;}}
-#line 1811 "y.tab.c" /* yacc.c:1646  */
+#line 1801 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 215 "expr.y" /* yacc.c:1646  */
+    {binding+=1;LInstall((yyvsp[0])->str,type);}
+#line 1807 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 212 "expr.y" /* yacc.c:1646  */
-    {binding+=1;LInstall((yyvsp[0])->str,type);}
-#line 1817 "y.tab.c" /* yacc.c:1646  */
+#line 217 "expr.y" /* yacc.c:1646  */
+    {	binding=0;}
+#line 1813 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 214 "expr.y" /* yacc.c:1646  */
-    {	binding=0;}
-#line 1823 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 61:
-#line 215 "expr.y" /* yacc.c:1646  */
+#line 218 "expr.y" /* yacc.c:1646  */
     {	funcname="main";
 										lhead=NULL;
 										binding=0;
 										GLookup("main")->type=TLookup("int");}
-#line 1832 "y.tab.c" /* yacc.c:1646  */
+#line 1822 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 62:
-#line 219 "expr.y" /* yacc.c:1646  */
+  case 61:
+#line 222 "expr.y" /* yacc.c:1646  */
     {lprint();initflag=allocflag=0;}
-#line 1838 "y.tab.c" /* yacc.c:1646  */
+#line 1828 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 64:
-#line 224 "expr.y" /* yacc.c:1646  */
+  case 63:
+#line 227 "expr.y" /* yacc.c:1646  */
     {//$$=$2;
 												struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);
 												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,(yyvsp[-4]),NULL,ret,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
-												if(allocflag>0 && initflag==0){
+												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
 												codeGen(body);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
 												printf("################################################################################################\n");}
-#line 1853 "y.tab.c" /* yacc.c:1646  */
+#line 1843 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 65:
-#line 234 "expr.y" /* yacc.c:1646  */
+  case 64:
+#line 237 "expr.y" /* yacc.c:1646  */
     {struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,(yyvsp[-1]),NULL,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(ret);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
 												printf("################################################################################################\n");}
-#line 1864 "y.tab.c" /* yacc.c:1646  */
+#line 1854 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 243 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_NODE,(yyvsp[-1]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1860 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 240 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_NODE,(yyvsp[-1]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 1870 "y.tab.c" /* yacc.c:1646  */
+#line 244 "expr.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[0]);}
+#line 1866 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 241 "expr.y" /* yacc.c:1646  */
-    {(yyval)=(yyvsp[0]);}
-#line 1876 "y.tab.c" /* yacc.c:1646  */
+#line 245 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_READ,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
+#line 1872 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 242 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_READ,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
-#line 1882 "y.tab.c" /* yacc.c:1646  */
+#line 246 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
+#line 1878 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 243 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
-#line 1888 "y.tab.c" /* yacc.c:1646  */
+#line 247 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,(yyvsp[-1]),NULL,NULL,NULL,NULL);}
+#line 1884 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 244 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WRITE,NULL,(yyvsp[-1]),NULL,NULL,NULL,NULL);}
-#line 1894 "y.tab.c" /* yacc.c:1646  */
+#line 248 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_ASGN,(yyvsp[-3]),NULL,(yyvsp[-1]),NULL,NULL,NULL);}
+#line 1890 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 245 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_ASGN,(yyvsp[-3]),NULL,(yyvsp[-1]),NULL,NULL,NULL);}
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 249 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_IFELSE,(yyvsp[-7]),(yyvsp[-4]),(yyvsp[-2]),NULL,NULL,NULL);}
+#line 1896 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 246 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_IFELSE,(yyvsp[-7]),(yyvsp[-4]),(yyvsp[-2]),NULL,NULL,NULL);}
-#line 1906 "y.tab.c" /* yacc.c:1646  */
+#line 250 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_IF,(yyvsp[-5]),NULL,(yyvsp[-2]),NULL,NULL,NULL);}
+#line 1902 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 247 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_IF,(yyvsp[-5]),NULL,(yyvsp[-2]),NULL,NULL,NULL);}
-#line 1912 "y.tab.c" /* yacc.c:1646  */
+#line 251 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WHILE,(yyvsp[-5]),NULL,(yyvsp[-2]),NULL,NULL,NULL);}
+#line 1908 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 248 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WHILE,(yyvsp[-5]),NULL,(yyvsp[-2]),NULL,NULL,NULL);}
-#line 1918 "y.tab.c" /* yacc.c:1646  */
+#line 252 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WHILE,(yyvsp[-2]),NULL,(yyvsp[-5]),NULL,NULL,NULL);}
+#line 1914 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 249 "expr.y" /* yacc.c:1646  */
+#line 253 "expr.y" /* yacc.c:1646  */
     {(yyval)=createtree(TLookup("void"),0,NULL,nt_WHILE,(yyvsp[-2]),NULL,(yyvsp[-5]),NULL,NULL,NULL);}
-#line 1924 "y.tab.c" /* yacc.c:1646  */
+#line 1920 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 250 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_WHILE,(yyvsp[-2]),NULL,(yyvsp[-5]),NULL,NULL,NULL);}
-#line 1930 "y.tab.c" /* yacc.c:1646  */
+#line 254 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_BREAK,NULL,NULL,NULL,NULL,NULL,NULL);}
+#line 1926 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 251 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_BREAK,NULL,NULL,NULL,NULL,NULL,NULL);}
-#line 1936 "y.tab.c" /* yacc.c:1646  */
+#line 255 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
+#line 1932 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 252 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
-#line 1942 "y.tab.c" /* yacc.c:1646  */
+#line 256 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
+#line 1938 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 253 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
-#line 1948 "y.tab.c" /* yacc.c:1646  */
+#line 257 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
+#line 1944 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 254 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
-#line 1954 "y.tab.c" /* yacc.c:1646  */
+#line 258 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_INIT,NULL,NULL,NULL,NULL,NULL,NULL);initflag++;}
+#line 1950 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 255 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_INIT,NULL,NULL,NULL,NULL,NULL,NULL);initflag++;}
-#line 1960 "y.tab.c" /* yacc.c:1646  */
+#line 259 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),8/*GetSize(TLookup($1->str))*/,NULL,nt_ALLOC,NULL,(yyvsp[-5]),NULL,NULL,NULL,NULL);allocflag++;}
+#line 1956 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 256 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),8/*GetSize(TLookup($1->str))*/,NULL,nt_ALLOC,NULL,(yyvsp[-5]),NULL,NULL,NULL,NULL);allocflag++;}
-#line 1966 "y.tab.c" /* yacc.c:1646  */
+#line 260 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("void"),0,NULL,nt_FREE,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
+#line 1962 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 257 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("void"),0,NULL,nt_FREE,NULL,(yyvsp[-2]),NULL,NULL,NULL,NULL);}
-#line 1972 "y.tab.c" /* yacc.c:1646  */
+#line 262 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("int"),0,NULL,nt_PLUS,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1968 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 259 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("int"),0,NULL,nt_PLUS,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 1978 "y.tab.c" /* yacc.c:1646  */
+#line 263 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MINUS,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1974 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 260 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MINUS,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 1984 "y.tab.c" /* yacc.c:1646  */
+#line 264 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MUL,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1980 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 261 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MUL,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 1990 "y.tab.c" /* yacc.c:1646  */
+#line 265 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("int"),0,NULL,nt_DIV,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1986 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 262 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("int"),0,NULL,nt_DIV,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 1996 "y.tab.c" /* yacc.c:1646  */
+#line 266 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MOD,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 1992 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 263 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(TLookup("int"),0,NULL,nt_MOD,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2002 "y.tab.c" /* yacc.c:1646  */
+#line 267 "expr.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[-1]);}
+#line 1998 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 264 "expr.y" /* yacc.c:1646  */
-    {(yyval)=(yyvsp[-1]);}
-#line 2008 "y.tab.c" /* yacc.c:1646  */
+#line 268 "expr.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[0]);}
+#line 2004 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 265 "expr.y" /* yacc.c:1646  */
+#line 269 "expr.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 2014 "y.tab.c" /* yacc.c:1646  */
+#line 2010 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 266 "expr.y" /* yacc.c:1646  */
+#line 270 "expr.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 2020 "y.tab.c" /* yacc.c:1646  */
+#line 2016 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 267 "expr.y" /* yacc.c:1646  */
-    {(yyval)=(yyvsp[0]);}
-#line 2026 "y.tab.c" /* yacc.c:1646  */
+#line 271 "expr.y" /* yacc.c:1646  */
+    {checkid((yyvsp[-2]));(yyval)=createtree(GLookup((yyvsp[-2])->str)->type,0,(yyvsp[-2])->str,nt_FUNC,NULL,NULL,NULL,GLookup((yyvsp[-2])->str),NULL,NULL);}
+#line 2022 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 268 "expr.y" /* yacc.c:1646  */
-    {checkid((yyvsp[-2]));(yyval)=createtree(GLookup((yyvsp[-2])->str)->type,0,(yyvsp[-2])->str,nt_FUNC,NULL,NULL,NULL,GLookup((yyvsp[-2])->str),NULL,NULL);}
-#line 2032 "y.tab.c" /* yacc.c:1646  */
+#line 272 "expr.y" /* yacc.c:1646  */
+    {checkid((yyvsp[-3]));(yyval)=createtree(GLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_FUNC,NULL,NULL,NULL,GLookup((yyvsp[-3])->str),(yyvsp[-1]),NULL);}
+#line 2028 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 269 "expr.y" /* yacc.c:1646  */
-    {checkid((yyvsp[-3]));
-										(yyval)=createtree(GLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_FUNC,NULL,NULL,NULL,GLookup((yyvsp[-3])->str),(yyvsp[-1]),NULL);}
-#line 2039 "y.tab.c" /* yacc.c:1646  */
+#line 273 "expr.y" /* yacc.c:1646  */
+    {(yyvsp[0])->down=(yyvsp[-2]);(yyval)=(yyvsp[0]);}
+#line 2034 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 271 "expr.y" /* yacc.c:1646  */
-    {(yyvsp[0])->down=(yyvsp[-2]);(yyval)=(yyvsp[0]);}
-#line 2045 "y.tab.c" /* yacc.c:1646  */
+#line 274 "expr.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[0]);}
+#line 2040 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 272 "expr.y" /* yacc.c:1646  */
-    {(yyval)=(yyvsp[0]);}
-#line 2051 "y.tab.c" /* yacc.c:1646  */
+#line 275 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_LT,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2046 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 273 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_LT,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2057 "y.tab.c" /* yacc.c:1646  */
+#line 276 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_LE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2052 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 274 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_LE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2063 "y.tab.c" /* yacc.c:1646  */
+#line 277 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_GT,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 275 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_GT,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2069 "y.tab.c" /* yacc.c:1646  */
+#line 278 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_GE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2064 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 276 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_GE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2075 "y.tab.c" /* yacc.c:1646  */
+#line 279 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_EE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2070 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 277 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_EE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2081 "y.tab.c" /* yacc.c:1646  */
+#line 280 "expr.y" /* yacc.c:1646  */
+    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_NE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
+#line 2076 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 278 "expr.y" /* yacc.c:1646  */
-    {(yyval) =createtree(TLookup("bool"),0,NULL,nt_NE,(yyvsp[-2]),NULL,(yyvsp[0]),NULL,NULL,NULL);}
-#line 2087 "y.tab.c" /* yacc.c:1646  */
+#line 283 "expr.y" /* yacc.c:1646  */
+    {checkid((yyvsp[0]));
+											(yyval)=createtree(LLookup((yyvsp[0])->str)==NULL?GLookup((yyvsp[0])->str)->type:LLookup((yyvsp[0])->str)->type,0,(yyvsp[0])->str,nt_ID,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[0])->str));}
+#line 2083 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 281 "expr.y" /* yacc.c:1646  */
-    {checkid((yyvsp[0]));
-
-											(yyval)=createtree(LLookup((yyvsp[0])->str)==NULL?GLookup((yyvsp[0])->str)->type:LLookup((yyvsp[0])->str)->type,0,(yyvsp[0])->str,nt_ID,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[0])->str));}
-#line 2095 "y.tab.c" /* yacc.c:1646  */
+#line 285 "expr.y" /* yacc.c:1646  */
+    {checkid((yyvsp[-3]));(yyval)=createtree(LLookup((yyvsp[-3])->str)==NULL?GLookup((yyvsp[-3])->str)->type:LLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_ARR,NULL,(yyvsp[-1]),NULL,GLookup((yyvsp[-3])->str),NULL,LLookup((yyvsp[-3])->str));}
+#line 2089 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 284 "expr.y" /* yacc.c:1646  */
-    {checkid((yyvsp[-3]));(yyval)=createtree(LLookup((yyvsp[-3])->str)==NULL?GLookup((yyvsp[-3])->str)->type:LLookup((yyvsp[-3])->str)->type,0,(yyvsp[-3])->str,nt_ARR,NULL,(yyvsp[-1]),NULL,GLookup((yyvsp[-3])->str),NULL,LLookup((yyvsp[-3])->str));}
-#line 2101 "y.tab.c" /* yacc.c:1646  */
+#line 288 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(GLookup((yyvsp[0])->str)->type,(yyvsp[0])->num,(yyvsp[0])->str,nt_SPTR,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[-1])->str));}
+#line 2095 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 287 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(GLookup((yyvsp[0])->str)->type,(yyvsp[0])->num,(yyvsp[0])->str,nt_SPTR,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[-1])->str));}
-#line 2107 "y.tab.c" /* yacc.c:1646  */
+#line 289 "expr.y" /* yacc.c:1646  */
+    {(yyval)=createtree(GLookup((yyvsp[0])->str)->type,(yyvsp[0])->num,(yyvsp[0])->str,nt_APTR,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[-1])->str));}
+#line 2101 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 288 "expr.y" /* yacc.c:1646  */
-    {(yyval)=createtree(GLookup((yyvsp[0])->str)->type,(yyvsp[0])->num,(yyvsp[0])->str,nt_APTR,NULL,NULL,NULL,GLookup((yyvsp[0])->str),NULL,LLookup((yyvsp[-1])->str));}
-#line 2113 "y.tab.c" /* yacc.c:1646  */
+#line 299 "expr.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[0]);(yyval)->nt=nt_USERROOT;}
+#line 2107 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 298 "expr.y" /* yacc.c:1646  */
-    {(yyval)=(yyvsp[0]);}
-#line 2119 "y.tab.c" /* yacc.c:1646  */
+#line 300 "expr.y" /* yacc.c:1646  */
+    {struct Typetable *ttemp=(yyvsp[-2])->t;
+											struct Fieldlist *ftemp=FLookup(ttemp,(yyvsp[0])->str);
+											(yyval)=createtree(ftemp->type,ftemp->fieldIndex,(yyvsp[0])->str,nt_USERNODE,NULL,(yyvsp[-2]),NULL,(yyvsp[-2])->Gentry,NULL,(yyvsp[-2])->Lentry);}
+#line 2115 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 299 "expr.y" /* yacc.c:1646  */
-    {(yyval)->t=(yyvsp[0])->t;}
-#line 2125 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 109:
-#line 300 "expr.y" /* yacc.c:1646  */
+#line 303 "expr.y" /* yacc.c:1646  */
     {checkid((yyvsp[-2]));
 											checkidid((yyvsp[-2]),(yyvsp[0]));
 											struct Typetable *ttemp=TLookup((yyvsp[-2])->str);
 											struct Fieldlist *ftemp=FLookup(ttemp,(yyvsp[0])->str);
-											struct tnode *field=createtree(ftemp->type,ftemp->fieldIndex,(yyvsp[0])->str,nt_ID,NULL,NULL,NULL,GLookup((yyvsp[-2])->str),NULL,LLookup((yyvsp[-2])->str));
-											(yyval)=createtree(field->t,0,(yyvsp[0])->str,nt_USER,NULL,field,NULL,GLookup((yyvsp[-2])->str),NULL,LLookup((yyvsp[-2])->str));}
-#line 2136 "y.tab.c" /* yacc.c:1646  */
+											struct tnode *node=createtree(ttemp,0,(yyvsp[-2])->str,nt_USERNODE,NULL,NULL,NULL,GLookup((yyvsp[-2])->str),NULL,LLookup((yyvsp[-2])->str));
+											(yyval)=createtree(ftemp->type,ftemp->fieldIndex,(yyvsp[0])->str,nt_USERNODE,NULL,node,NULL,GLookup((yyvsp[-2])->str),NULL,LLookup((yyvsp[-2])->str));}
+#line 2126 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2140 "y.tab.c" /* yacc.c:1646  */
+#line 2130 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2364,8 +2354,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 307 "expr.y" /* yacc.c:1906  */
-
+#line 310 "expr.y" /* yacc.c:1906  */
 
 void checkid(struct tnode *t){
 	if(LLookup(t->str)==NULL && GLookup(t->str)==NULL){
@@ -2374,19 +2363,22 @@ void checkid(struct tnode *t){
 void checkidid(struct tnode *t1,struct tnode *t3){
 	struct Gsymbol *gtemp=GLookup(t1->str);
 	struct Lsymbol *ltemp=LLookup(t1->str);
+	struct Typetable *ttemp;
 	if(gtemp==NULL && ltemp==NULL){
 		printf("line:'%d'\tUndeclared type:'%s'\n",line,t1->str);
 		exit(1);}
-	struct Typetable *ttemp=gtemp->type;
+	if(ltemp==NULL)
+		ttemp=gtemp->type;
+	else
+		ttemp=ltemp->type;
 	struct Fieldlist *ftemp=ttemp->fields;
-	while(ftemp){
-		if(strcmp(ftemp->name,t3->str)==0)
-			return;
-		ftemp=ftemp->next;}
-	printf("line:'%d'\tNo member '%s' in type '%s'\n",line,t3->str,t1->str);
-	exit(1);}
+	if(FLookup(ttemp,t3->str)==NULL){
+		printf("line:'%d'\tNo member '%s' in type '%s'\n",line,t3->str,t1->str);
+		exit(1);}}
 void yyerror(char const *s){
 	printf("yyerror %s\nLine:%d at '%s'\n",s,line,yytext);
+	if(strcmp(yytext,"end")==0)
+		printf("Did you use a return statement...!\n");
 	exit(1);}
 void func(struct Paramstruct* phead){
 	struct Paramstruct* temp=phead;
