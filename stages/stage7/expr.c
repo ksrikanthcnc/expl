@@ -309,9 +309,6 @@ int label=0;
 int break2[100];
 int cont1[100];
 int top=-1;
-int andor1[100];
-int andor2[100];
-int topandor=0;
 int readflag=0;
 
 int getReg(){
@@ -341,7 +338,7 @@ void freeReg(){
 int getLabel(){label++;return label;}
 int codeGen(struct tnode *t){
 	tabs++;
-	int i,j,k,ret,label1,label2,label3,result,regtemp;
+	int i,j,k,ret,label1,label2,result,regtemp;
 	struct Gsymbol *node,*temp;
 	struct tnode *atemp;
 	struct Lsymbol *ltemp;
@@ -670,39 +667,27 @@ int codeGen(struct tnode *t){
 
 		case nt_IF:
 			puts("\t\t\t\t+if");
-			topandor++;
-			label1=getLabel();
-			andor1[topandor]=label1;
-			label2=getLabel();
-			andor2[topandor]=label2;
 			result=codeGen(t->left);
-			fprintf(target_file,"JZ R%d,L%d\n",result,label2);
+			label1=getLabel();
+			fprintf(target_file,"JZ R%d,L%d\n",result,label1);
 			freeReg();
-			fprintf(target_file,"L%d:\n",label1);
 			codeGen(t->right);
-			fprintf(target_file,"L%d:\n",label2);
+			fprintf(target_file,"L%d:\n",label1);
 			puts("\t\t\t\t-if");
-			topandor--;
 			break;
 		case nt_IFELSE:
 			puts("\t\t\t\tifelse");
-			topandor++;
 			label1=getLabel();
-			andor1[topandor]=label1;
 			label2=getLabel();
-			andor2[topandor]=label2;
-			label3=getLabel();
 			result=codeGen(t->left);
-			fprintf(target_file,"JZ R%d,L%d\n",result,label3);
+			fprintf(target_file,"JZ R%d,L%d\n",result,label1);
 			freeReg();
-			fprintf(target_file,"L%d:\n",label1);
 			codeGen(t->down);
-			fprintf(target_file,"JMP L%d\n",label3);
-			fprintf(target_file,"L%d:\n",label2);
+			fprintf(target_file,"JMP L%d\n",label2);
+			fprintf(target_file,"L%d:\n",label1);
 			codeGen(t->right);
-			fprintf(target_file,"L%d:\n",label3);
+			fprintf(target_file,"L%d:\n",label2);
 			puts("\t\t\t\t-ifelse");
-			topandor--;
 			break;
 		case nt_WHILE:
 			puts("\t\t\t\t+while");
@@ -913,28 +898,50 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "MOV R%d,0 --set0\n",j);
 			fprintf(target_file, "L%d:\n",label2);
 			return j;
-		case nt_AND:
-			//short circuit beta
+		case nt_AND://can be made efficient
+			label1=getLabel();
+			label2=getLabel();
+			result=getReg();
 			i=codeGen(t->left);
-			fprintf(target_file,"JZ R%d,L%d\n",i,andor2[topandor]);
-			freeReg();
 			j=codeGen(t->right);
-			fprintf(target_file,"JZ R%d,L%d\n",i,andor2[topandor]);
-			freeReg();
 			k=getReg();
-			fprintf(target_file, "MOV R%d,1 --andtrue\n",k);
-			return k;
+			fprintf(target_file, "MOV R%d,1 \n",k);
+			fprintf(target_file, "EQ R%d,R%d \n",i,k);
+			fprintf(target_file, "JZ R%d,L%d\n",i,label1);
+			fprintf(target_file, "MOV R%d,1 \n",k);
+			fprintf(target_file, "EQ R%d,R%d\n",j,k);
+			fprintf(target_file, "JZ R%d,L%d\n",j,label1);
+			fprintf(target_file, "MOV R%d,1\n",result);
+			fprintf(target_file, "JMP L%d\n",label2);
+			fprintf(target_file, "L%d:\n",label1);
+			fprintf(target_file, "MOV R%d,0 \n",result);
+			fprintf(target_file, "L%d:\n",label2);
+			freeReg();
+			freeReg();
+			freeReg();
+			return result;
 		case nt_OR:
-			//short circuit beta
+			label1=getLabel();
+			label2=getLabel();
+			result=getReg();
 			i=codeGen(t->left);
-			fprintf(target_file,"JNZ R%d,L%d\n",i,andor1[topandor]);
-			freeReg();
 			j=codeGen(t->right);
-			fprintf(target_file,"JNZ R%d,L%d\n",i,andor1[topandor]);
-			freeReg();
 			k=getReg();
-			fprintf(target_file, "MOV R%d,0 --orfalse\n",k);
-			return k;
+			fprintf(target_file, "MOV R%d,0 \n",k);
+			fprintf(target_file, "EQ R%d,R%d \n",i,k);
+			fprintf(target_file, "JZ R%d,L%d\n",i,label1);
+			fprintf(target_file, "MOV R%d,0 \n",k);
+			fprintf(target_file, "EQ R%d,R%d\n",j,k);
+			fprintf(target_file, "JZ R%d,L%d\n",j,label1);
+			fprintf(target_file, "MOV R%d,0\n",result);
+			fprintf(target_file, "JMP L%d\n",label2);
+			fprintf(target_file, "L%d:\n",label1);
+			fprintf(target_file, "MOV R%d,1 \n",result);
+			fprintf(target_file, "L%d:\n",label2);
+			freeReg();
+			freeReg();
+			freeReg();
+			return result;
 		default:
 			printf("\tNO CODE-GEN MATCHING FOUND\ttype:'%d'\n",t->nt);
 			exit(1);	
