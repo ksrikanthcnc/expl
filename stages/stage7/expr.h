@@ -86,7 +86,7 @@ union Constant{
 };
 typedef struct tnode {
 	struct Typetable *t;
-	int num;//offset,address for pointer,no.of arguements
+	int num;
 	char *str;
 	int nt;
 	union Constant value;
@@ -196,3 +196,5 @@ void tprint();
 void gprint();
 void lprint();
 
+void ldealloc(struct Lsymbol *lhead);
+void bdealloc(struct tnode *body);

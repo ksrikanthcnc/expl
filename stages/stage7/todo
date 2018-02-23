@@ -1,12 +1,6 @@
 --
 ++
 
-AND OR NOT
-
-replace install with genrty
-	lookup
-	.y gentry
-
 a[1]
 *a should work
 
@@ -17,10 +11,6 @@ a[1]
 		p
 		
 		
-deallocate
-
-void return type
-
 global
 	int *ret
 define
@@ -41,31 +31,5 @@ type = NULL
 
 return last and only one
 
-brkp==breakpoint
-
-
-identifier -> (letter)(letter | digit)*
-
-
 copy full tuple ie tuple a = tuple x
-
-
-$$body  	past problem	check now
-
-
-write(function
-
-
-local declarations of structs)
-
-
-asgn for arr in local
-
-
-true false
-
-print_reg
-
-
-
 
