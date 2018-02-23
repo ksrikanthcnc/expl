@@ -1,0 +1,17 @@
+decl 
+	int num,sum,a[10];
+	str mesg;
+enddecl
+
+begin
+	num=0;
+	while(num<10) do
+		read(a[num]);
+		num=num+1;
+	endwhile;
+	num=0;
+	while(num<10) do
+		write(a[num]);
+		num=num+1;
+	endwhile;
+end;

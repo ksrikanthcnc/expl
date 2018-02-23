@@ -1,0 +1,8 @@
+decl
+int c[1];
+enddecl;
+
+begin
+c[0]=asd;
+write(c[0]);
+end;

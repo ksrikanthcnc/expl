@@ -1,0 +1,9 @@
+decl
+int b[3][2];
+int c;
+enddecl;
+
+begin
+b[1][0]=5;
+write(b[1][5]);
+end;

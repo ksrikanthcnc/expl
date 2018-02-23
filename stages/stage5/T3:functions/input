@@ -1,0 +1,29 @@
+decl
+	int sum(int a,int b),m();
+enddecl;
+
+int sum(int a,int b){
+	decl
+	enddecl;
+	
+	begin
+		return a+b;
+	end;
+}
+
+int main()
+{
+	decl
+		int a,b;
+	enddecl;
+	begin
+		a=m();
+		a=100;
+		b=43;
+		brkp;
+		a=sum(a,b);
+		write(a);
+		brkp;
+		return 0;
+	end	;
+}

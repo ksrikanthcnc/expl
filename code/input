@@ -1,14 +1,40 @@
+type
+i{
+	int val;
+	i next;
+}
+endtype
+
 decl
-str *p,a[2];
-int *q,b;
-enddecl;
+	i b;
+	int a[10];
+enddecl
 
-begin
-p=&a[0];
-a[1]="start";
-p=1+p;
-q=&b;
-q=&b;
-write(*p);
-end;
+int main()
+{
+	decl
+		int i;
+	enddecl
+	
+	begin
+/*		initialize();
+		a=alloc();
+		write(a);
+		free(a);
+		write(a);
+		a=alloc();
+		write(a);
+*/
 
+		read(a[1]);
+		write(a[1]);
+		write("loop");
+		i=0;
+		while(i<11)do
+			write(a[i]);
+			i=i+1;
+		endwhile;
+		
+		return 0;
+	end
+}

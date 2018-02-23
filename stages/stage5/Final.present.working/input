@@ -1,0 +1,35 @@
+decl
+	int first(int a, int b),second(int a,int b);
+enddecl;
+
+int first(int a,int b){
+	decl
+	enddecl;
+	
+	begin
+		return a;
+	end;
+}
+int second(int a,int b){
+	decl
+	enddecl;
+	
+	begin
+		return b;
+	end;
+}
+
+int main()
+{
+	decl
+		int a,b,c;
+	enddecl;
+	
+	begin
+		a=100;
+		b=43;
+		c=first(second(first(a,b),b),first(a,b));
+		write(c);
+		return 0;
+	end;
+}

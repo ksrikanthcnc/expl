@@ -1,0 +1,42 @@
+type
+node{
+	int val,i;
+	node next;
+}
+endtype
+
+decl
+	int a[10],g;
+	node n,m,l;
+enddecl
+
+int main(){
+	decl
+//		int l;
+//		node m;
+		node n,m,l;
+	enddecl
+	
+	begin
+		initialize();
+		
+		n=alloc();
+		m=alloc();
+		l=alloc();
+		n.next=m;
+//brkp;
+		m.next=l;
+		
+//		brkp;
+		n.i=321;
+		write(n.i);
+		read(n.i);
+		
+		read(n.next.next.val);
+		write(n.next.next.val);
+
+brkp;
+		return 0;
+	end
+}
+

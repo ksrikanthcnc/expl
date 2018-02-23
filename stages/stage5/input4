@@ -1,0 +1,36 @@
+decl
+int gcd(int m,int n);
+int x,y;
+enddecl
+int gcd(int m,int n){
+	decl
+		int d,q,temp;
+	enddecl
+	begin
+		q=m/n;
+		if(m-q*n==0) then
+			x=0;
+			y=1;
+			d=n;
+		else
+			d=gcd(n,m-q*n);
+			temp=y;
+			y=x-y*q;
+			x=temp;
+		endif;
+		return d;
+	end
+}
+int main(){
+	decl
+		int g,a,b;
+	enddecl
+	begin
+		read(a);
+		read(b);
+		g=gcd(a,b);
+		write(g);
+		write(x);
+		write(y);
+	end
+}

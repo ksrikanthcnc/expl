@@ -1,0 +1,14 @@
+decl
+str *p,a[2];
+int *q,b;
+enddecl;
+
+begin
+p=&a[0];
+a[1]="start";
+p=1+p;
+q=&b;
+q=&b;
+write(*p);
+end;
+
