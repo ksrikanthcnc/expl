@@ -67,6 +67,11 @@
 	#define nt_FREE 41
 	#define nt_USERROOT 42
 	#define nt_USERNODE 43
+	#define nt_TRUE 44
+	#define nt_FALSE 45
+	#define nt_AND 46
+	#define nt_OR 47
+	#define nt_NOT 48
 
 int val[26];
 int line=1;

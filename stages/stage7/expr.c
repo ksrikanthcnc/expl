@@ -23,25 +23,12 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 			break;
 		case nt_PLUS:	
 		case nt_MINUS:
-			/*if(l->nt==nt_PTR || r->nt==nt_PTR)
-				if(	!(l->nt == nt_PTR && (r->nt==nt_PTR || r->nt==nt_NUM))	&&
-					!(r->nt == nt_PTR && (l->nt==nt_PTR || l->nt==nt_NUM))){
-						mismatch(nt, l->t, r->t);}
-			if(l->nt==nt_PTR && r->nt==nt_PTR)
-				if(l->t!=r->t)
-					mismatch(nt, l->t, r->t);
-				else
-					t=l->t;
-			if(l->nt==nt_PTR)	t=l->t;
-			if(r->nt==nt_PTR)	t=r->t;*/
+			/*need to work*/
 		case nt_MUL:
 		case nt_DIV:
 		case nt_MOD:
 			if(l->t!=tint || r->t!=tint)
 				mismatch(nt, l->t, r->t);
-			/*if (	(l->t == t_CHAR && l->nt!=nt_PTR) || 
-					(r->t == t_CHAR && r->nt!=nt_PTR))
-				mismatch(nt, l->t, r->t);*/
 			break;
 		case nt_LT:
 		case nt_LE:
@@ -69,20 +56,6 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 		case nt_ASGN:
 			if(l->t!=r->t || r->t==tnull)
 				mismatch(nt,l->t,r->t);
-			/*if(l->nt==nt_PTR && r->nt==nt_FUNC)
-				l->t+=4;
-			if(	(l->nt==nt_NUM || l->t==t_BOOL || l->nt==nt_APTR)	||
-				(r->t==t_BOOL)	||
-				(l->t!=r->t)	||
-				(l->nt==nt_PTR && r->nt==nt_PTR)	||
-				(l->nt==nt_PTR && r->nt==nt_ID)		||
-				(l->nt==nt_ID && r->nt==nt_PTR)		||
-				(l->nt==nt_ID && r->nt==nt_APTR)	||
-				(l->nt==nt_PTR && r->nt==nt_NUM))
-				{printf("ntype mismatch:nt_%d at line:%d\n",nt,line);
-				printf("left:nt_%d\n",l->nt);
-				printf("right:nt_%d\n",r->nt);
-				mismatch(nt,l->t,r->t);}*/
 			break;
 		case nt_IF:
 		case nt_IFELSE:
@@ -140,6 +113,11 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 				mismatch(nt,d->t,d->t);
 			break;
 		case nt_EXIT:
+		case nt_TRUE:
+		case nt_FALSE:
+		case nt_AND:
+		case nt_OR:
+		case nt_NOT:
 			break;
 		default:
 			printf("NO NT MATCHED IN CREATTREE...\n");
@@ -331,6 +309,9 @@ int label=0;
 int break2[100];
 int cont1[100];
 int top=-1;
+int andor1[100];
+int andor2[100];
+int topandor=0;
 int readflag=0;
 
 int getReg(){
@@ -358,18 +339,12 @@ void freeReg(){
 	*/
 	}
 int getLabel(){label++;return label;}
-//int argtemp=0;
 int codeGen(struct tnode *t){
 	tabs++;
-	int i,j,k,ret,label1,label2,result,regtemp;
+	int i,j,k,ret,label1,label2,label3,result,regtemp;
 	struct Gsymbol *node,*temp;
 	struct tnode *atemp;
 	struct Lsymbol *ltemp;
-	/*if(t==NULL){
-		printf("t==NULL\n");
-		i=getReg();
-		fprintf(target_file, "MOV R%d,0 --off0\n",i);
-		return i;}*/
 	switch(t->nt){
 		case nt_NODE:
 			puts("\t\t\t\t+node");
@@ -413,20 +388,6 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		/*case nt_PTR:
-			puts("\t\t\t\tpointer-<var name>");
-			//printf("%s\n",t->str);
-			i=getReg();
-			if(t->Lentry==NULL){
-				fprintf(target_file, "MOV R%d, [%d]\n",i,t->Gentry->binding);}
-			else{
-				j=getReg();
-				fetch_local_loc_to(t,j);
-				fprintf(target_file, "MOV R%d,[R%d]\n",i,j);
-				freeReg();}
-			tabs--;
-			return i;
-			break;*/
 		case nt_APTR:
 			puts("\t\t\t\t+pointer-&");
 			//printf("%s\n",t->str);
@@ -615,11 +576,7 @@ int codeGen(struct tnode *t){
 					freeReg();
 				}
 				else{
-				fetch_local_loc_to(t->down,j);
-				/*j=getReg();
-				fprintf(target_file, "MOV R%d,BP\n",j);
-				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->down->str)->binding);*/
-				}
+					fetch_local_loc_to(t->down,j);}
 				ret = getReg();
 				ReadReg(j, ret);
 				freeReg();
@@ -627,32 +584,6 @@ int codeGen(struct tnode *t){
 			readflag=0;
 			puts("\t\t\t\t-read");
 			break;
-		/*case nt_READ://---------old
-			puts("\t\t\t\tread");
-			// printf("%s",t->down->str);
-			ret = getReg();
-			if(t->down->Lentry==NULL){
-				if(t->down->nt==nt_ARR){
-					i=codeGen(t->down->down);
-					k=getReg();
-					fprintf(target_file,"MOV R%d,%d\n",k,t->down->Gentry->binding);
-					fprintf(target_file,"ADD R%d,R%d\n",k,i);
-					freeReg();
-					ret=getReg();
-					ReadReg(k,ret);
-					freeReg();
-					freeReg();
-					break;
-				}
-				Read(t->down->Gentry->binding + t->num, ret);}
-			else{
-				j=getReg();
-				fprintf(target_file, "MOV R%d,BP\n",j);
-				fprintf(target_file, "ADD R%d,%d\n",j,LLookup(t->down->str)->binding);
-				ReadReg(j, ret);
-				freeReg();}
-			freeReg();
-			break;*/
 		case nt_WRITE:
 			puts("\t\t\t\t+write");
 			//if((t->down->t)==t_CHAR)
@@ -660,12 +591,6 @@ int codeGen(struct tnode *t){
 				;
 			i=codeGen(t->down);
 			ret=getReg();
-			/*if(t->down->Lentry==NULL || t->down->nt==nt_STR){
-				puts("\t\t\t\t global");
-				Write(i,ret);}
-			else{
-				puts("\t\t\t\t local");
-				Write(i,ret);}//---------------------------------------------LWrite??*/
 			Write(i,ret);
 			freeReg();
 			freeReg();//--------------------------
@@ -684,27 +609,9 @@ int codeGen(struct tnode *t){
 					freeReg();
 					freeReg();//---------------------
 					;}
-				/*else if(t->left->nt==nt_ARR){
-					i=codeGen(t->left->down);
-					j=codeGen(t->right);
-					k=getReg();
-					fprintf(target_file,"MOV R%d,%d\n",k,node->binding);
-					fprintf(target_file,"ADD R%d,R%d\n",k,i);
-					fprintf(target_file,"MOV [R%d],R%d\n",k,j);
-					freeReg();
-					freeReg();
-					freeReg();}*/
 				else if(t->left->nt==nt_STR){
 					j=(node->binding)+(t->left->num);
 					fprintf(target_file,"MOV [%d],\"%s\" --\"str\"\n",j,t->right->str);}
-				/*else{
-					if((t->left->num)>node->size)
-						printf("WARNING:Accessing beyond declaration!\n");
-						;
-					i=codeGen(t->right);
-					j=(node->binding)+(t->left->num);
-					fprintf(target_file,"MOV [%d],R%d\n",j,i);
-					freeReg();}}*/
 				else if(t->left->nt==nt_USERROOT){
 					i=codeGen(t->left->down);
 					k=getReg();
@@ -721,6 +628,8 @@ int codeGen(struct tnode *t){
 					else{
 						i=getReg();
 						fprintf(target_file, "MOV R%d,0 --extra\n",i);}
+					if((t->left->down->num)>node->size)//-------------------------------
+						printf("WARNING:Accessing beyond declaration!\n");
 					j=codeGen(t->right);
 					k=getReg();
 					fprintf(target_file,"MOV R%d,%d --Gbind\n",k,node->binding);
@@ -750,13 +659,6 @@ int codeGen(struct tnode *t){
 					fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
 					freeReg();
 					freeReg();
-					/*fprintf(target_file, "MOV R%d,[R%d] --base\n",k,k);
-					fprintf(target_file, "MOV R%d,%d --off\n",i,t->left->num);
-					fprintf(target_file, "ADD R%d,R%d --base\n",k,i);
-					j=codeGen(t->right);
-					fprintf(target_file, "MOV [R%d],R%d --lasgn\n",k,j);
-					freeReg();
-					freeReg();*/
 				}
 				else{
 					i=codeGen(t->right);
@@ -768,27 +670,39 @@ int codeGen(struct tnode *t){
 
 		case nt_IF:
 			puts("\t\t\t\t+if");
-			result=codeGen(t->left);
+			topandor++;
 			label1=getLabel();
-			fprintf(target_file,"JZ R%d,L%d\n",result,label1);
-			freeReg();
-			codeGen(t->right);
-			fprintf(target_file,"L%d:\n",label1);
-			puts("\t\t\t\t-if");
-			break;
-		case nt_IFELSE:
-			puts("\t\t\t\tifelse");
-			label1=getLabel();
+			andor1[topandor]=label1;
 			label2=getLabel();
+			andor2[topandor]=label2;
 			result=codeGen(t->left);
-			fprintf(target_file,"JZ R%d,L%d\n",result,label1);
+			fprintf(target_file,"JZ R%d,L%d\n",result,label2);
 			freeReg();
-			codeGen(t->down);
-			fprintf(target_file,"JMP L%d\n",label2);
 			fprintf(target_file,"L%d:\n",label1);
 			codeGen(t->right);
 			fprintf(target_file,"L%d:\n",label2);
+			puts("\t\t\t\t-if");
+			topandor--;
+			break;
+		case nt_IFELSE:
+			puts("\t\t\t\tifelse");
+			topandor++;
+			label1=getLabel();
+			andor1[topandor]=label1;
+			label2=getLabel();
+			andor2[topandor]=label2;
+			label3=getLabel();
+			result=codeGen(t->left);
+			fprintf(target_file,"JZ R%d,L%d\n",result,label3);
+			freeReg();
+			fprintf(target_file,"L%d:\n",label1);
+			codeGen(t->down);
+			fprintf(target_file,"JMP L%d\n",label3);
+			fprintf(target_file,"L%d:\n",label2);
+			codeGen(t->right);
+			fprintf(target_file,"L%d:\n",label3);
 			puts("\t\t\t\t-ifelse");
+			topandor--;
 			break;
 		case nt_WHILE:
 			puts("\t\t\t\t+while");
@@ -976,6 +890,51 @@ int codeGen(struct tnode *t){
 				freeReg();
 				return k;}
 			break;
+		case nt_TRUE:
+			i=getReg();
+			fprintf(target_file, "MOV R%d, 1 --true\n",i);
+			return i;
+		case nt_FALSE:
+			i=getReg();
+			fprintf(target_file, "MOV R%d, 0 --false\n",i);
+			return i;
+		case nt_NOT:
+			label1=getLabel();
+			label2=getLabel();
+			j=codeGen(t->down);
+			i=getReg();
+			fprintf(target_file, "MOV R%d,0 --not\n",i);
+			fprintf(target_file, "EQ R%d,R%d --not\n",j,i);
+			freeReg();
+			fprintf(target_file, "JZ R%d,L%d\n",j,label1);
+			fprintf(target_file, "MOV R%d, 1 --set1\n",j);
+			fprintf(target_file, "JMP L%d\n",label2);
+			fprintf(target_file, "L%d:\n",label1);
+			fprintf(target_file, "MOV R%d,0 --set0\n",j);
+			fprintf(target_file, "L%d:\n",label2);
+			return j;
+		case nt_AND:
+			//short circuit beta
+			i=codeGen(t->left);
+			fprintf(target_file,"JZ R%d,L%d\n",i,andor2[topandor]);
+			freeReg();
+			j=codeGen(t->right);
+			fprintf(target_file,"JZ R%d,L%d\n",i,andor2[topandor]);
+			freeReg();
+			k=getReg();
+			fprintf(target_file, "MOV R%d,1 --andtrue\n",k);
+			return k;
+		case nt_OR:
+			//short circuit beta
+			i=codeGen(t->left);
+			fprintf(target_file,"JNZ R%d,L%d\n",i,andor1[topandor]);
+			freeReg();
+			j=codeGen(t->right);
+			fprintf(target_file,"JNZ R%d,L%d\n",i,andor1[topandor]);
+			freeReg();
+			k=getReg();
+			fprintf(target_file, "MOV R%d,0 --orfalse\n",k);
+			return k;
 		default:
 			printf("\tNO CODE-GEN MATCHING FOUND\ttype:'%d'\n",t->nt);
 			exit(1);	
@@ -1027,31 +986,6 @@ void Write(int reg,int ret){
 	freeReg();
 	puts("\t\t\t\t");
 	;}
-
-/*void Read(int addr,int ret){
-	int t;
-	puts("\t\t\t\t");
-	t=getReg();
-	fprintf(target_file, "MOV R%d, \"Read\"\n",t);
-	fprintf(target_file, "PUSH R%d--\"read\"\n",t);
-	fprintf(target_file, "MOV R%d, -1\n",t);
-	fprintf(target_file, "PUSH R%d--(-1)\n",t);
-	fprintf(target_file, "MOV R%d,%d\n",t,addr);
-	fprintf(target_file, "PUSH R%d--addr\n",t);
-	fprintf(target_file, "MOV R%d, \"\"\n",t);
-	fprintf(target_file, "PUSH R%d--blank\n",t);
-	fprintf(target_file, "PUSH R%d--blank\n",t);
-	freeReg();
-	fprintf(target_file, "CALL 0\n");
-	fprintf(target_file, "POP R%d--ret\n",ret);
-	t=getReg();
-	fprintf(target_file, "POP R%d--disc\n",t);
-	fprintf(target_file, "POP R%d--disc\n",t);
-	fprintf(target_file, "POP R%d--disc\n",t);
-	fprintf(target_file, "POP R%d--disc\n",t);
-	freeReg();
-	puts("\t\t\t\t");
-	;}*/
 void ReadReg(int reg_addr,int ret){
 	int t;
 	puts("\t\t\t\t");
@@ -1118,9 +1052,7 @@ void init(int ret){
 	fprintf(target_file, "PUSH R%d--ret\n",t);
 	freeReg();
 	fprintf(target_file, "CALL 0\n");
-	//ret=getReg();
 	fprintf(target_file, "POP R%d--ret\n",ret);
-	//freeReg();
 	t=getReg();
 	fprintf(target_file, "POP R%d--disc\n",t);
 	fprintf(target_file, "POP R%d--disc\n",t);
@@ -1152,7 +1084,6 @@ void alloc_to(int size,int i){
 	freeReg();
 	puts("\t\t\t\t");
 	;}
-
 void freee(int reg_addr){
 	int t,ret;
 	puts("\t\t\t\t");
@@ -1166,7 +1097,6 @@ void freee(int reg_addr){
 	fprintf(target_file, "PUSH R%d--ret\n",t);
 	freeReg();
 	fprintf(target_file, "CALL 0\n");
-	//ret=getReg();
 	fprintf(target_file, "POP R%d--retfree\n",ret);
 	t=getReg();
 	fprintf(target_file, "POP R%d--disc\n",t);
@@ -1174,7 +1104,6 @@ void freee(int reg_addr){
 	fprintf(target_file, "POP R%d--disc\n",t);
 	fprintf(target_file, "POP R%d--disc\n",t);
 	freeReg();
-	//return ret;
 	puts("\t\t\t\t");
 	;}
 void mismatch(int n, struct Typetable *l, struct Typetable *r){
@@ -1182,91 +1111,6 @@ void mismatch(int n, struct Typetable *l, struct Typetable *r){
 	printf("left:'%s'\n",l->name);
 	printf("right:'%s'\n",r->name);
 	exit(1);}
-
-/*int evaluate(struct tnode *t){
-	switch(t->nt)
-	{
-		case nt_NODE:
-		puts("\t\t\t\tnode");
-			evaluate(t->left);
-			evaluate(t->right);
-			break;
-		case nt_PLUS:
-		puts("\t\t\t\tplus");
-			return evaluate(t->left)+evaluate(t->right);
-			break;
-		case nt_MUL:
-		puts("\t\t\t\tmul");
-			return evaluate(t->left)*evaluate(t->right);
-			break;
-		case nt_MINUS:
-		puts("\t\t\t\tminus");
-			return evaluate(t->left)-evaluate(t->right);
-			break;
-		case nt_DIV:
-		puts("\t\t\t\tdiv");
-			return evaluate(t->left)/evaluate(t->right);
-			break;
-		case nt_NUM:
-		puts("\t\t\t\tnum");
-			return t->num;
-			break;
-		case nt_ID:
-		puts("\t\t\t\tid");
-				return val[*(t->str)-'a'];
-			break;
-		case nt_READ:
-		puts("\t\t\t\tread");
-			scanf("%d",&val[*(t->down->str)-'a']);
-			break;
-		case nt_WRITE:
-		puts("\t\t\t\twrite");
-			printf("%d\n",evaluate(t->down));
-			break;
-		case nt_ASGN:
-		puts("\t\t\t\tasgn");
-			val[*(t->left->str)-'a']=evaluate(t->right);
-			break;
-		case nt_LT:
-		puts("\t\t\t\tlt");
-			return evaluate(t->left)<evaluate(t->right);
-			break;
-		case nt_LE:
-		puts("\t\t\t\tle");
-			return evaluate(t->left)<=evaluate(t->right);
-			break;
-		case nt_GT:
-		puts("\t\t\t\tgt");
-			return evaluate(t->left)>evaluate(t->right);
-			break;
-		case nt_GE:
-		puts("\t\t\t\tge");
-			return evaluate(t->left)>=evaluate(t->right);
-			break;
-		case nt_EE:
-		puts("\t\t\t\tee");
-			return evaluate(t->left)==evaluate(t->right);
-			break;
-		case nt_NE:
-		puts("\t\t\t\tne");
-			return evaluate(t->left)!=evaluate(t->right);
-			break;		
-		case nt_IF:
-			if(evaluate(t->left))
-				evaluate(t->right);
-			break;
-		case nt_IFELSE:
-			if(evaluate(t->left))
-				evaluate(t->down);
-			else
-				evaluate(t->right);
-			break;
-		case nt_WHILE:
-			while(evaluate(t->left))
-				evaluate(t->right);
-			break;}}	
-
-//*/
 void fetch_local_loc_to(struct tnode *t,int i){
 	puts("\t\t\t\t");
 	fprintf(target_file, "MOV R%d,BP --BP+?\n",i);
