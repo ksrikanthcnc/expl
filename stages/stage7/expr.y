@@ -15,6 +15,7 @@
 	int flabel=1,mainflag=0,equiv=0,tuplesize=0,typesize=0,fieldindex,initflag=0,allocflag=0;
 	struct Typetable *type,*temptype,*t;
 	char *tuplename;
+	int tint=1,ttint=1;
 %}
 //tokens
 	%token NUM ID STRING
@@ -23,6 +24,7 @@
 	%token BEG END
 	%token READ WRITE
 	%token IF THEN ELSE ENDIF
+	%token TRUE FALSE NOT
 	%token WHILE DO ENDWHILE
 	%token BREAK CONTINUE
 	%token REPEAT UNTIL
@@ -31,6 +33,8 @@
 	%token MAIN RETURN BRKP EXIT
 	%token AND OR
 	%token INIT ALLOC FREE
+	%left AND OR
+	%right NOT
 	%left PLUS MINUS
 	%left MUL DIV MOD
 	%nonassoc LT LE GT GE EE NE
@@ -143,7 +147,8 @@
 								binding=-2;
 								lhead=NULL;
 								phead=NULL;
-								equiv=1;}//-------------------------------------------------------------------
+								equiv=1;
+								ttint=1;}//-------------------------------------------------------------------
 							ParamList ')' {	equiv=0;
 											struct Lsymbol *ltemp;
 											struct Paramstruct *ptemp;
@@ -168,8 +173,8 @@
 														ltemp=ltemp->next;}}
 												exit(1);}}
 										 '{' {	binding=0;}
-												LDeclBlock {lprint();initflag=allocflag=0;}
-															Body '}';
+												LDeclBlock {lprint();initflag=allocflag=0;tint=1;}
+															Body '}' {ldealloc(lhead);};
 //-------------------------------------------------------------------------param
 	ParamList	:ParamList ',' Param			{}
 				|Param
@@ -220,7 +225,7 @@
 										binding=0;
 										GLookup("main")->type=TLookup("int");}
 									LDeclBlock {lprint();initflag=allocflag=0;}
-												Body '}'
+												Body '}' {ldealloc(lhead);}
 				;
 //-------------------------------------------------------------------------body
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
@@ -232,12 +237,14 @@
 												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
 												codeGen(body);
+												bdealloc(body);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
 												printf("################################################################################################\n");}
 				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
 												funcGen(GLookup(funcname));
 												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(ret);
+												bdealloc(ret);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
 												printf("################################################################################################\n");};
 	Slist		:Slist Stmt				{$$=createtree(TLookup("void"),0,NULL,nt_NODE,$1,NULL,$2,NULL,NULL,NULL);}
@@ -272,12 +279,19 @@
 				|ID '(' ArgList ')'		{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
 	ArgList		:ArgList ',' Expr		{$3->down=$1;$$=$3;}
 				|Expr					{$$=$1;};
-	Bool		:Expr LT Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr LE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_LE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr GT Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_GT,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr GE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_GE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr EE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_EE,$1,NULL,$3,NULL,NULL,NULL);}
-				|Expr NE Expr			{$$ =createtree(TLookup("bool"),0,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);};
+	Bool		:Expr LT Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr LE Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_LE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr GT Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_GT,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr GE Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_GE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr EE Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_EE,$1,NULL,$3,NULL,NULL,NULL);}
+				|Expr NE Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_NE,$1,NULL,$3,NULL,NULL,NULL);}
+				|TRUE					{$$=createtree(TLookup("bool"),0,NULL,nt_TRUE,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|FALSE					{$$=createtree(TLookup("bool"),0,NULL,nt_FALSE,NULL,NULL,NULL,NULL,NULL,NULL);}
+				|'(' Bool ')'			{$$=$2;}
+				|NOT Bool				{$$=createtree(TLookup("bool"),0,NULL,nt_NOT,NULL,$2,NULL,NULL,NULL,NULL);}
+				|Bool AND Bool			{$$=createtree(TLookup("bool"),0,NULL,nt_AND,$1,NULL,$3,NULL,NULL,NULL);}
+				|Bool OR Bool			{$$=createtree(TLookup("bool"),0,NULL,nt_OR,$1,NULL,$3,NULL,NULL,NULL);}
+				;
 //-------------------------------------------------------------------------id
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	id			:ID							{checkid($1);
@@ -405,6 +419,20 @@ void lprint(){
 	void n(int n){printf("~~~%d~~~\n",n);}
 	void c(char c){printf("~~~%c~~~\n",c);}
 	void s(char *s){printf("~~~%s~~~\n",s);}*/
+void ldealloc(struct Lsymbol *lhead){
+	if(lhead==NULL)
+		return;
+	printf("%d.funcname:'%s'\tname:'%s'\n",ttint++,funcname,lhead->name);
+	ldealloc(lhead->next);
+	free(lhead->next);}
+void bdealloc(struct tnode *body){
+	if(body==NULL)
+		return;
+	printf("%d.funcname:'%s'\tnt:'%d'\n",tint++,funcname,body->nt);
+	bdealloc(body->left);
+	free(body->left);
+	bdealloc(body->right);
+	free(body->right);}
 int main(void){
 	ghead=NULL;
 	FILE *fp=fopen("input","r");
