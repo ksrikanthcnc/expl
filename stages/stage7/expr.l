@@ -60,14 +60,14 @@
 "alloc"			{return ALLOC;}
 "free"			{return FREE;}
 
-["][^"\n]*["]	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]*[']	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-[0-9]+			{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
+["][^"\n]*["]					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+[0-9]+							{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
 [a-zA-Z][a-zA-Z0-9]*			{yylval = createtree(NULL,0,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
-[(),\[\];&{}.]	{return *yytext;}
-[ \t]			{}
-[\n]			{line++;}
-.				{printf("line:'%d'\tunknown character:'%c'\n",line,*yytext);exit(1);}
+[(),\[\];&{}.]					{return *yytext;}
+[ \t]							{}
+[\n]							{line++;}
+.								{printf("line:'%d'\tunknown character:'%c'\n",line,*yytext);exit(1);}
 
 %%
 int yywrap(void){

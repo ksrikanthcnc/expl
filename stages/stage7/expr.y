@@ -422,7 +422,7 @@ void lprint(){
 void ldealloc(struct Lsymbol *lhead){
 	if(lhead==NULL)
 		return;
-	printf("%d.funcname:'%s'\tnt:'%s'\n",ttint++,funcname,lhead->name);
+	printf("%d.funcname:'%s'\tname:'%s'\n",ttint++,funcname,lhead->name);
 	ldealloc(lhead->next);
 	free(lhead->next);}
 void bdealloc(struct tnode *body){
