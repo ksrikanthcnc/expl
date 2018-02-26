@@ -288,6 +288,17 @@ struct Fieldlist* FLookup(struct Typetable *type, char *name){
 		temp=temp->next;}
 	//printf("line:'%d':Not found '%s' in type:'%s'\n",line,name,type->name);
 	return NULL;}
+struct Fieldlist* FLookmember(struct Typetable *type, char *name){
+	struct Fieldlist *temp;
+	temp=type->fields;
+	while(temp!=NULL){
+		//printf("\tname:'%s'\tfieldIndex:'%d'\ttype->name:'%s'\n",temp->name,temp->fieldIndex,temp->type->name);
+		if(strcmp(temp->name,name)==0){
+			//printf("Found!\n");
+			return temp;}
+		temp=temp->next;}
+	//printf("line:'%d':Not found '%s' in type:'%s'\n",line,name,type->name);
+	return NULL;}
 
 int GetSize (struct Typetable *type){
 	return type->size;}
@@ -304,7 +315,7 @@ void generate(){
 	puts("\t\t\t\t-Generated");
 	;}
 
-int reg=-1;
+int reg=-1,tempreg;
 int label=0;
 int break2[100];
 int cont1[100];
@@ -548,6 +559,7 @@ int codeGen(struct tnode *t){
 			puts("\t\t\t\t+read");
 			// printf("%s",t->down->str);
 			readflag=1;
+			saveReg();
 			if(t->down->Lentry==NULL){
 				if(t->down->nt!=nt_ARR)
 					i=codeGen(t->down);
@@ -579,6 +591,7 @@ int codeGen(struct tnode *t){
 				freeReg();
 				freeReg();}
 			readflag=0;
+			restReg();
 			puts("\t\t\t\t-read");
 			break;
 		case nt_WRITE:
@@ -586,11 +599,13 @@ int codeGen(struct tnode *t){
 			//if((t->down->t)==t_CHAR)
 				//printf("%s\n",t->down->str);
 				;
+			saveReg();
 			i=codeGen(t->down);
 			ret=getReg();
 			Write(i,ret);
 			freeReg();
 			freeReg();//--------------------------
+			restReg();
 			puts("\t\t\t\t-write");
 			break;
 		case nt_ASGN:
@@ -611,8 +626,6 @@ int codeGen(struct tnode *t){
 					fprintf(target_file,"MOV [%d],\"%s\" --\"str\"\n",j,t->right->str);}
 				else if(t->left->nt==nt_USERROOT){
 					i=codeGen(t->left->down);
-					k=getReg();
-					fprintf(target_file, "MOV R%d,[R%d] --suser\n",i,i);
 					fprintf(target_file, "ADD R%d,%d --off\n",i,t->left->num);
 					j=codeGen(t->right);
 					fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
@@ -638,19 +651,17 @@ int codeGen(struct tnode *t){
 				}
 			else{//Local
 				k=getReg();
-				fetch_local_loc_to(t->left,k);
 				if(t->left->nt==nt_SPTR){
+					fetch_local_loc_to(t->left,k);
 					i=codeGen(t->right);
 					fprintf(target_file,"MOV R%d,[R%d] --Lsptr\n",k,k);
 					fprintf(target_file,"MOV [R%d],R%d --Lsptr\n",k,i);
 					freeReg();}
 				else if(t->left->nt==nt_STR){
+					fetch_local_loc_to(t->left,k);
 					fprintf(target_file,"MOV [R%d],\"%s\" --\"str\"\n",k,t->right->str);}
 				else if(t->left->nt==nt_USERROOT){
 					i=codeGen(t->left->down);
-					k=getReg();
-					fetch_local_loc_to(t->left,k);
-					fprintf(target_file, "MOV R%d,[R%d] --suser\n",i,i);
 					fprintf(target_file, "ADD R%d,%d --off\n",i,t->left->num);
 					j=codeGen(t->right);
 					fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
@@ -658,6 +669,8 @@ int codeGen(struct tnode *t){
 					freeReg();
 				}
 				else{
+					k=getReg();
+					fetch_local_loc_to(t->left,k);
 					i=codeGen(t->right);
 					fprintf(target_file,"MOV [R%d],R%d --Lasgn\n",k,i);
 					freeReg();}
@@ -807,22 +820,34 @@ int codeGen(struct tnode *t){
 			break;
 		case nt_ALLOC:
 			puts("\t\t\t\t+alloc");
+			saveReg();
+			i=getReg();
 			if(t->down->Lentry==NULL){
-				i=getReg();
 				alloc_to(t->num,i);
-				fprintf(target_file,"MOV [%d],R%d --Galloc\n",t->down->Gentry->binding+t->down->num,i);}
+				if(t->down->down==NULL){
+					fprintf(target_file,"MOV [%d],R%d --Galloc\n",t->down->Gentry->binding+t->down->num,i);}
+				else{
+					j=codeGen(t->down->down);
+					fprintf(target_file, "ADD R%d,%d --base+off\n",j,t->down->num);
+					fprintf(target_file,"MOV [R%d],R%d --Galloc\n",j,i);
+					freeReg();}}
 			else{
-				i=getReg();
 				alloc_to(t->num,i);
-				k=getReg();
-				fetch_local_loc_to(t->down,k);
-				fprintf(target_file,"MOV [R%d],R%d --Lalloc\n",k,i);
+				if(t->down->down==NULL){
+					j=getReg();
+					fetch_local_loc_to(t->down,j);}
+				else{
+					j=codeGen(t->down->down);
+					fprintf(target_file, "ADD R%d,%d --base+off\n",j,t->down->num);}
+				fprintf(target_file,"MOV [R%d],R%d --Lalloc\n",j,i);
 				freeReg();}
 			freeReg();
+			restReg();
 			puts("\t\t\t\t-alloc");
 			break;
 		case nt_FREE:
 			puts("\t\t\t\t+free");
+			saveReg();
 			if(t->down->Lentry==NULL){
 				i=codeGen(t->down);
 				//j=getReg();
@@ -835,6 +860,7 @@ int codeGen(struct tnode *t){
 				fprintf(target_file,"MOV R%d,[R%d]\n",i,i);
 				/*j=*/freee(i);
 				freeReg();}
+			restReg();
 			puts("\t\t\t\t-free");
 			break;
 		case nt_USERROOT:
@@ -842,48 +868,60 @@ int codeGen(struct tnode *t){
 			//printf("%s\n",t->str);
 			j=codeGen(t->down);
 			k=getReg();
-			fprintf(target_file, "MOV R%d,[R%d] --user\n",k,j);
-			freeReg();
-			fprintf(target_file, "ADD R%d,%d --off\n",k,t->num);
+			/*fprintf(target_file, "MOV R%d,[R%d] --user\n",k,j);
+			freeReg();*/
+			fprintf(target_file, "ADD R%d,%d --off\n",j,t->num);
 			if(!readflag)
-				fprintf(target_file, "MOV R%d,[R%d] --fetch\n",k,k);
+				fprintf(target_file, "MOV R%d,[R%d] --fetch\n",k,j);
+			fprintf(target_file, "MOV R%d,[R%d] --user\n",j,j);
 			puts("\t\t\t\t-user");
+			freeReg();
 			tabs--;
-			return k;
+			return j;
 			break;
 		case nt_USERNODE:
+			puts("\t\t\t\t+usernode");
 			if(t->down==NULL){//root node
 				puts("\t\t\t\t-user");
 				if(t->Lentry==NULL){
 					i=getReg();
-					fprintf(target_file,"MOV R%d,%d --groot\n",i,t->Gentry->binding);
+					fprintf(target_file,"MOV R%d,[%d] --groot\n",i,t->Gentry->binding);
 					tabs--;
+					puts("\t\t\t\t-usernode");
 					return i;}
 				else{
+					j=getReg();
 					i=getReg();
 					fetch_local_loc_to(t,i);
-					j=getReg();
 					fprintf(target_file, "MOV R%d,[R%d] --lroot\n",j,i);
 					freeReg();
 					tabs--;
-					return i;}}
+					puts("\t\t\t\t-usernode");
+					return j;}}
 			else{
-				k=getReg();
 				j=codeGen(t->down);
-				fprintf(target_file, "MOV R%d,[R%d] --addr\n",k,j);
-				fprintf(target_file, "ADD R%d,%d --addr\n",k,t->num);
-				freeReg();
-				return k;}
+				fprintf(target_file, "ADD R%d,%d --addr\n",j,t->num);
+				fprintf(target_file, "MOV R%d,[R%d] --addr\n",j,j);
+				tabs--;
+				puts("\t\t\t\t-usernode");
+				return j;}
 			break;
 		case nt_TRUE:
+			puts("\t\t\t\t+true");
 			i=getReg();
 			fprintf(target_file, "MOV R%d, 1 --true\n",i);
+			tabs--;
+			puts("\t\t\t\t-true");
 			return i;
 		case nt_FALSE:
+			puts("\t\t\t\t+false");
 			i=getReg();
 			fprintf(target_file, "MOV R%d, 0 --false\n",i);
+			tabs--;
+			puts("\t\t\t\t-false");
 			return i;
 		case nt_NOT:
+			puts("\t\t\t\t+not");
 			label1=getLabel();
 			label2=getLabel();
 			j=codeGen(t->down);
@@ -897,50 +935,58 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "L%d:\n",label1);
 			fprintf(target_file, "MOV R%d,0 --set0\n",j);
 			fprintf(target_file, "L%d:\n",label2);
+			tabs--;
+			puts("\t\t\t\t-not");
 			return j;
-		case nt_AND://can be made efficient
+		case nt_AND:
+			puts("\t\t\t\t+and");
 			label1=getLabel();
 			label2=getLabel();
-			result=getReg();
-			i=codeGen(t->left);
-			j=codeGen(t->right);
 			k=getReg();
-			fprintf(target_file, "MOV R%d,1 \n",k);
-			fprintf(target_file, "EQ R%d,R%d \n",i,k);
+			fprintf(target_file, "MOV R%d,1 --and\n",k);
+			i=codeGen(t->left);
+			fprintf(target_file, "EQ R%d,R%d --cond1?\n",i,k);
 			fprintf(target_file, "JZ R%d,L%d\n",i,label1);
+			freeReg();
 			fprintf(target_file, "MOV R%d,1 \n",k);
-			fprintf(target_file, "EQ R%d,R%d\n",j,k);
+			j=codeGen(t->right);
+			fprintf(target_file, "EQ R%d,R%d --cond2?\n",j,k);
 			fprintf(target_file, "JZ R%d,L%d\n",j,label1);
-			fprintf(target_file, "MOV R%d,1\n",result);
+			freeReg();
+			freeReg();
+			result=getReg();
+			fprintf(target_file, "MOV R%d,1 --ans1\n",result);
 			fprintf(target_file, "JMP L%d\n",label2);
 			fprintf(target_file, "L%d:\n",label1);
-			fprintf(target_file, "MOV R%d,0 \n",result);
+			fprintf(target_file, "MOV R%d,0 --ans0\n",result);
 			fprintf(target_file, "L%d:\n",label2);
-			freeReg();
-			freeReg();
-			freeReg();
+			tabs--;
+			puts("\t\t\t\t-and");
 			return result;
 		case nt_OR:
+			puts("\t\t\t\t+or");
 			label1=getLabel();
 			label2=getLabel();
-			result=getReg();
-			i=codeGen(t->left);
-			j=codeGen(t->right);
 			k=getReg();
-			fprintf(target_file, "MOV R%d,0 \n",k);
-			fprintf(target_file, "EQ R%d,R%d \n",i,k);
+			fprintf(target_file, "MOV R%d,0 --or\n",k);
+			i=codeGen(t->left);
+			fprintf(target_file, "EQ R%d,R%d --cond1?\n",i,k);
 			fprintf(target_file, "JZ R%d,L%d\n",i,label1);
+			freeReg();
 			fprintf(target_file, "MOV R%d,0 \n",k);
-			fprintf(target_file, "EQ R%d,R%d\n",j,k);
+			j=codeGen(t->right);
+			fprintf(target_file, "EQ R%d,R%d --cond2?\n",j,k);
 			fprintf(target_file, "JZ R%d,L%d\n",j,label1);
-			fprintf(target_file, "MOV R%d,0\n",result);
+			freeReg();
+			freeReg();
+			result=getReg();
+			fprintf(target_file, "MOV R%d,0 --ans0\n",result);
 			fprintf(target_file, "JMP L%d\n",label2);
 			fprintf(target_file, "L%d:\n",label1);
-			fprintf(target_file, "MOV R%d,1 \n",result);
+			fprintf(target_file, "MOV R%d,1 --ans1\n",result);
 			fprintf(target_file, "L%d:\n",label2);
-			freeReg();
-			freeReg();
-			freeReg();
+			tabs--;
+			puts("\t\t\t\t-or");
 			return result;
 		default:
 			printf("\tNO CODE-GEN MATCHING FOUND\ttype:'%d'\n",t->nt);
@@ -1043,9 +1089,6 @@ void Debug(int i){
 	fprintf(target_file,"BRKP--'%d'\n",i);
 	puts("\t\t\t\t");
 	;}
-void SDebug(char *func){
-	fprintf(target_file,"BRKP\n");
-	fprintf(target_file,"BRKP--%s\n",func);}
 void init(int ret){
 	int t;
 	puts("\t\t\t\t");
@@ -1124,3 +1167,16 @@ void fetch_local_loc_to(struct tnode *t,int i){
 	fprintf(target_file, "ADD R%d,%d --L.loc\n",i,t->Lentry->binding);
 	puts("\t\t\t\t");
 	;}
+void saveReg(){
+	tempreg=reg;
+	while(reg>-1){
+		fprintf(target_file, "PUSH R%d --save.reg\n",reg);
+		freeReg();}}
+void restReg(){
+	int t;
+	while(tempreg!=-1){
+		tempreg--;
+		t=getReg();
+		fprintf(target_file, "POP R%d --old.regs\n",t);}}
+
+//

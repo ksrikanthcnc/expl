@@ -59,6 +59,12 @@
 "initialize"	{return INIT;}
 "alloc"			{return ALLOC;}
 "free"			{return FREE;}
+"class"			{return CLASS;}
+"endclass"		{return ENDCLASS;}
+"extends"		{return EXTENDS;}
+"new"			{return NEW;}
+"delete"		{return DELETE;}
+"self"			{return SELF;}
 
 ["][^"\n]*["]					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
 ['][^'\n]*[']					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}

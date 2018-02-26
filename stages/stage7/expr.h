@@ -125,31 +125,30 @@ struct Lsymbol{
 	int binding;
 	struct Lsymbol *next;
 }*lhead;
-//void LInstall(char *name, struct Typetable *type);
 void LInstall(char *name, struct Typetable *type);
 struct Lsymbol *LLookup(char* name);
 
 struct Typetable{
     char *name;
     int size;
-    struct Fieldlist *fields;   //pointer to the head of fields list
-    struct Typetable *next;     // pointer to the next type table entry
+    struct Fieldlist *fields;
+    struct Typetable *next;
 }*thead;
 struct Fieldlist{
-  char *name;              //name of the field
-  int fieldIndex;          //the position of the field in the field list
-  struct Typetable *type;  //pointer to type table entry of the field's type
-  struct Fieldlist *next;  //pointer to the next field
+  char *name;
+  int fieldIndex;
+  struct Typetable *type;
+  struct Fieldlist *next;
 }*fhead;
 void TypeTableCreate();
 void TInstall(char *name,int size, struct Fieldlist *fields);
 struct Typetable* TLookup(char *name);
 void FInstall(char *name,int fieldIndex,struct Typetable *type);
 struct Fieldlist* FLookup(struct Typetable *type, char *name);
+struct Fieldlist* FLookmember(struct Typetable *type, char *name);
 int GetSize (struct Typetable * type);
 
 struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
-//void LocalParam(struct Paramstruct* phead,struct Gsymbol *g);
 
 struct tnode *dnode;
 struct Gsymbol *gnode;
@@ -160,7 +159,7 @@ struct Fieldlist *fnode;
 
 
 void generate();
-int gerReg();
+int getReg();
 void freeReg();
 int getLabel();
 
@@ -176,6 +175,8 @@ void init(int ret);
 void SDebug(char *func);
 void alloc_to(int size,int i);
 void freee(int reg_addr);
+void saveReg();
+void restReg();
 
 void mismatch(int n, struct Typetable *l, struct Typetable *r);
 
@@ -190,6 +191,7 @@ void debt(struct tnode * t);
 
 void checkid(struct tnode *t);
 void checkidid(struct tnode *t1,struct tnode *t3);
+void checktype(struct Typetable *t1, char *member);
 void yyerror(char const *s);
 void func(struct Paramstruct* phead);
 void tprint();

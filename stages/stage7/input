@@ -1,42 +1,54 @@
 type
 node{
-	int val,i;
+	int val;
 	node next;
 }
+
+linkedlist{
+	int data;
+	linkedlist next;
+}
+
+marklist{
+	str name;
+	linkedlist marks;
+	marklist next;
+}
+
 endtype
 
 decl
-	int a[10],g;
-	node n,m,l;
+	marklist mlist,temp;
 enddecl
 
 int main(){
 	decl
-//		int l;
-//		node m;
-		node n,m,l;
+		node x,y,z;
+		int i;
 	enddecl
 	
 	begin
 		initialize();
 		
-		n=alloc();
-		m=alloc();
-		l=alloc();
-		n.next=m;
-//brkp;
-		m.next=l;
+		mlist=alloc();
+		mlist.name="one";
+		mlist.marks=alloc();
+		write(mlist.marks);
+		mlist.marks.data=45;
 		
-//		brkp;
-		n.i=321;
-		write(n.i);
-		read(n.i);
+		mlist.next=alloc();
+		mlist.next.name="two";
+		mlist.next.marks=alloc();
+		mlist.next.marks.data=40;
 		
-		read(n.next.next.val);
-		write(n.next.next.val);
-
-brkp;
+		write(mlist.marks.data);
+		write(mlist.next.marks.data);
+		if(mlist.marks.data>mlist.next.marks.data)then
+			write("two thope");
+		else
+			print "one thope";
+		endif;
+		
 		return 0;
 	end
 }
-
