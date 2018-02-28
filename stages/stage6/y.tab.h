@@ -64,35 +64,45 @@ extern int yydebug;
     THEN = 274,
     ELSE = 275,
     ENDIF = 276,
-    WHILE = 277,
-    DO = 278,
-    ENDWHILE = 279,
-    BREAK = 280,
-    CONTINUE = 281,
-    REPEAT = 282,
-    UNTIL = 283,
-    TYPE = 284,
-    ENDTYPE = 285,
-    DECL = 286,
-    ENDDECL = 287,
-    INT = 288,
-    STR = 289,
-    TUPLE = 290,
-    MAIN = 291,
-    RETURN = 292,
-    BRKP = 293,
-    EXIT = 294,
-    AND = 295,
-    OR = 296,
-    INIT = 297,
-    ALLOC = 298,
-    FREE = 299,
-    LT = 300,
-    LE = 301,
-    GT = 302,
-    GE = 303,
-    EE = 304,
-    NE = 305
+    TRUE = 277,
+    FALSE = 278,
+    NOT = 279,
+    WHILE = 280,
+    DO = 281,
+    ENDWHILE = 282,
+    BREAK = 283,
+    CONTINUE = 284,
+    REPEAT = 285,
+    UNTIL = 286,
+    TYPE = 287,
+    ENDTYPE = 288,
+    DECL = 289,
+    ENDDECL = 290,
+    INT = 291,
+    STR = 292,
+    TUPLE = 293,
+    MAIN = 294,
+    RETURN = 295,
+    BRKP = 296,
+    EXIT = 297,
+    AND = 298,
+    OR = 299,
+    INIT = 300,
+    ALLOC = 301,
+    FREE = 302,
+    NUL = 303,
+    CLASS = 304,
+    ENDCLASS = 305,
+    EXTENDS = 306,
+    NEW = 307,
+    DELETE = 308,
+    SELF = 309,
+    LT = 310,
+    LE = 311,
+    GT = 312,
+    GE = 313,
+    EE = 314,
+    NE = 315
   };
 #endif
 /* Tokens.  */
@@ -115,35 +125,45 @@ extern int yydebug;
 #define THEN 274
 #define ELSE 275
 #define ENDIF 276
-#define WHILE 277
-#define DO 278
-#define ENDWHILE 279
-#define BREAK 280
-#define CONTINUE 281
-#define REPEAT 282
-#define UNTIL 283
-#define TYPE 284
-#define ENDTYPE 285
-#define DECL 286
-#define ENDDECL 287
-#define INT 288
-#define STR 289
-#define TUPLE 290
-#define MAIN 291
-#define RETURN 292
-#define BRKP 293
-#define EXIT 294
-#define AND 295
-#define OR 296
-#define INIT 297
-#define ALLOC 298
-#define FREE 299
-#define LT 300
-#define LE 301
-#define GT 302
-#define GE 303
-#define EE 304
-#define NE 305
+#define TRUE 277
+#define FALSE 278
+#define NOT 279
+#define WHILE 280
+#define DO 281
+#define ENDWHILE 282
+#define BREAK 283
+#define CONTINUE 284
+#define REPEAT 285
+#define UNTIL 286
+#define TYPE 287
+#define ENDTYPE 288
+#define DECL 289
+#define ENDDECL 290
+#define INT 291
+#define STR 292
+#define TUPLE 293
+#define MAIN 294
+#define RETURN 295
+#define BRKP 296
+#define EXIT 297
+#define AND 298
+#define OR 299
+#define INIT 300
+#define ALLOC 301
+#define FREE 302
+#define NUL 303
+#define CLASS 304
+#define ENDCLASS 305
+#define EXTENDS 306
+#define NEW 307
+#define DELETE 308
+#define SELF 309
+#define LT 310
+#define LE 311
+#define GT 312
+#define GE 313
+#define EE 314
+#define NE 315
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

@@ -55,6 +55,7 @@
 "tuple"			{return TUPLE;}
 "type"			{return TYPE;}
 "endtype"		{return ENDTYPE;}
+"null"			{yylval = createtree(TLookup("null"),0,NULL,nt_NUL,NULL,NULL,NULL,NULL,NULL,NULL);return NUL;}
 "int main"		{return MAIN;}
 "initialize"	{return INIT;}
 "alloc"			{return ALLOC;}
