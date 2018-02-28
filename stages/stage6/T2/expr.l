@@ -19,11 +19,17 @@
 "<="			{return LE;}
 ">="			{return GE;}
 "!="			{return NE;}
-"=="			{return EE;}
+"=="			{return EE;}/*
 "++"			{return INC;}
-"--"			{return DEC;}
+"--"			{return DEC;}*/
+"!"				{return NOT;}
+"not"			{return NOT;}
 "||"			{return OR;}
+"or"			{return OR;}
 "&&"			{return AND;}
+"and"			{return AND;}
+"true"			{return TRUE;}
+"false"			{return FALSE;}
 "return"		{return RETURN;}
 "brkp"			{return BRKP;}
 "breakpoint"	{return BRKP;}
@@ -49,19 +55,26 @@
 "tuple"			{return TUPLE;}
 "type"			{return TYPE;}
 "endtype"		{return ENDTYPE;}
+"null"			{yylval = createtree(TLookup("null"),0,NULL,nt_NUL,NULL,NULL,NULL,NULL,NULL,NULL);return NUL;}
 "int main"		{return MAIN;}
 "initialize"	{return INIT;}
 "alloc"			{return ALLOC;}
 "free"			{return FREE;}
+"class"			{return CLASS;}
+"endclass"		{return ENDCLASS;}
+"extends"		{return EXTENDS;}
+"new"			{return NEW;}
+"delete"		{return DELETE;}
+"self"			{return SELF;}
 
-["][^"\n]*["]	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]*[']	{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
-[0-9]+			{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
+["][^"\n]*["]					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
+[0-9]+							{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
 [a-zA-Z][a-zA-Z0-9]*			{yylval = createtree(NULL,0,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
-[(),\[\];&{}.]	{return *yytext;}
-[ \t]			{}
-[\n]			{line++;}
-.				{printf("line:'%d'\tunknown character:'%c'\n",line,*yytext);exit(1);}
+[(),\[\];&{}.]					{return *yytext;}
+[ \t]							{}
+[\n]							{line++;}
+.								{printf("line:'%d'\tunknown character:'%c'\n",line,*yytext);exit(1);}
 
 %%
 int yywrap(void){

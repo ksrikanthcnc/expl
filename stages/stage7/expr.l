@@ -55,10 +55,17 @@
 "tuple"			{return TUPLE;}
 "type"			{return TYPE;}
 "endtype"		{return ENDTYPE;}
+"null"			{yylval = createtree(TLookup("null"),0,NULL,nt_NUL,NULL,NULL,NULL,NULL,NULL,NULL);return NUL;}
 "int main"		{return MAIN;}
 "initialize"	{return INIT;}
 "alloc"			{return ALLOC;}
 "free"			{return FREE;}
+"class"			{return CLASS;}
+"endclass"		{return ENDCLASS;}
+"extends"		{return EXTENDS;}
+"new"			{return NEW;}
+"delete"		{return DELETE;}
+"self"			{return SELF;}
 
 ["][^"\n]*["]					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
 ['][^'\n]*[']					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}

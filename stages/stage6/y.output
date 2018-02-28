@@ -5,8 +5,12 @@ Terminals unused in grammar
    INT
    STR
    TUPLE
-   AND
-   OR
+   CLASS
+   ENDCLASS
+   EXTENDS
+   NEW
+   DELETE
+   SELF
 
 
 Grammar
@@ -15,329 +19,349 @@ Grammar
 
     1 start: Program
 
-    2 Program: TDeclBlock GDeclBlock FDefBlock MainBlock
-    3        | TDeclBlock GDeclBlock MainBlock
-    4        | TDeclBlock MainBlock
-    5        | GDeclBlock FDefBlock MainBlock
-    6        | GDeclBlock MainBlock
-    7        | MainBlock
+    2 Program: %empty
+    3        | TDeclBlock GDeclBlock FDefBlock MainBlock
+    4        | TDeclBlock GDeclBlock MainBlock
+    5        | TDeclBlock MainBlock
+    6        | GDeclBlock FDefBlock MainBlock
+    7        | GDeclBlock MainBlock
+    8        | MainBlock
 
-    8 TDeclBlock: TYPE TStructs ENDTYPE
+    9 TDeclBlock: TYPE TStructs ENDTYPE
 
-    9 TStructs: TStructs TStruct
-   10         | TStruct
+   10 TStructs: TStructs TStruct
+   11         | TStruct
 
-   11 $@1: %empty
+   12 $@1: %empty
 
-   12 $@2: %empty
+   13 $@2: %empty
 
-   13 TStruct: ID $@1 '{' $@2 TFields '}'
+   14 TStruct: ID $@1 '{' $@2 TFields '}'
 
-   14 TFields: TFields TField
-   15        | TField
+   15 TFields: TFields TField
+   16        | TField
 
-   16 $@3: %empty
+   17 $@3: %empty
 
-   17 TField: Type $@3 VList ';'
+   18 TField: Type $@3 VList ';'
 
-   18 VList: VList ',' Vid
-   19      | Vid
+   19 VList: VList ',' Vid
+   20      | Vid
 
-   20 Vid: ID
+   21 Vid: ID
 
-   21 GDeclBlock: DECL GDeclList ENDDECL
-   22           | DECL ENDDECL
+   22 GDeclBlock: DECL GDeclList ENDDECL
+   23           | DECL ENDDECL
 
-   23 GDeclList: GDeclList GDecl
-   24          | GDecl
+   24 GDeclList: GDeclList GDecl
+   25          | GDecl
 
-   25 GDecl: Type GidList ';'
+   26 GDecl: Type GidList ';'
 
-   26 Type: ID
+   27 Type: ID
 
-   27 GidList: GidList ',' Gid
-   28        | Gid
+   28 GidList: GidList ',' Gid
+   29        | Gid
 
-   29 Gid: ID
-   30    | ID '[' NUM ']'
+   30 Gid: ID
+   31    | ID '[' NUM ']'
 
-   31 $@4: %empty
+   32 $@4: %empty
 
-   32 $@5: %empty
+   33 $@5: %empty
 
-   33 Gid: ID '(' $@4 ParamList $@5 ')'
+   34 Gid: ID '(' $@4 ParamList $@5 ')'
 
-   34 $@6: %empty
+   35 $@6: %empty
 
-   35 $@7: %empty
+   36 $@7: %empty
 
-   36 Gid: MUL ID '(' $@6 ParamList $@7 ')'
+   37 Gid: MUL ID '(' $@6 ParamList $@7 ')'
 
-   37 FDefBlock: FDefBlock FDef
-   38          | FDef
+   38 FDefBlock: FDefBlock FDef
+   39          | FDef
 
-   39 $@8: %empty
+   40 $@8: %empty
 
-   40 $@9: %empty
+   41 $@9: %empty
 
-   41 $@10: %empty
+   42 $@10: %empty
 
-   42 $@11: %empty
+   43 $@11: %empty
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
-   44 ParamList: ParamList ',' Param
-   45          | Param
-   46          | %empty
+   45 ParamList: ParamList ',' Param
+   46          | Param
+   47          | %empty
 
-   47 Param: Type Pid
+   48 Param: Type Pid
 
-   48 Pid: ID
-   49    | MUL ID
+   49 Pid: ID
+   50    | MUL ID
 
-   50 LDeclBlock: DECL LDecList ENDDECL
-   51           | DECL ENDDECL
+   51 LDeclBlock: DECL LDecList ENDDECL
+   52           | DECL ENDDECL
+   53           | %empty
 
-   52 LDecList: LDecList LDecl
-   53         | LDecl
+   54 LDecList: LDecList LDecl
+   55         | LDecl
 
-   54 LDecl: Type IdList ';'
+   56 LDecl: Type IdList ';'
 
-   55 IdList: IdList ',' Lid
-   56       | Lid
+   57 IdList: IdList ',' Lid
+   58       | Lid
 
-   57 Lid: ID
+   59 Lid: ID
 
-   58 $@12: %empty
+   60 $@12: %empty
 
-   59 $@13: %empty
+   61 $@13: %empty
 
-   60 $@14: %empty
+   62 $@14: %empty
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
 
-   62 Body: BEG Slist RETURN Expr ';' END
-   63     | BEG RETURN Expr ';' END
+   64 Body: BEG Slist RETURN Expr ';' END
+   65     | BEG RETURN Expr ';' END
 
-   64 Slist: Slist Stmt
-   65      | Stmt
+   66 Slist: Slist Stmt
+   67      | Stmt
 
-   66 Stmt: READ '(' id ')' ';'
-   67     | WRITE '(' Expr ')' ';'
-   68     | WRITE STRING ';'
-   69     | id EQ Expr ';'
-   70     | IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
-   71     | IF '(' Bool ')' THEN Slist ENDIF ';'
-   72     | WHILE '(' Bool ')' DO Slist ENDWHILE ';'
-   73     | REPEAT Slist UNTIL '(' Bool ')' ';'
-   74     | DO Slist WHILE '(' Bool ')' ';'
-   75     | BREAK ';'
-   76     | CONTINUE ';'
-   77     | BRKP ';'
-   78     | EXIT ';'
-   79     | INIT '(' ')' ';'
-   80     | id EQ ALLOC '(' ')' ';'
-   81     | FREE '(' id ')' ';'
+   68 Stmt: READ '(' id ')' ';'
+   69     | WRITE '(' Expr ')' ';'
+   70     | WRITE STRING ';'
+   71     | id EQ Expr ';'
+   72     | IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   73     | IF '(' Bool ')' THEN Slist ENDIF ';'
+   74     | WHILE '(' Bool ')' DO Slist ENDWHILE ';'
+   75     | REPEAT Slist UNTIL '(' Bool ')' ';'
+   76     | DO Slist WHILE '(' Bool ')' ';'
+   77     | BREAK ';'
+   78     | CONTINUE ';'
+   79     | BRKP ';'
+   80     | EXIT ';'
+   81     | INIT '(' ')' ';'
+   82     | id EQ ALLOC '(' ')' ';'
+   83     | FREE '(' id ')' ';'
 
-   82 Expr: Expr PLUS Expr
-   83     | Expr MINUS Expr
-   84     | Expr MUL Expr
-   85     | Expr DIV Expr
-   86     | Expr MOD Expr
-   87     | '(' Expr ')'
-   88     | NUM
-   89     | STRING
-   90     | id
-   91     | ID '(' ')'
-   92     | ID '(' ArgList ')'
+   84 Expr: Expr PLUS Expr
+   85     | Expr MINUS Expr
+   86     | Expr MUL Expr
+   87     | Expr DIV Expr
+   88     | Expr MOD Expr
+   89     | '(' Expr ')'
+   90     | NUM
+   91     | STRING
+   92     | id
+   93     | NUL
+   94     | ID '(' ')'
+   95     | ID '(' ArgList ')'
 
-   93 ArgList: ArgList ',' Expr
-   94        | Expr
+   96 ArgList: ArgList ',' Expr
+   97        | Expr
 
-   95 Bool: Expr LT Expr
-   96     | Expr LE Expr
-   97     | Expr GT Expr
-   98     | Expr GE Expr
-   99     | Expr EE Expr
-  100     | Expr NE Expr
+   98 Bool: Expr LT Expr
+   99     | Expr LE Expr
+  100     | Expr GT Expr
+  101     | Expr GE Expr
+  102     | Expr EE Expr
+  103     | Expr NE Expr
+  104     | TRUE
+  105     | FALSE
+  106     | '(' Bool ')'
+  107     | NOT Bool
+  108     | Bool AND Bool
+  109     | Bool OR Bool
 
-  101 id: ID
-  102   | ID '[' Expr ']'
-  103   | MUL id
-  104   | '&' id
-  105   | Field
+  110 id: ID
+  111   | ID '[' Expr ']'
+  112   | MUL id
+  113   | '&' id
+  114   | Field
 
-  106 Field: Field '.' ID
-  107      | ID '.' ID
+  115 Field: Field '.' ID
+  116      | ID '.' ID
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'&' (38) 104
-'(' (40) 33 36 43 61 66 67 70 71 72 73 74 79 80 81 87 91 92
-')' (41) 33 36 43 61 66 67 70 71 72 73 74 79 80 81 87 91 92
-',' (44) 18 27 44 55 93
-'.' (46) 106 107
-';' (59) 17 25 54 62 63 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
-    81
-'[' (91) 30 102
-']' (93) 30 102
-'{' (123) 13 43 61
-'}' (125) 13 43 61
+'&' (38) 113
+'(' (40) 34 37 44 63 68 69 72 73 74 75 76 81 82 83 89 94 95 106
+')' (41) 34 37 44 63 68 69 72 73 74 75 76 81 82 83 89 94 95 106
+',' (44) 19 28 45 57 96
+'.' (46) 115 116
+';' (59) 18 26 56 64 65 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82
+    83
+'[' (91) 31 111
+']' (93) 31 111
+'{' (123) 14 44 63
+'}' (125) 14 44 63
 error (256)
-NUM (258) 30 88
-ID (259) 13 20 26 29 30 33 36 43 48 49 57 91 92 101 102 106 107
-STRING (260) 68 89
-PLUS (261) 82
-MINUS (262) 83
-MUL (263) 36 49 84 103
-DIV (264) 85
-MOD (265) 86
-EQ (266) 69 80
+NUM (258) 31 90
+ID (259) 14 21 27 30 31 34 37 44 49 50 59 94 95 110 111 115 116
+STRING (260) 70 91
+PLUS (261) 84
+MINUS (262) 85
+MUL (263) 37 50 86 112
+DIV (264) 87
+MOD (265) 88
+EQ (266) 71 82
 INC (267)
 DEC (268)
-BEG (269) 62 63
-END (270) 62 63
-READ (271) 66
-WRITE (272) 67 68
-IF (273) 70 71
-THEN (274) 70 71
-ELSE (275) 70
-ENDIF (276) 70 71
-WHILE (277) 72 74
-DO (278) 72 74
-ENDWHILE (279) 72
-BREAK (280) 75
-CONTINUE (281) 76
-REPEAT (282) 73
-UNTIL (283) 73
-TYPE (284) 8
-ENDTYPE (285) 8
-DECL (286) 21 22 50 51
-ENDDECL (287) 21 22 50 51
-INT (288)
-STR (289)
-TUPLE (290)
-MAIN (291) 61
-RETURN (292) 62 63
-BRKP (293) 77
-EXIT (294) 78
-AND (295)
-OR (296)
-INIT (297) 79
-ALLOC (298) 80
-FREE (299) 81
-LT (300) 95
-LE (301) 96
-GT (302) 97
-GE (303) 98
-EE (304) 99
-NE (305) 100
+BEG (269) 64 65
+END (270) 64 65
+READ (271) 68
+WRITE (272) 69 70
+IF (273) 72 73
+THEN (274) 72 73
+ELSE (275) 72
+ENDIF (276) 72 73
+TRUE (277) 104
+FALSE (278) 105
+NOT (279) 107
+WHILE (280) 74 76
+DO (281) 74 76
+ENDWHILE (282) 74
+BREAK (283) 77
+CONTINUE (284) 78
+REPEAT (285) 75
+UNTIL (286) 75
+TYPE (287) 9
+ENDTYPE (288) 9
+DECL (289) 22 23 51 52
+ENDDECL (290) 22 23 51 52
+INT (291)
+STR (292)
+TUPLE (293)
+MAIN (294) 63
+RETURN (295) 64 65
+BRKP (296) 79
+EXIT (297) 80
+AND (298) 108
+OR (299) 109
+INIT (300) 81
+ALLOC (301) 82
+FREE (302) 83
+NUL (303) 93
+CLASS (304)
+ENDCLASS (305)
+EXTENDS (306)
+NEW (307)
+DELETE (308)
+SELF (309)
+LT (310) 98
+LE (311) 99
+GT (312) 100
+GE (313) 101
+EE (314) 102
+NE (315) 103
 
 
 Nonterminals, with rules where they appear
 
-$accept (61)
+$accept (71)
     on left: 0
-start (62)
+start (72)
     on left: 1, on right: 0
-Program (63)
-    on left: 2 3 4 5 6 7, on right: 1
-TDeclBlock (64)
-    on left: 8, on right: 2 3 4
-TStructs (65)
-    on left: 9 10, on right: 8 9
-TStruct (66)
-    on left: 13, on right: 9 10
-$@1 (67)
-    on left: 11, on right: 13
-$@2 (68)
-    on left: 12, on right: 13
-TFields (69)
-    on left: 14 15, on right: 13 14
-TField (70)
-    on left: 17, on right: 14 15
-$@3 (71)
-    on left: 16, on right: 17
-VList (72)
-    on left: 18 19, on right: 17 18
-Vid (73)
-    on left: 20, on right: 18 19
-GDeclBlock (74)
-    on left: 21 22, on right: 2 3 5 6
-GDeclList (75)
-    on left: 23 24, on right: 21 23
-GDecl (76)
-    on left: 25, on right: 23 24
-Type (77)
-    on left: 26, on right: 17 25 43 47 54
-GidList (78)
-    on left: 27 28, on right: 25 27
-Gid (79)
-    on left: 29 30 33 36, on right: 27 28
-$@4 (80)
-    on left: 31, on right: 33
-$@5 (81)
-    on left: 32, on right: 33
-$@6 (82)
-    on left: 34, on right: 36
-$@7 (83)
-    on left: 35, on right: 36
-FDefBlock (84)
-    on left: 37 38, on right: 2 5 37
-FDef (85)
-    on left: 43, on right: 37 38
-$@8 (86)
-    on left: 39, on right: 43
-$@9 (87)
-    on left: 40, on right: 43
-$@10 (88)
-    on left: 41, on right: 43
-$@11 (89)
-    on left: 42, on right: 43
-ParamList (90)
-    on left: 44 45 46, on right: 33 36 43 44
-Param (91)
-    on left: 47, on right: 44 45
-Pid (92)
-    on left: 48 49, on right: 47
-LDeclBlock (93)
-    on left: 50 51, on right: 43 61
-LDecList (94)
-    on left: 52 53, on right: 50 52
-LDecl (95)
-    on left: 54, on right: 52 53
-IdList (96)
-    on left: 55 56, on right: 54 55
-Lid (97)
-    on left: 57, on right: 55 56
-MainBlock (98)
-    on left: 61, on right: 2 3 4 5 6 7
-$@12 (99)
-    on left: 58, on right: 61
-$@13 (100)
-    on left: 59, on right: 61
-$@14 (101)
-    on left: 60, on right: 61
-Body (102)
-    on left: 62 63, on right: 43 61
-Slist (103)
-    on left: 64 65, on right: 62 64 70 71 72 73 74
-Stmt (104)
-    on left: 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81, on right:
-    64 65
-Expr (105)
-    on left: 82 83 84 85 86 87 88 89 90 91 92, on right: 62 63 67 69
-    82 83 84 85 86 87 93 94 95 96 97 98 99 100 102
-ArgList (106)
-    on left: 93 94, on right: 92 93
-Bool (107)
-    on left: 95 96 97 98 99 100, on right: 70 71 72 73 74
-id (108)
-    on left: 101 102 103 104 105, on right: 66 69 80 81 90 103 104
-Field (109)
-    on left: 106 107, on right: 105 106
+Program (73)
+    on left: 2 3 4 5 6 7 8, on right: 1
+TDeclBlock (74)
+    on left: 9, on right: 3 4 5
+TStructs (75)
+    on left: 10 11, on right: 9 10
+TStruct (76)
+    on left: 14, on right: 10 11
+$@1 (77)
+    on left: 12, on right: 14
+$@2 (78)
+    on left: 13, on right: 14
+TFields (79)
+    on left: 15 16, on right: 14 15
+TField (80)
+    on left: 18, on right: 15 16
+$@3 (81)
+    on left: 17, on right: 18
+VList (82)
+    on left: 19 20, on right: 18 19
+Vid (83)
+    on left: 21, on right: 19 20
+GDeclBlock (84)
+    on left: 22 23, on right: 3 4 6 7
+GDeclList (85)
+    on left: 24 25, on right: 22 24
+GDecl (86)
+    on left: 26, on right: 24 25
+Type (87)
+    on left: 27, on right: 18 26 44 48 56
+GidList (88)
+    on left: 28 29, on right: 26 28
+Gid (89)
+    on left: 30 31 34 37, on right: 28 29
+$@4 (90)
+    on left: 32, on right: 34
+$@5 (91)
+    on left: 33, on right: 34
+$@6 (92)
+    on left: 35, on right: 37
+$@7 (93)
+    on left: 36, on right: 37
+FDefBlock (94)
+    on left: 38 39, on right: 3 6 38
+FDef (95)
+    on left: 44, on right: 38 39
+$@8 (96)
+    on left: 40, on right: 44
+$@9 (97)
+    on left: 41, on right: 44
+$@10 (98)
+    on left: 42, on right: 44
+$@11 (99)
+    on left: 43, on right: 44
+ParamList (100)
+    on left: 45 46 47, on right: 34 37 44 45
+Param (101)
+    on left: 48, on right: 45 46
+Pid (102)
+    on left: 49 50, on right: 48
+LDeclBlock (103)
+    on left: 51 52 53, on right: 44 63
+LDecList (104)
+    on left: 54 55, on right: 51 54
+LDecl (105)
+    on left: 56, on right: 54 55
+IdList (106)
+    on left: 57 58, on right: 56 57
+Lid (107)
+    on left: 59, on right: 57 58
+MainBlock (108)
+    on left: 63, on right: 3 4 5 6 7 8
+$@12 (109)
+    on left: 60, on right: 63
+$@13 (110)
+    on left: 61, on right: 63
+$@14 (111)
+    on left: 62, on right: 63
+Body (112)
+    on left: 64 65, on right: 44 63
+Slist (113)
+    on left: 66 67, on right: 64 66 72 73 74 75 76
+Stmt (114)
+    on left: 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83, on right:
+    66 67
+Expr (115)
+    on left: 84 85 86 87 88 89 90 91 92 93 94 95, on right: 64 65 69
+    71 84 85 86 87 88 89 96 97 98 99 100 101 102 103 111
+ArgList (116)
+    on left: 96 97, on right: 95 96
+Bool (117)
+    on left: 98 99 100 101 102 103 104 105 106 107 108 109, on right:
+    72 73 74 75 76 106 107 108 109
+id (118)
+    on left: 110 111 112 113 114, on right: 68 71 82 83 92 112 113
+Field (119)
+    on left: 115 116, on right: 114 115
 
 
 State 0
@@ -348,6 +372,8 @@ State 0
     DECL  shift, and go to state 2
     MAIN  shift, and go to state 3
 
+    $default  reduce using rule 2 (Program)
+
     start       go to state 4
     Program     go to state 5
     TDeclBlock  go to state 6
@@ -357,7 +383,7 @@ State 0
 
 State 1
 
-    8 TDeclBlock: TYPE . TStructs ENDTYPE
+    9 TDeclBlock: TYPE . TStructs ENDTYPE
 
     ID  shift, and go to state 9
 
@@ -367,8 +393,8 @@ State 1
 
 State 2
 
-   21 GDeclBlock: DECL . GDeclList ENDDECL
-   22           | DECL . ENDDECL
+   22 GDeclBlock: DECL . GDeclList ENDDECL
+   23           | DECL . ENDDECL
 
     ID       shift, and go to state 12
     ENDDECL  shift, and go to state 13
@@ -380,9 +406,9 @@ State 2
 
 State 3
 
-   61 MainBlock: MAIN . $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN . $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
 
-    $default  reduce using rule 58 ($@12)
+    $default  reduce using rule 60 ($@12)
 
     $@12  go to state 17
 
@@ -403,9 +429,9 @@ State 5
 
 State 6
 
-    2 Program: TDeclBlock . GDeclBlock FDefBlock MainBlock
-    3        | TDeclBlock . GDeclBlock MainBlock
-    4        | TDeclBlock . MainBlock
+    3 Program: TDeclBlock . GDeclBlock FDefBlock MainBlock
+    4        | TDeclBlock . GDeclBlock MainBlock
+    5        | TDeclBlock . MainBlock
 
     DECL  shift, and go to state 2
     MAIN  shift, and go to state 3
@@ -416,8 +442,8 @@ State 6
 
 State 7
 
-    5 Program: GDeclBlock . FDefBlock MainBlock
-    6        | GDeclBlock . MainBlock
+    6 Program: GDeclBlock . FDefBlock MainBlock
+    7        | GDeclBlock . MainBlock
 
     ID    shift, and go to state 12
     MAIN  shift, and go to state 3
@@ -430,24 +456,24 @@ State 7
 
 State 8
 
-    7 Program: MainBlock .
+    8 Program: MainBlock .
 
-    $default  reduce using rule 7 (Program)
+    $default  reduce using rule 8 (Program)
 
 
 State 9
 
-   13 TStruct: ID . $@1 '{' $@2 TFields '}'
+   14 TStruct: ID . $@1 '{' $@2 TFields '}'
 
-    $default  reduce using rule 11 ($@1)
+    $default  reduce using rule 12 ($@1)
 
     $@1  go to state 25
 
 
 State 10
 
-    8 TDeclBlock: TYPE TStructs . ENDTYPE
-    9 TStructs: TStructs . TStruct
+    9 TDeclBlock: TYPE TStructs . ENDTYPE
+   10 TStructs: TStructs . TStruct
 
     ID       shift, and go to state 9
     ENDTYPE  shift, and go to state 26
@@ -457,29 +483,29 @@ State 10
 
 State 11
 
-   10 TStructs: TStruct .
+   11 TStructs: TStruct .
 
-    $default  reduce using rule 10 (TStructs)
+    $default  reduce using rule 11 (TStructs)
 
 
 State 12
 
-   26 Type: ID .
+   27 Type: ID .
 
-    $default  reduce using rule 26 (Type)
+    $default  reduce using rule 27 (Type)
 
 
 State 13
 
-   22 GDeclBlock: DECL ENDDECL .
+   23 GDeclBlock: DECL ENDDECL .
 
-    $default  reduce using rule 22 (GDeclBlock)
+    $default  reduce using rule 23 (GDeclBlock)
 
 
 State 14
 
-   21 GDeclBlock: DECL GDeclList . ENDDECL
-   23 GDeclList: GDeclList . GDecl
+   22 GDeclBlock: DECL GDeclList . ENDDECL
+   24 GDeclList: GDeclList . GDecl
 
     ID       shift, and go to state 12
     ENDDECL  shift, and go to state 28
@@ -490,14 +516,14 @@ State 14
 
 State 15
 
-   24 GDeclList: GDecl .
+   25 GDeclList: GDecl .
 
-    $default  reduce using rule 24 (GDeclList)
+    $default  reduce using rule 25 (GDeclList)
 
 
 State 16
 
-   25 GDecl: Type . GidList ';'
+   26 GDecl: Type . GidList ';'
 
     ID   shift, and go to state 30
     MUL  shift, and go to state 31
@@ -508,7 +534,7 @@ State 16
 
 State 17
 
-   61 MainBlock: MAIN $@12 . '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 . '(' ')' '{' $@13 LDeclBlock $@14 Body '}'
 
     '('  shift, and go to state 34
 
@@ -522,8 +548,8 @@ State 18
 
 State 19
 
-    2 Program: TDeclBlock GDeclBlock . FDefBlock MainBlock
-    3        | TDeclBlock GDeclBlock . MainBlock
+    3 Program: TDeclBlock GDeclBlock . FDefBlock MainBlock
+    4        | TDeclBlock GDeclBlock . MainBlock
 
     ID    shift, and go to state 12
     MAIN  shift, and go to state 3
@@ -536,22 +562,22 @@ State 19
 
 State 20
 
-    4 Program: TDeclBlock MainBlock .
+    5 Program: TDeclBlock MainBlock .
 
-    $default  reduce using rule 4 (Program)
+    $default  reduce using rule 5 (Program)
 
 
 State 21
 
-   43 FDef: Type . ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type . ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
     ID  shift, and go to state 37
 
 
 State 22
 
-    5 Program: GDeclBlock FDefBlock . MainBlock
-   37 FDefBlock: FDefBlock . FDef
+    6 Program: GDeclBlock FDefBlock . MainBlock
+   38 FDefBlock: FDefBlock . FDef
 
     ID    shift, and go to state 12
     MAIN  shift, and go to state 3
@@ -563,76 +589,76 @@ State 22
 
 State 23
 
-   38 FDefBlock: FDef .
+   39 FDefBlock: FDef .
 
-    $default  reduce using rule 38 (FDefBlock)
+    $default  reduce using rule 39 (FDefBlock)
 
 
 State 24
 
-    6 Program: GDeclBlock MainBlock .
+    7 Program: GDeclBlock MainBlock .
 
-    $default  reduce using rule 6 (Program)
+    $default  reduce using rule 7 (Program)
 
 
 State 25
 
-   13 TStruct: ID $@1 . '{' $@2 TFields '}'
+   14 TStruct: ID $@1 . '{' $@2 TFields '}'
 
     '{'  shift, and go to state 40
 
 
 State 26
 
-    8 TDeclBlock: TYPE TStructs ENDTYPE .
+    9 TDeclBlock: TYPE TStructs ENDTYPE .
 
-    $default  reduce using rule 8 (TDeclBlock)
+    $default  reduce using rule 9 (TDeclBlock)
 
 
 State 27
 
-    9 TStructs: TStructs TStruct .
+   10 TStructs: TStructs TStruct .
 
-    $default  reduce using rule 9 (TStructs)
+    $default  reduce using rule 10 (TStructs)
 
 
 State 28
 
-   21 GDeclBlock: DECL GDeclList ENDDECL .
+   22 GDeclBlock: DECL GDeclList ENDDECL .
 
-    $default  reduce using rule 21 (GDeclBlock)
+    $default  reduce using rule 22 (GDeclBlock)
 
 
 State 29
 
-   23 GDeclList: GDeclList GDecl .
+   24 GDeclList: GDeclList GDecl .
 
-    $default  reduce using rule 23 (GDeclList)
+    $default  reduce using rule 24 (GDeclList)
 
 
 State 30
 
-   29 Gid: ID .
-   30    | ID . '[' NUM ']'
-   33    | ID . '(' $@4 ParamList $@5 ')'
+   30 Gid: ID .
+   31    | ID . '[' NUM ']'
+   34    | ID . '(' $@4 ParamList $@5 ')'
 
     '['  shift, and go to state 41
     '('  shift, and go to state 42
 
-    $default  reduce using rule 29 (Gid)
+    $default  reduce using rule 30 (Gid)
 
 
 State 31
 
-   36 Gid: MUL . ID '(' $@6 ParamList $@7 ')'
+   37 Gid: MUL . ID '(' $@6 ParamList $@7 ')'
 
     ID  shift, and go to state 43
 
 
 State 32
 
-   25 GDecl: Type GidList . ';'
-   27 GidList: GidList . ',' Gid
+   26 GDecl: Type GidList . ';'
+   28 GidList: GidList . ',' Gid
 
     ';'  shift, and go to state 44
     ','  shift, and go to state 45
@@ -640,22 +666,22 @@ State 32
 
 State 33
 
-   28 GidList: Gid .
+   29 GidList: Gid .
 
-    $default  reduce using rule 28 (GidList)
+    $default  reduce using rule 29 (GidList)
 
 
 State 34
 
-   61 MainBlock: MAIN $@12 '(' . ')' '{' $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' . ')' '{' $@13 LDeclBlock $@14 Body '}'
 
     ')'  shift, and go to state 46
 
 
 State 35
 
-    2 Program: TDeclBlock GDeclBlock FDefBlock . MainBlock
-   37 FDefBlock: FDefBlock . FDef
+    3 Program: TDeclBlock GDeclBlock FDefBlock . MainBlock
+   38 FDefBlock: FDefBlock . FDef
 
     ID    shift, and go to state 12
     MAIN  shift, and go to state 3
@@ -667,74 +693,74 @@ State 35
 
 State 36
 
-    3 Program: TDeclBlock GDeclBlock MainBlock .
+    4 Program: TDeclBlock GDeclBlock MainBlock .
 
-    $default  reduce using rule 3 (Program)
+    $default  reduce using rule 4 (Program)
 
 
 State 37
 
-   43 FDef: Type ID . '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID . '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
     '('  shift, and go to state 48
 
 
 State 38
 
-   37 FDefBlock: FDefBlock FDef .
+   38 FDefBlock: FDefBlock FDef .
 
-    $default  reduce using rule 37 (FDefBlock)
+    $default  reduce using rule 38 (FDefBlock)
 
 
 State 39
 
-    5 Program: GDeclBlock FDefBlock MainBlock .
+    6 Program: GDeclBlock FDefBlock MainBlock .
 
-    $default  reduce using rule 5 (Program)
+    $default  reduce using rule 6 (Program)
 
 
 State 40
 
-   13 TStruct: ID $@1 '{' . $@2 TFields '}'
+   14 TStruct: ID $@1 '{' . $@2 TFields '}'
 
-    $default  reduce using rule 12 ($@2)
+    $default  reduce using rule 13 ($@2)
 
     $@2  go to state 49
 
 
 State 41
 
-   30 Gid: ID '[' . NUM ']'
+   31 Gid: ID '[' . NUM ']'
 
     NUM  shift, and go to state 50
 
 
 State 42
 
-   33 Gid: ID '(' . $@4 ParamList $@5 ')'
+   34 Gid: ID '(' . $@4 ParamList $@5 ')'
 
-    $default  reduce using rule 31 ($@4)
+    $default  reduce using rule 32 ($@4)
 
     $@4  go to state 51
 
 
 State 43
 
-   36 Gid: MUL ID . '(' $@6 ParamList $@7 ')'
+   37 Gid: MUL ID . '(' $@6 ParamList $@7 ')'
 
     '('  shift, and go to state 52
 
 
 State 44
 
-   25 GDecl: Type GidList ';' .
+   26 GDecl: Type GidList ';' .
 
-    $default  reduce using rule 25 (GDecl)
+    $default  reduce using rule 26 (GDecl)
 
 
 State 45
 
-   27 GidList: GidList ',' . Gid
+   28 GidList: GidList ',' . Gid
 
     ID   shift, and go to state 30
     MUL  shift, and go to state 31
@@ -744,30 +770,30 @@ State 45
 
 State 46
 
-   61 MainBlock: MAIN $@12 '(' ')' . '{' $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' . '{' $@13 LDeclBlock $@14 Body '}'
 
     '{'  shift, and go to state 54
 
 
 State 47
 
-    2 Program: TDeclBlock GDeclBlock FDefBlock MainBlock .
+    3 Program: TDeclBlock GDeclBlock FDefBlock MainBlock .
 
-    $default  reduce using rule 2 (Program)
+    $default  reduce using rule 3 (Program)
 
 
 State 48
 
-   43 FDef: Type ID '(' . $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' . $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
-    $default  reduce using rule 39 ($@8)
+    $default  reduce using rule 40 ($@8)
 
     $@8  go to state 55
 
 
 State 49
 
-   13 TStruct: ID $@1 '{' $@2 . TFields '}'
+   14 TStruct: ID $@1 '{' $@2 . TFields '}'
 
     ID  shift, and go to state 12
 
@@ -778,18 +804,18 @@ State 49
 
 State 50
 
-   30 Gid: ID '[' NUM . ']'
+   31 Gid: ID '[' NUM . ']'
 
     ']'  shift, and go to state 59
 
 
 State 51
 
-   33 Gid: ID '(' $@4 . ParamList $@5 ')'
+   34 Gid: ID '(' $@4 . ParamList $@5 ')'
 
     ID  shift, and go to state 12
 
-    $default  reduce using rule 46 (ParamList)
+    $default  reduce using rule 47 (ParamList)
 
     Type       go to state 60
     ParamList  go to state 61
@@ -798,36 +824,36 @@ State 51
 
 State 52
 
-   36 Gid: MUL ID '(' . $@6 ParamList $@7 ')'
+   37 Gid: MUL ID '(' . $@6 ParamList $@7 ')'
 
-    $default  reduce using rule 34 ($@6)
+    $default  reduce using rule 35 ($@6)
 
     $@6  go to state 63
 
 
 State 53
 
-   27 GidList: GidList ',' Gid .
+   28 GidList: GidList ',' Gid .
 
-    $default  reduce using rule 27 (GidList)
+    $default  reduce using rule 28 (GidList)
 
 
 State 54
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' . $@13 LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' . $@13 LDeclBlock $@14 Body '}'
 
-    $default  reduce using rule 59 ($@13)
+    $default  reduce using rule 61 ($@13)
 
     $@13  go to state 64
 
 
 State 55
 
-   43 FDef: Type ID '(' $@8 . ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 . ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
     ID  shift, and go to state 12
 
-    $default  reduce using rule 46 (ParamList)
+    $default  reduce using rule 47 (ParamList)
 
     Type       go to state 60
     ParamList  go to state 65
@@ -836,8 +862,8 @@ State 55
 
 State 56
 
-   13 TStruct: ID $@1 '{' $@2 TFields . '}'
-   14 TFields: TFields . TField
+   14 TStruct: ID $@1 '{' $@2 TFields . '}'
+   15 TFields: TFields . TField
 
     ID   shift, and go to state 12
     '}'  shift, and go to state 66
@@ -848,30 +874,30 @@ State 56
 
 State 57
 
-   15 TFields: TField .
+   16 TFields: TField .
 
-    $default  reduce using rule 15 (TFields)
+    $default  reduce using rule 16 (TFields)
 
 
 State 58
 
-   17 TField: Type . $@3 VList ';'
+   18 TField: Type . $@3 VList ';'
 
-    $default  reduce using rule 16 ($@3)
+    $default  reduce using rule 17 ($@3)
 
     $@3  go to state 68
 
 
 State 59
 
-   30 Gid: ID '[' NUM ']' .
+   31 Gid: ID '[' NUM ']' .
 
-    $default  reduce using rule 30 (Gid)
+    $default  reduce using rule 31 (Gid)
 
 
 State 60
 
-   47 Param: Type . Pid
+   48 Param: Type . Pid
 
     ID   shift, and go to state 69
     MUL  shift, and go to state 70
@@ -881,30 +907,30 @@ State 60
 
 State 61
 
-   33 Gid: ID '(' $@4 ParamList . $@5 ')'
-   44 ParamList: ParamList . ',' Param
+   34 Gid: ID '(' $@4 ParamList . $@5 ')'
+   45 ParamList: ParamList . ',' Param
 
     ','  shift, and go to state 72
 
-    $default  reduce using rule 32 ($@5)
+    $default  reduce using rule 33 ($@5)
 
     $@5  go to state 73
 
 
 State 62
 
-   45 ParamList: Param .
+   46 ParamList: Param .
 
-    $default  reduce using rule 45 (ParamList)
+    $default  reduce using rule 46 (ParamList)
 
 
 State 63
 
-   36 Gid: MUL ID '(' $@6 . ParamList $@7 ')'
+   37 Gid: MUL ID '(' $@6 . ParamList $@7 ')'
 
     ID  shift, and go to state 12
 
-    $default  reduce using rule 46 (ParamList)
+    $default  reduce using rule 47 (ParamList)
 
     Type       go to state 60
     ParamList  go to state 74
@@ -913,17 +939,19 @@ State 63
 
 State 64
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 . LDeclBlock $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 . LDeclBlock $@14 Body '}'
 
     DECL  shift, and go to state 75
+
+    $default  reduce using rule 53 (LDeclBlock)
 
     LDeclBlock  go to state 76
 
 
 State 65
 
-   43 FDef: Type ID '(' $@8 ParamList . ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
-   44 ParamList: ParamList . ',' Param
+   44 FDef: Type ID '(' $@8 ParamList . ')' $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   45 ParamList: ParamList . ',' Param
 
     ','  shift, and go to state 72
     ')'  shift, and go to state 77
@@ -931,21 +959,21 @@ State 65
 
 State 66
 
-   13 TStruct: ID $@1 '{' $@2 TFields '}' .
+   14 TStruct: ID $@1 '{' $@2 TFields '}' .
 
-    $default  reduce using rule 13 (TStruct)
+    $default  reduce using rule 14 (TStruct)
 
 
 State 67
 
-   14 TFields: TFields TField .
+   15 TFields: TFields TField .
 
-    $default  reduce using rule 14 (TFields)
+    $default  reduce using rule 15 (TFields)
 
 
 State 68
 
-   17 TField: Type $@3 . VList ';'
+   18 TField: Type $@3 . VList ';'
 
     ID  shift, and go to state 78
 
@@ -955,28 +983,28 @@ State 68
 
 State 69
 
-   48 Pid: ID .
+   49 Pid: ID .
 
-    $default  reduce using rule 48 (Pid)
+    $default  reduce using rule 49 (Pid)
 
 
 State 70
 
-   49 Pid: MUL . ID
+   50 Pid: MUL . ID
 
     ID  shift, and go to state 81
 
 
 State 71
 
-   47 Param: Type Pid .
+   48 Param: Type Pid .
 
-    $default  reduce using rule 47 (Param)
+    $default  reduce using rule 48 (Param)
 
 
 State 72
 
-   44 ParamList: ParamList ',' . Param
+   45 ParamList: ParamList ',' . Param
 
     ID  shift, and go to state 12
 
@@ -986,27 +1014,27 @@ State 72
 
 State 73
 
-   33 Gid: ID '(' $@4 ParamList $@5 . ')'
+   34 Gid: ID '(' $@4 ParamList $@5 . ')'
 
     ')'  shift, and go to state 83
 
 
 State 74
 
-   36 Gid: MUL ID '(' $@6 ParamList . $@7 ')'
-   44 ParamList: ParamList . ',' Param
+   37 Gid: MUL ID '(' $@6 ParamList . $@7 ')'
+   45 ParamList: ParamList . ',' Param
 
     ','  shift, and go to state 72
 
-    $default  reduce using rule 35 ($@7)
+    $default  reduce using rule 36 ($@7)
 
     $@7  go to state 84
 
 
 State 75
 
-   50 LDeclBlock: DECL . LDecList ENDDECL
-   51           | DECL . ENDDECL
+   51 LDeclBlock: DECL . LDecList ENDDECL
+   52           | DECL . ENDDECL
 
     ID       shift, and go to state 12
     ENDDECL  shift, and go to state 85
@@ -1018,33 +1046,33 @@ State 75
 
 State 76
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock . $@14 Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock . $@14 Body '}'
 
-    $default  reduce using rule 60 ($@14)
+    $default  reduce using rule 62 ($@14)
 
     $@14  go to state 89
 
 
 State 77
 
-   43 FDef: Type ID '(' $@8 ParamList ')' . $@9 '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 ParamList ')' . $@9 '{' $@10 LDeclBlock $@11 Body '}'
 
-    $default  reduce using rule 40 ($@9)
+    $default  reduce using rule 41 ($@9)
 
     $@9  go to state 90
 
 
 State 78
 
-   20 Vid: ID .
+   21 Vid: ID .
 
-    $default  reduce using rule 20 (Vid)
+    $default  reduce using rule 21 (Vid)
 
 
 State 79
 
-   17 TField: Type $@3 VList . ';'
-   18 VList: VList . ',' Vid
+   18 TField: Type $@3 VList . ';'
+   19 VList: VList . ',' Vid
 
     ';'  shift, and go to state 91
     ','  shift, and go to state 92
@@ -1052,49 +1080,49 @@ State 79
 
 State 80
 
-   19 VList: Vid .
+   20 VList: Vid .
 
-    $default  reduce using rule 19 (VList)
+    $default  reduce using rule 20 (VList)
 
 
 State 81
 
-   49 Pid: MUL ID .
+   50 Pid: MUL ID .
 
-    $default  reduce using rule 49 (Pid)
+    $default  reduce using rule 50 (Pid)
 
 
 State 82
 
-   44 ParamList: ParamList ',' Param .
+   45 ParamList: ParamList ',' Param .
 
-    $default  reduce using rule 44 (ParamList)
+    $default  reduce using rule 45 (ParamList)
 
 
 State 83
 
-   33 Gid: ID '(' $@4 ParamList $@5 ')' .
+   34 Gid: ID '(' $@4 ParamList $@5 ')' .
 
-    $default  reduce using rule 33 (Gid)
+    $default  reduce using rule 34 (Gid)
 
 
 State 84
 
-   36 Gid: MUL ID '(' $@6 ParamList $@7 . ')'
+   37 Gid: MUL ID '(' $@6 ParamList $@7 . ')'
 
     ')'  shift, and go to state 93
 
 
 State 85
 
-   51 LDeclBlock: DECL ENDDECL .
+   52 LDeclBlock: DECL ENDDECL .
 
-    $default  reduce using rule 51 (LDeclBlock)
+    $default  reduce using rule 52 (LDeclBlock)
 
 
 State 86
 
-   54 LDecl: Type . IdList ';'
+   56 LDecl: Type . IdList ';'
 
     ID  shift, and go to state 94
 
@@ -1104,8 +1132,8 @@ State 86
 
 State 87
 
-   50 LDeclBlock: DECL LDecList . ENDDECL
-   52 LDecList: LDecList . LDecl
+   51 LDeclBlock: DECL LDecList . ENDDECL
+   54 LDecList: LDecList . LDecl
 
     ID       shift, and go to state 12
     ENDDECL  shift, and go to state 97
@@ -1116,14 +1144,14 @@ State 87
 
 State 88
 
-   53 LDecList: LDecl .
+   55 LDecList: LDecl .
 
-    $default  reduce using rule 53 (LDecList)
+    $default  reduce using rule 55 (LDecList)
 
 
 State 89
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 . Body '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 . Body '}'
 
     BEG  shift, and go to state 99
 
@@ -1132,21 +1160,21 @@ State 89
 
 State 90
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 . '{' $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 . '{' $@10 LDeclBlock $@11 Body '}'
 
     '{'  shift, and go to state 101
 
 
 State 91
 
-   17 TField: Type $@3 VList ';' .
+   18 TField: Type $@3 VList ';' .
 
-    $default  reduce using rule 17 (TField)
+    $default  reduce using rule 18 (TField)
 
 
 State 92
 
-   18 VList: VList ',' . Vid
+   19 VList: VList ',' . Vid
 
     ID  shift, and go to state 78
 
@@ -1155,22 +1183,22 @@ State 92
 
 State 93
 
-   36 Gid: MUL ID '(' $@6 ParamList $@7 ')' .
+   37 Gid: MUL ID '(' $@6 ParamList $@7 ')' .
 
-    $default  reduce using rule 36 (Gid)
+    $default  reduce using rule 37 (Gid)
 
 
 State 94
 
-   57 Lid: ID .
+   59 Lid: ID .
 
-    $default  reduce using rule 57 (Lid)
+    $default  reduce using rule 59 (Lid)
 
 
 State 95
 
-   54 LDecl: Type IdList . ';'
-   55 IdList: IdList . ',' Lid
+   56 LDecl: Type IdList . ';'
+   57 IdList: IdList . ',' Lid
 
     ';'  shift, and go to state 103
     ','  shift, and go to state 104
@@ -1178,29 +1206,29 @@ State 95
 
 State 96
 
-   56 IdList: Lid .
+   58 IdList: Lid .
 
-    $default  reduce using rule 56 (IdList)
+    $default  reduce using rule 58 (IdList)
 
 
 State 97
 
-   50 LDeclBlock: DECL LDecList ENDDECL .
+   51 LDeclBlock: DECL LDecList ENDDECL .
 
-    $default  reduce using rule 50 (LDeclBlock)
+    $default  reduce using rule 51 (LDeclBlock)
 
 
 State 98
 
-   52 LDecList: LDecList LDecl .
+   54 LDecList: LDecList LDecl .
 
-    $default  reduce using rule 52 (LDecList)
+    $default  reduce using rule 54 (LDecList)
 
 
 State 99
 
-   62 Body: BEG . Slist RETURN Expr ';' END
-   63     | BEG . RETURN Expr ';' END
+   64 Body: BEG . Slist RETURN Expr ';' END
+   65     | BEG . RETURN Expr ';' END
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -1227,37 +1255,37 @@ State 99
 
 State 100
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body . '}'
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body . '}'
 
     '}'  shift, and go to state 125
 
 
 State 101
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' . $@10 LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' . $@10 LDeclBlock $@11 Body '}'
 
-    $default  reduce using rule 41 ($@10)
+    $default  reduce using rule 42 ($@10)
 
     $@10  go to state 126
 
 
 State 102
 
-   18 VList: VList ',' Vid .
+   19 VList: VList ',' Vid .
 
-    $default  reduce using rule 18 (VList)
+    $default  reduce using rule 19 (VList)
 
 
 State 103
 
-   54 LDecl: Type IdList ';' .
+   56 LDecl: Type IdList ';' .
 
-    $default  reduce using rule 54 (LDecl)
+    $default  reduce using rule 56 (LDecl)
 
 
 State 104
 
-   55 IdList: IdList ',' . Lid
+   57 IdList: IdList ',' . Lid
 
     ID  shift, and go to state 94
 
@@ -1266,19 +1294,19 @@ State 104
 
 State 105
 
-  101 id: ID .
-  102   | ID . '[' Expr ']'
-  107 Field: ID . '.' ID
+  110 id: ID .
+  111   | ID . '[' Expr ']'
+  116 Field: ID . '.' ID
 
     '['  shift, and go to state 128
     '.'  shift, and go to state 129
 
-    $default  reduce using rule 101 (id)
+    $default  reduce using rule 110 (id)
 
 
 State 106
 
-  103 id: MUL . id
+  112 id: MUL . id
 
     ID   shift, and go to state 105
     MUL  shift, and go to state 106
@@ -1290,15 +1318,15 @@ State 106
 
 State 107
 
-   66 Stmt: READ . '(' id ')' ';'
+   68 Stmt: READ . '(' id ')' ';'
 
     '('  shift, and go to state 131
 
 
 State 108
 
-   67 Stmt: WRITE . '(' Expr ')' ';'
-   68     | WRITE . STRING ';'
+   69 Stmt: WRITE . '(' Expr ')' ';'
+   70     | WRITE . STRING ';'
 
     STRING  shift, and go to state 132
     '('     shift, and go to state 133
@@ -1306,22 +1334,22 @@ State 108
 
 State 109
 
-   70 Stmt: IF . '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
-   71     | IF . '(' Bool ')' THEN Slist ENDIF ';'
+   72 Stmt: IF . '(' Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   73     | IF . '(' Bool ')' THEN Slist ENDIF ';'
 
     '('  shift, and go to state 134
 
 
 State 110
 
-   72 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
+   74 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
 
     '('  shift, and go to state 135
 
 
 State 111
 
-   74 Stmt: DO . Slist WHILE '(' Bool ')' ';'
+   76 Stmt: DO . Slist WHILE '(' Bool ')' ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -1347,21 +1375,21 @@ State 111
 
 State 112
 
-   75 Stmt: BREAK . ';'
+   77 Stmt: BREAK . ';'
 
     ';'  shift, and go to state 137
 
 
 State 113
 
-   76 Stmt: CONTINUE . ';'
+   78 Stmt: CONTINUE . ';'
 
     ';'  shift, and go to state 138
 
 
 State 114
 
-   73 Stmt: REPEAT . Slist UNTIL '(' Bool ')' ';'
+   75 Stmt: REPEAT . Slist UNTIL '(' Bool ')' ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -1387,64 +1415,65 @@ State 114
 
 State 115
 
-   63 Body: BEG RETURN . Expr ';' END
+   65 Body: BEG RETURN . Expr ';' END
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 144
-    id     go to state 145
+    Expr   go to state 145
+    id     go to state 146
     Field  go to state 124
 
 
 State 116
 
-   77 Stmt: BRKP . ';'
-
-    ';'  shift, and go to state 146
-
-
-State 117
-
-   78 Stmt: EXIT . ';'
+   79 Stmt: BRKP . ';'
 
     ';'  shift, and go to state 147
 
 
+State 117
+
+   80 Stmt: EXIT . ';'
+
+    ';'  shift, and go to state 148
+
+
 State 118
 
-   79 Stmt: INIT . '(' ')' ';'
-
-    '('  shift, and go to state 148
-
-
-State 119
-
-   81 Stmt: FREE . '(' id ')' ';'
+   81 Stmt: INIT . '(' ')' ';'
 
     '('  shift, and go to state 149
 
 
+State 119
+
+   83 Stmt: FREE . '(' id ')' ';'
+
+    '('  shift, and go to state 150
+
+
 State 120
 
-  104 id: '&' . id
+  113 id: '&' . id
 
     ID   shift, and go to state 105
     MUL  shift, and go to state 106
     '&'  shift, and go to state 120
 
-    id     go to state 150
+    id     go to state 151
     Field  go to state 124
 
 
 State 121
 
-   62 Body: BEG Slist . RETURN Expr ';' END
-   64 Slist: Slist . Stmt
+   64 Body: BEG Slist . RETURN Expr ';' END
+   66 Slist: Slist . Stmt
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -1456,177 +1485,189 @@ State 121
     BREAK     shift, and go to state 112
     CONTINUE  shift, and go to state 113
     REPEAT    shift, and go to state 114
-    RETURN    shift, and go to state 151
+    RETURN    shift, and go to state 152
     BRKP      shift, and go to state 116
     EXIT      shift, and go to state 117
     INIT      shift, and go to state 118
     FREE      shift, and go to state 119
     '&'       shift, and go to state 120
 
-    Stmt   go to state 152
+    Stmt   go to state 153
     id     go to state 123
     Field  go to state 124
 
 
 State 122
 
-   65 Slist: Stmt .
+   67 Slist: Stmt .
 
-    $default  reduce using rule 65 (Slist)
+    $default  reduce using rule 67 (Slist)
 
 
 State 123
 
-   69 Stmt: id . EQ Expr ';'
-   80     | id . EQ ALLOC '(' ')' ';'
+   71 Stmt: id . EQ Expr ';'
+   82     | id . EQ ALLOC '(' ')' ';'
 
-    EQ  shift, and go to state 153
+    EQ  shift, and go to state 154
 
 
 State 124
 
-  105 id: Field .
-  106 Field: Field . '.' ID
+  114 id: Field .
+  115 Field: Field . '.' ID
 
-    '.'  shift, and go to state 154
+    '.'  shift, and go to state 155
 
-    $default  reduce using rule 105 (id)
+    $default  reduce using rule 114 (id)
 
 
 State 125
 
-   61 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}' .
+   63 MainBlock: MAIN $@12 '(' ')' '{' $@13 LDeclBlock $@14 Body '}' .
 
-    $default  reduce using rule 61 (MainBlock)
+    $default  reduce using rule 63 (MainBlock)
 
 
 State 126
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 . LDeclBlock $@11 Body '}'
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 . LDeclBlock $@11 Body '}'
 
     DECL  shift, and go to state 75
 
-    LDeclBlock  go to state 155
+    $default  reduce using rule 53 (LDeclBlock)
+
+    LDeclBlock  go to state 156
 
 
 State 127
 
-   55 IdList: IdList ',' Lid .
+   57 IdList: IdList ',' Lid .
 
-    $default  reduce using rule 55 (IdList)
+    $default  reduce using rule 57 (IdList)
 
 
 State 128
 
-  102 id: ID '[' . Expr ']'
+  111 id: ID '[' . Expr ']'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 156
-    id     go to state 145
+    Expr   go to state 157
+    id     go to state 146
     Field  go to state 124
 
 
 State 129
 
-  107 Field: ID '.' . ID
+  116 Field: ID '.' . ID
 
-    ID  shift, and go to state 157
+    ID  shift, and go to state 158
 
 
 State 130
 
-  103 id: MUL id .
+  112 id: MUL id .
 
-    $default  reduce using rule 103 (id)
+    $default  reduce using rule 112 (id)
 
 
 State 131
 
-   66 Stmt: READ '(' . id ')' ';'
+   68 Stmt: READ '(' . id ')' ';'
 
     ID   shift, and go to state 105
     MUL  shift, and go to state 106
     '&'  shift, and go to state 120
 
-    id     go to state 158
+    id     go to state 159
     Field  go to state 124
 
 
 State 132
 
-   68 Stmt: WRITE STRING . ';'
+   70 Stmt: WRITE STRING . ';'
 
-    ';'  shift, and go to state 159
+    ';'  shift, and go to state 160
 
 
 State 133
 
-   67 Stmt: WRITE '(' . Expr ')' ';'
+   69 Stmt: WRITE '(' . Expr ')' ';'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 160
-    id     go to state 145
+    Expr   go to state 161
+    id     go to state 146
     Field  go to state 124
 
 
 State 134
 
-   70 Stmt: IF '(' . Bool ')' THEN Slist ELSE Slist ENDIF ';'
-   71     | IF '(' . Bool ')' THEN Slist ENDIF ';'
+   72 Stmt: IF '(' . Bool ')' THEN Slist ELSE Slist ENDIF ';'
+   73     | IF '(' . Bool ')' THEN Slist ENDIF ';'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
     '&'     shift, and go to state 120
 
-    Expr   go to state 161
-    Bool   go to state 162
-    id     go to state 145
+    Expr   go to state 166
+    Bool   go to state 167
+    id     go to state 146
     Field  go to state 124
 
 
 State 135
 
-   72 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
+   74 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
     '&'     shift, and go to state 120
 
-    Expr   go to state 161
-    Bool   go to state 163
-    id     go to state 145
+    Expr   go to state 166
+    Bool   go to state 168
+    id     go to state 146
     Field  go to state 124
 
 
 State 136
 
-   64 Slist: Slist . Stmt
-   74 Stmt: DO Slist . WHILE '(' Bool ')' ';'
+   66 Slist: Slist . Stmt
+   76 Stmt: DO Slist . WHILE '(' Bool ')' ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
     READ      shift, and go to state 107
     WRITE     shift, and go to state 108
     IF        shift, and go to state 109
-    WHILE     shift, and go to state 164
+    WHILE     shift, and go to state 169
     DO        shift, and go to state 111
     BREAK     shift, and go to state 112
     CONTINUE  shift, and go to state 113
@@ -1637,29 +1678,29 @@ State 136
     FREE      shift, and go to state 119
     '&'       shift, and go to state 120
 
-    Stmt   go to state 152
+    Stmt   go to state 153
     id     go to state 123
     Field  go to state 124
 
 
 State 137
 
-   75 Stmt: BREAK ';' .
+   77 Stmt: BREAK ';' .
 
-    $default  reduce using rule 75 (Stmt)
+    $default  reduce using rule 77 (Stmt)
 
 
 State 138
 
-   76 Stmt: CONTINUE ';' .
+   78 Stmt: CONTINUE ';' .
 
-    $default  reduce using rule 76 (Stmt)
+    $default  reduce using rule 78 (Stmt)
 
 
 State 139
 
-   64 Slist: Slist . Stmt
-   73 Stmt: REPEAT Slist . UNTIL '(' Bool ')' ';'
+   66 Slist: Slist . Stmt
+   75 Stmt: REPEAT Slist . UNTIL '(' Bool ')' ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -1671,1156 +1712,1152 @@ State 139
     BREAK     shift, and go to state 112
     CONTINUE  shift, and go to state 113
     REPEAT    shift, and go to state 114
-    UNTIL     shift, and go to state 165
+    UNTIL     shift, and go to state 170
     BRKP      shift, and go to state 116
     EXIT      shift, and go to state 117
     INIT      shift, and go to state 118
     FREE      shift, and go to state 119
     '&'       shift, and go to state 120
 
-    Stmt   go to state 152
+    Stmt   go to state 153
     id     go to state 123
     Field  go to state 124
 
 
 State 140
 
-   88 Expr: NUM .
+   90 Expr: NUM .
 
-    $default  reduce using rule 88 (Expr)
+    $default  reduce using rule 90 (Expr)
 
 
 State 141
 
-   91 Expr: ID . '(' ')'
-   92     | ID . '(' ArgList ')'
-  101 id: ID .
-  102   | ID . '[' Expr ']'
-  107 Field: ID . '.' ID
+   94 Expr: ID . '(' ')'
+   95     | ID . '(' ArgList ')'
+  110 id: ID .
+  111   | ID . '[' Expr ']'
+  116 Field: ID . '.' ID
 
     '['  shift, and go to state 128
-    '('  shift, and go to state 166
+    '('  shift, and go to state 171
     '.'  shift, and go to state 129
 
-    $default  reduce using rule 101 (id)
+    $default  reduce using rule 110 (id)
 
 
 State 142
 
-   89 Expr: STRING .
+   91 Expr: STRING .
 
-    $default  reduce using rule 89 (Expr)
+    $default  reduce using rule 91 (Expr)
 
 
 State 143
 
-   87 Expr: '(' . Expr ')'
+   93 Expr: NUL .
+
+    $default  reduce using rule 93 (Expr)
+
+
+State 144
+
+   89 Expr: '(' . Expr ')'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 167
-    id     go to state 145
+    Expr   go to state 172
+    id     go to state 146
     Field  go to state 124
-
-
-State 144
-
-   63 Body: BEG RETURN Expr . ';' END
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ';'    shift, and go to state 173
 
 
 State 145
 
-   90 Expr: id .
+   65 Body: BEG RETURN Expr . ';' END
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
 
-    $default  reduce using rule 90 (Expr)
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ';'    shift, and go to state 178
 
 
 State 146
 
-   77 Stmt: BRKP ';' .
+   92 Expr: id .
 
-    $default  reduce using rule 77 (Stmt)
+    $default  reduce using rule 92 (Expr)
 
 
 State 147
 
-   78 Stmt: EXIT ';' .
+   79 Stmt: BRKP ';' .
 
-    $default  reduce using rule 78 (Stmt)
+    $default  reduce using rule 79 (Stmt)
 
 
 State 148
 
-   79 Stmt: INIT '(' . ')' ';'
+   80 Stmt: EXIT ';' .
 
-    ')'  shift, and go to state 174
+    $default  reduce using rule 80 (Stmt)
 
 
 State 149
 
-   81 Stmt: FREE '(' . id ')' ';'
+   81 Stmt: INIT '(' . ')' ';'
+
+    ')'  shift, and go to state 179
+
+
+State 150
+
+   83 Stmt: FREE '(' . id ')' ';'
 
     ID   shift, and go to state 105
     MUL  shift, and go to state 106
     '&'  shift, and go to state 120
 
-    id     go to state 175
+    id     go to state 180
     Field  go to state 124
-
-
-State 150
-
-  104 id: '&' id .
-
-    $default  reduce using rule 104 (id)
 
 
 State 151
 
-   62 Body: BEG Slist RETURN . Expr ';' END
+  113 id: '&' id .
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 176
-    id     go to state 145
-    Field  go to state 124
+    $default  reduce using rule 113 (id)
 
 
 State 152
 
-   64 Slist: Slist Stmt .
+   64 Body: BEG Slist RETURN . Expr ';' END
 
-    $default  reduce using rule 64 (Slist)
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 181
+    id     go to state 146
+    Field  go to state 124
 
 
 State 153
 
-   69 Stmt: id EQ . Expr ';'
-   80     | id EQ . ALLOC '(' ')' ';'
+   66 Slist: Slist Stmt .
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    ALLOC   shift, and go to state 177
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 178
-    id     go to state 145
-    Field  go to state 124
+    $default  reduce using rule 66 (Slist)
 
 
 State 154
 
-  106 Field: Field '.' . ID
+   71 Stmt: id EQ . Expr ';'
+   82     | id EQ . ALLOC '(' ')' ';'
 
-    ID  shift, and go to state 179
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    ALLOC   shift, and go to state 182
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 183
+    id     go to state 146
+    Field  go to state 124
 
 
 State 155
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock . $@11 Body '}'
+  115 Field: Field '.' . ID
 
-    $default  reduce using rule 42 ($@11)
-
-    $@11  go to state 180
+    ID  shift, and go to state 184
 
 
 State 156
 
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-  102 id: ID '[' Expr . ']'
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock . $@11 Body '}'
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ']'    shift, and go to state 181
+    $default  reduce using rule 43 ($@11)
+
+    $@11  go to state 185
 
 
 State 157
 
-  107 Field: ID '.' ID .
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+  111 id: ID '[' Expr . ']'
 
-    $default  reduce using rule 107 (Field)
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ']'    shift, and go to state 186
 
 
 State 158
 
-   66 Stmt: READ '(' id . ')' ';'
+  116 Field: ID '.' ID .
 
-    ')'  shift, and go to state 182
+    $default  reduce using rule 116 (Field)
 
 
 State 159
 
-   68 Stmt: WRITE STRING ';' .
+   68 Stmt: READ '(' id . ')' ';'
 
-    $default  reduce using rule 68 (Stmt)
+    ')'  shift, and go to state 187
 
 
 State 160
 
-   67 Stmt: WRITE '(' Expr . ')' ';'
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
+   70 Stmt: WRITE STRING ';' .
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ')'    shift, and go to state 183
+    $default  reduce using rule 70 (Stmt)
 
 
 State 161
 
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   95 Bool: Expr . LT Expr
-   96     | Expr . LE Expr
-   97     | Expr . GT Expr
-   98     | Expr . GE Expr
-   99     | Expr . EE Expr
-  100     | Expr . NE Expr
+   69 Stmt: WRITE '(' Expr . ')' ';'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    LT     shift, and go to state 184
-    LE     shift, and go to state 185
-    GT     shift, and go to state 186
-    GE     shift, and go to state 187
-    EE     shift, and go to state 188
-    NE     shift, and go to state 189
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ')'    shift, and go to state 188
 
 
 State 162
 
-   70 Stmt: IF '(' Bool . ')' THEN Slist ELSE Slist ENDIF ';'
-   71     | IF '(' Bool . ')' THEN Slist ENDIF ';'
+  104 Bool: TRUE .
 
-    ')'  shift, and go to state 190
+    $default  reduce using rule 104 (Bool)
 
 
 State 163
 
-   72 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
+  105 Bool: FALSE .
 
-    ')'  shift, and go to state 191
+    $default  reduce using rule 105 (Bool)
 
 
 State 164
 
-   72 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
-   74     | DO Slist WHILE . '(' Bool ')' ';'
+  107 Bool: NOT . Bool
 
-    '('  shift, and go to state 192
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 166
+    Bool   go to state 189
+    id     go to state 146
+    Field  go to state 124
 
 
 State 165
 
-   73 Stmt: REPEAT Slist UNTIL . '(' Bool ')' ';'
+   89 Expr: '(' . Expr ')'
+  106 Bool: '(' . Bool ')'
 
-    '('  shift, and go to state 193
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 190
+    Bool   go to state 191
+    id     go to state 146
+    Field  go to state 124
 
 
 State 166
 
-   91 Expr: ID '(' . ')'
-   92     | ID '(' . ArgList ')'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   98 Bool: Expr . LT Expr
+   99     | Expr . LE Expr
+  100     | Expr . GT Expr
+  101     | Expr . GE Expr
+  102     | Expr . EE Expr
+  103     | Expr . NE Expr
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    ')'     shift, and go to state 194
-    '&'     shift, and go to state 120
-
-    Expr     go to state 195
-    ArgList  go to state 196
-    id       go to state 145
-    Field    go to state 124
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    LT     shift, and go to state 192
+    LE     shift, and go to state 193
+    GT     shift, and go to state 194
+    GE     shift, and go to state 195
+    EE     shift, and go to state 196
+    NE     shift, and go to state 197
 
 
 State 167
 
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   87     | '(' Expr . ')'
+   72 Stmt: IF '(' Bool . ')' THEN Slist ELSE Slist ENDIF ';'
+   73     | IF '(' Bool . ')' THEN Slist ENDIF ';'
+  108 Bool: Bool . AND Bool
+  109     | Bool . OR Bool
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ')'    shift, and go to state 197
+    AND  shift, and go to state 198
+    OR   shift, and go to state 199
+    ')'  shift, and go to state 200
 
 
 State 168
 
-   82 Expr: Expr PLUS . Expr
+   74 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
+  108 Bool: Bool . AND Bool
+  109     | Bool . OR Bool
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 198
-    id     go to state 145
-    Field  go to state 124
+    AND  shift, and go to state 198
+    OR   shift, and go to state 199
+    ')'  shift, and go to state 201
 
 
 State 169
 
-   83 Expr: Expr MINUS . Expr
+   74 Stmt: WHILE . '(' Bool ')' DO Slist ENDWHILE ';'
+   76     | DO Slist WHILE . '(' Bool ')' ';'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 199
-    id     go to state 145
-    Field  go to state 124
+    '('  shift, and go to state 202
 
 
 State 170
 
-   84 Expr: Expr MUL . Expr
+   75 Stmt: REPEAT Slist UNTIL . '(' Bool ')' ';'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 200
-    id     go to state 145
-    Field  go to state 124
+    '('  shift, and go to state 203
 
 
 State 171
 
-   85 Expr: Expr DIV . Expr
+   94 Expr: ID '(' . ')'
+   95     | ID '(' . ArgList ')'
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    ')'     shift, and go to state 204
     '&'     shift, and go to state 120
 
-    Expr   go to state 201
-    id     go to state 145
-    Field  go to state 124
+    Expr     go to state 205
+    ArgList  go to state 206
+    id       go to state 146
+    Field    go to state 124
 
 
 State 172
 
-   86 Expr: Expr MOD . Expr
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   89     | '(' Expr . ')'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 202
-    id     go to state 145
-    Field  go to state 124
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ')'    shift, and go to state 207
 
 
 State 173
 
-   63 Body: BEG RETURN Expr ';' . END
+   84 Expr: Expr PLUS . Expr
 
-    END  shift, and go to state 203
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 208
+    id     go to state 146
+    Field  go to state 124
 
 
 State 174
 
-   79 Stmt: INIT '(' ')' . ';'
+   85 Expr: Expr MINUS . Expr
 
-    ';'  shift, and go to state 204
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 209
+    id     go to state 146
+    Field  go to state 124
 
 
 State 175
 
-   81 Stmt: FREE '(' id . ')' ';'
+   86 Expr: Expr MUL . Expr
 
-    ')'  shift, and go to state 205
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 210
+    id     go to state 146
+    Field  go to state 124
 
 
 State 176
 
-   62 Body: BEG Slist RETURN Expr . ';' END
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
+   87 Expr: Expr DIV . Expr
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ';'    shift, and go to state 206
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 211
+    id     go to state 146
+    Field  go to state 124
 
 
 State 177
 
-   80 Stmt: id EQ ALLOC . '(' ')' ';'
+   88 Expr: Expr MOD . Expr
 
-    '('  shift, and go to state 207
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 212
+    id     go to state 146
+    Field  go to state 124
 
 
 State 178
 
-   69 Stmt: id EQ Expr . ';'
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
+   65 Body: BEG RETURN Expr ';' . END
 
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-    ';'    shift, and go to state 208
+    END  shift, and go to state 213
 
 
 State 179
 
-  106 Field: Field '.' ID .
+   81 Stmt: INIT '(' ')' . ';'
 
-    $default  reduce using rule 106 (Field)
+    ';'  shift, and go to state 214
 
 
 State 180
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 . Body '}'
+   83 Stmt: FREE '(' id . ')' ';'
 
-    BEG  shift, and go to state 99
-
-    Body  go to state 209
+    ')'  shift, and go to state 215
 
 
 State 181
 
-  102 id: ID '[' Expr ']' .
+   64 Body: BEG Slist RETURN Expr . ';' END
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
 
-    $default  reduce using rule 102 (id)
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ';'    shift, and go to state 216
 
 
 State 182
 
-   66 Stmt: READ '(' id ')' . ';'
+   82 Stmt: id EQ ALLOC . '(' ')' ';'
 
-    ';'  shift, and go to state 210
+    '('  shift, and go to state 217
 
 
 State 183
 
-   67 Stmt: WRITE '(' Expr ')' . ';'
+   71 Stmt: id EQ Expr . ';'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
 
-    ';'  shift, and go to state 211
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    ';'    shift, and go to state 218
 
 
 State 184
 
-   95 Bool: Expr LT . Expr
+  115 Field: Field '.' ID .
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 212
-    id     go to state 145
-    Field  go to state 124
+    $default  reduce using rule 115 (Field)
 
 
 State 185
 
-   96 Bool: Expr LE . Expr
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 . Body '}'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
+    BEG  shift, and go to state 99
 
-    Expr   go to state 213
-    id     go to state 145
-    Field  go to state 124
+    Body  go to state 219
 
 
 State 186
 
-   97 Bool: Expr GT . Expr
+  111 id: ID '[' Expr ']' .
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 214
-    id     go to state 145
-    Field  go to state 124
+    $default  reduce using rule 111 (id)
 
 
 State 187
 
-   98 Bool: Expr GE . Expr
+   68 Stmt: READ '(' id ')' . ';'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 215
-    id     go to state 145
-    Field  go to state 124
+    ';'  shift, and go to state 220
 
 
 State 188
 
-   99 Bool: Expr EE . Expr
+   69 Stmt: WRITE '(' Expr ')' . ';'
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 216
-    id     go to state 145
-    Field  go to state 124
+    ';'  shift, and go to state 221
 
 
 State 189
 
-  100 Bool: Expr NE . Expr
+  107 Bool: NOT Bool .
+  108     | Bool . AND Bool
+  109     | Bool . OR Bool
 
-    NUM     shift, and go to state 140
-    ID      shift, and go to state 141
-    STRING  shift, and go to state 142
-    MUL     shift, and go to state 106
-    '('     shift, and go to state 143
-    '&'     shift, and go to state 120
-
-    Expr   go to state 217
-    id     go to state 145
-    Field  go to state 124
+    $default  reduce using rule 107 (Bool)
 
 
 State 190
 
-   70 Stmt: IF '(' Bool ')' . THEN Slist ELSE Slist ENDIF ';'
-   71     | IF '(' Bool ')' . THEN Slist ENDIF ';'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   89     | '(' Expr . ')'
+   98 Bool: Expr . LT Expr
+   99     | Expr . LE Expr
+  100     | Expr . GT Expr
+  101     | Expr . GE Expr
+  102     | Expr . EE Expr
+  103     | Expr . NE Expr
 
-    THEN  shift, and go to state 218
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+    LT     shift, and go to state 192
+    LE     shift, and go to state 193
+    GT     shift, and go to state 194
+    GE     shift, and go to state 195
+    EE     shift, and go to state 196
+    NE     shift, and go to state 197
+    ')'    shift, and go to state 207
 
 
 State 191
 
-   72 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
+  106 Bool: '(' Bool . ')'
+  108     | Bool . AND Bool
+  109     | Bool . OR Bool
 
-    DO  shift, and go to state 219
+    AND  shift, and go to state 198
+    OR   shift, and go to state 199
+    ')'  shift, and go to state 222
 
 
 State 192
 
-   72 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
-   74     | DO Slist WHILE '(' . Bool ')' ';'
+   98 Bool: Expr LT . Expr
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 161
-    Bool   go to state 220
-    id     go to state 145
+    Expr   go to state 223
+    id     go to state 146
     Field  go to state 124
 
 
 State 193
 
-   73 Stmt: REPEAT Slist UNTIL '(' . Bool ')' ';'
+   99 Bool: Expr LE . Expr
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 161
-    Bool   go to state 221
-    id     go to state 145
+    Expr   go to state 224
+    id     go to state 146
     Field  go to state 124
 
 
 State 194
 
-   91 Expr: ID '(' ')' .
-
-    $default  reduce using rule 91 (Expr)
-
-
-State 195
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   94 ArgList: Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 94 (ArgList)
-
-
-State 196
-
-   92 Expr: ID '(' ArgList . ')'
-   93 ArgList: ArgList . ',' Expr
-
-    ','  shift, and go to state 222
-    ')'  shift, and go to state 223
-
-
-State 197
-
-   87 Expr: '(' Expr ')' .
-
-    $default  reduce using rule 87 (Expr)
-
-
-State 198
-
-   82 Expr: Expr . PLUS Expr
-   82     | Expr PLUS Expr .
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-
-    MUL  shift, and go to state 170
-    DIV  shift, and go to state 171
-    MOD  shift, and go to state 172
-
-    $default  reduce using rule 82 (Expr)
-
-
-State 199
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   83     | Expr MINUS Expr .
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-
-    MUL  shift, and go to state 170
-    DIV  shift, and go to state 171
-    MOD  shift, and go to state 172
-
-    $default  reduce using rule 83 (Expr)
-
-
-State 200
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   84     | Expr MUL Expr .
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-
-    $default  reduce using rule 84 (Expr)
-
-
-State 201
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   85     | Expr DIV Expr .
-   86     | Expr . MOD Expr
-
-    $default  reduce using rule 85 (Expr)
-
-
-State 202
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   86     | Expr MOD Expr .
-
-    $default  reduce using rule 86 (Expr)
-
-
-State 203
-
-   63 Body: BEG RETURN Expr ';' END .
-
-    $default  reduce using rule 63 (Body)
-
-
-State 204
-
-   79 Stmt: INIT '(' ')' ';' .
-
-    $default  reduce using rule 79 (Stmt)
-
-
-State 205
-
-   81 Stmt: FREE '(' id ')' . ';'
-
-    ';'  shift, and go to state 224
-
-
-State 206
-
-   62 Body: BEG Slist RETURN Expr ';' . END
-
-    END  shift, and go to state 225
-
-
-State 207
-
-   80 Stmt: id EQ ALLOC '(' . ')' ';'
-
-    ')'  shift, and go to state 226
-
-
-State 208
-
-   69 Stmt: id EQ Expr ';' .
-
-    $default  reduce using rule 69 (Stmt)
-
-
-State 209
-
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body . '}'
-
-    '}'  shift, and go to state 227
-
-
-State 210
-
-   66 Stmt: READ '(' id ')' ';' .
-
-    $default  reduce using rule 66 (Stmt)
-
-
-State 211
-
-   67 Stmt: WRITE '(' Expr ')' ';' .
-
-    $default  reduce using rule 67 (Stmt)
-
-
-State 212
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   95 Bool: Expr LT Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 95 (Bool)
-
-
-State 213
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   96 Bool: Expr LE Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 96 (Bool)
-
-
-State 214
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   97 Bool: Expr GT Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 97 (Bool)
-
-
-State 215
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   98 Bool: Expr GE Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 98 (Bool)
-
-
-State 216
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   99 Bool: Expr EE Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 99 (Bool)
-
-
-State 217
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-  100 Bool: Expr NE Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 100 (Bool)
-
-
-State 218
-
-   70 Stmt: IF '(' Bool ')' THEN . Slist ELSE Slist ENDIF ';'
-   71     | IF '(' Bool ')' THEN . Slist ENDIF ';'
-
-    ID        shift, and go to state 105
-    MUL       shift, and go to state 106
-    READ      shift, and go to state 107
-    WRITE     shift, and go to state 108
-    IF        shift, and go to state 109
-    WHILE     shift, and go to state 110
-    DO        shift, and go to state 111
-    BREAK     shift, and go to state 112
-    CONTINUE  shift, and go to state 113
-    REPEAT    shift, and go to state 114
-    BRKP      shift, and go to state 116
-    EXIT      shift, and go to state 117
-    INIT      shift, and go to state 118
-    FREE      shift, and go to state 119
-    '&'       shift, and go to state 120
-
-    Slist  go to state 228
-    Stmt   go to state 122
-    id     go to state 123
-    Field  go to state 124
-
-
-State 219
-
-   72 Stmt: WHILE '(' Bool ')' DO . Slist ENDWHILE ';'
-
-    ID        shift, and go to state 105
-    MUL       shift, and go to state 106
-    READ      shift, and go to state 107
-    WRITE     shift, and go to state 108
-    IF        shift, and go to state 109
-    WHILE     shift, and go to state 110
-    DO        shift, and go to state 111
-    BREAK     shift, and go to state 112
-    CONTINUE  shift, and go to state 113
-    REPEAT    shift, and go to state 114
-    BRKP      shift, and go to state 116
-    EXIT      shift, and go to state 117
-    INIT      shift, and go to state 118
-    FREE      shift, and go to state 119
-    '&'       shift, and go to state 120
-
-    Slist  go to state 229
-    Stmt   go to state 122
-    id     go to state 123
-    Field  go to state 124
-
-
-State 220
-
-   72 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
-   74     | DO Slist WHILE '(' Bool . ')' ';'
-
-    ')'  shift, and go to state 230
-
-
-State 221
-
-   73 Stmt: REPEAT Slist UNTIL '(' Bool . ')' ';'
-
-    ')'  shift, and go to state 231
-
-
-State 222
-
-   93 ArgList: ArgList ',' . Expr
+  100 Bool: Expr GT . Expr
 
     NUM     shift, and go to state 140
     ID      shift, and go to state 141
     STRING  shift, and go to state 142
     MUL     shift, and go to state 106
-    '('     shift, and go to state 143
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
     '&'     shift, and go to state 120
 
-    Expr   go to state 232
-    id     go to state 145
+    Expr   go to state 225
+    id     go to state 146
     Field  go to state 124
 
 
-State 223
+State 195
 
-   92 Expr: ID '(' ArgList ')' .
+  101 Bool: Expr GE . Expr
 
-    $default  reduce using rule 92 (Expr)
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 226
+    id     go to state 146
+    Field  go to state 124
 
 
-State 224
+State 196
 
-   81 Stmt: FREE '(' id ')' ';' .
+  102 Bool: Expr EE . Expr
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 227
+    id     go to state 146
+    Field  go to state 124
+
+
+State 197
+
+  103 Bool: Expr NE . Expr
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 228
+    id     go to state 146
+    Field  go to state 124
+
+
+State 198
+
+  108 Bool: Bool AND . Bool
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 166
+    Bool   go to state 229
+    id     go to state 146
+    Field  go to state 124
+
+
+State 199
+
+  109 Bool: Bool OR . Bool
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 166
+    Bool   go to state 230
+    id     go to state 146
+    Field  go to state 124
+
+
+State 200
+
+   72 Stmt: IF '(' Bool ')' . THEN Slist ELSE Slist ENDIF ';'
+   73     | IF '(' Bool ')' . THEN Slist ENDIF ';'
+
+    THEN  shift, and go to state 231
+
+
+State 201
+
+   74 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
+
+    DO  shift, and go to state 232
+
+
+State 202
+
+   74 Stmt: WHILE '(' . Bool ')' DO Slist ENDWHILE ';'
+   76     | DO Slist WHILE '(' . Bool ')' ';'
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 166
+    Bool   go to state 233
+    id     go to state 146
+    Field  go to state 124
+
+
+State 203
+
+   75 Stmt: REPEAT Slist UNTIL '(' . Bool ')' ';'
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    TRUE    shift, and go to state 162
+    FALSE   shift, and go to state 163
+    NOT     shift, and go to state 164
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 165
+    '&'     shift, and go to state 120
+
+    Expr   go to state 166
+    Bool   go to state 234
+    id     go to state 146
+    Field  go to state 124
+
+
+State 204
+
+   94 Expr: ID '(' ')' .
+
+    $default  reduce using rule 94 (Expr)
+
+
+State 205
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   97 ArgList: Expr .
+
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 97 (ArgList)
+
+
+State 206
+
+   95 Expr: ID '(' ArgList . ')'
+   96 ArgList: ArgList . ',' Expr
+
+    ','  shift, and go to state 235
+    ')'  shift, and go to state 236
+
+
+State 207
+
+   89 Expr: '(' Expr ')' .
+
+    $default  reduce using rule 89 (Expr)
+
+
+State 208
+
+   84 Expr: Expr . PLUS Expr
+   84     | Expr PLUS Expr .
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+
+    MUL  shift, and go to state 175
+    DIV  shift, and go to state 176
+    MOD  shift, and go to state 177
+
+    $default  reduce using rule 84 (Expr)
+
+
+State 209
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   85     | Expr MINUS Expr .
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+
+    MUL  shift, and go to state 175
+    DIV  shift, and go to state 176
+    MOD  shift, and go to state 177
+
+    $default  reduce using rule 85 (Expr)
+
+
+State 210
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   86     | Expr MUL Expr .
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+
+    $default  reduce using rule 86 (Expr)
+
+
+State 211
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   87     | Expr DIV Expr .
+   88     | Expr . MOD Expr
+
+    $default  reduce using rule 87 (Expr)
+
+
+State 212
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   88     | Expr MOD Expr .
+
+    $default  reduce using rule 88 (Expr)
+
+
+State 213
+
+   65 Body: BEG RETURN Expr ';' END .
+
+    $default  reduce using rule 65 (Body)
+
+
+State 214
+
+   81 Stmt: INIT '(' ')' ';' .
 
     $default  reduce using rule 81 (Stmt)
 
 
+State 215
+
+   83 Stmt: FREE '(' id ')' . ';'
+
+    ';'  shift, and go to state 237
+
+
+State 216
+
+   64 Body: BEG Slist RETURN Expr ';' . END
+
+    END  shift, and go to state 238
+
+
+State 217
+
+   82 Stmt: id EQ ALLOC '(' . ')' ';'
+
+    ')'  shift, and go to state 239
+
+
+State 218
+
+   71 Stmt: id EQ Expr ';' .
+
+    $default  reduce using rule 71 (Stmt)
+
+
+State 219
+
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body . '}'
+
+    '}'  shift, and go to state 240
+
+
+State 220
+
+   68 Stmt: READ '(' id ')' ';' .
+
+    $default  reduce using rule 68 (Stmt)
+
+
+State 221
+
+   69 Stmt: WRITE '(' Expr ')' ';' .
+
+    $default  reduce using rule 69 (Stmt)
+
+
+State 222
+
+  106 Bool: '(' Bool ')' .
+
+    $default  reduce using rule 106 (Bool)
+
+
+State 223
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   98 Bool: Expr LT Expr .
+
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 98 (Bool)
+
+
+State 224
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   99 Bool: Expr LE Expr .
+
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 99 (Bool)
+
+
 State 225
 
-   62 Body: BEG Slist RETURN Expr ';' END .
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+  100 Bool: Expr GT Expr .
 
-    $default  reduce using rule 62 (Body)
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 100 (Bool)
 
 
 State 226
 
-   80 Stmt: id EQ ALLOC '(' ')' . ';'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+  101 Bool: Expr GE Expr .
 
-    ';'  shift, and go to state 233
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 101 (Bool)
 
 
 State 227
 
-   43 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}' .
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+  102 Bool: Expr EE Expr .
 
-    $default  reduce using rule 43 (FDef)
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 102 (Bool)
 
 
 State 228
 
-   64 Slist: Slist . Stmt
-   70 Stmt: IF '(' Bool ')' THEN Slist . ELSE Slist ENDIF ';'
-   71     | IF '(' Bool ')' THEN Slist . ENDIF ';'
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+  103 Bool: Expr NE Expr .
 
-    ID        shift, and go to state 105
-    MUL       shift, and go to state 106
-    READ      shift, and go to state 107
-    WRITE     shift, and go to state 108
-    IF        shift, and go to state 109
-    ELSE      shift, and go to state 234
-    ENDIF     shift, and go to state 235
-    WHILE     shift, and go to state 110
-    DO        shift, and go to state 111
-    BREAK     shift, and go to state 112
-    CONTINUE  shift, and go to state 113
-    REPEAT    shift, and go to state 114
-    BRKP      shift, and go to state 116
-    EXIT      shift, and go to state 117
-    INIT      shift, and go to state 118
-    FREE      shift, and go to state 119
-    '&'       shift, and go to state 120
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
 
-    Stmt   go to state 152
-    id     go to state 123
-    Field  go to state 124
+    $default  reduce using rule 103 (Bool)
 
 
 State 229
 
-   64 Slist: Slist . Stmt
-   72 Stmt: WHILE '(' Bool ')' DO Slist . ENDWHILE ';'
+  108 Bool: Bool . AND Bool
+  108     | Bool AND Bool .
+  109     | Bool . OR Bool
 
-    ID        shift, and go to state 105
-    MUL       shift, and go to state 106
-    READ      shift, and go to state 107
-    WRITE     shift, and go to state 108
-    IF        shift, and go to state 109
-    WHILE     shift, and go to state 110
-    DO        shift, and go to state 111
-    ENDWHILE  shift, and go to state 236
-    BREAK     shift, and go to state 112
-    CONTINUE  shift, and go to state 113
-    REPEAT    shift, and go to state 114
-    BRKP      shift, and go to state 116
-    EXIT      shift, and go to state 117
-    INIT      shift, and go to state 118
-    FREE      shift, and go to state 119
-    '&'       shift, and go to state 120
-
-    Stmt   go to state 152
-    id     go to state 123
-    Field  go to state 124
+    $default  reduce using rule 108 (Bool)
 
 
 State 230
 
-   72 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
-   74     | DO Slist WHILE '(' Bool ')' . ';'
+  108 Bool: Bool . AND Bool
+  109     | Bool . OR Bool
+  109     | Bool OR Bool .
 
-    DO   shift, and go to state 219
-    ';'  shift, and go to state 237
+    $default  reduce using rule 109 (Bool)
 
 
 State 231
 
-   73 Stmt: REPEAT Slist UNTIL '(' Bool ')' . ';'
-
-    ';'  shift, and go to state 238
-
-
-State 232
-
-   82 Expr: Expr . PLUS Expr
-   83     | Expr . MINUS Expr
-   84     | Expr . MUL Expr
-   85     | Expr . DIV Expr
-   86     | Expr . MOD Expr
-   93 ArgList: ArgList ',' Expr .
-
-    PLUS   shift, and go to state 168
-    MINUS  shift, and go to state 169
-    MUL    shift, and go to state 170
-    DIV    shift, and go to state 171
-    MOD    shift, and go to state 172
-
-    $default  reduce using rule 93 (ArgList)
-
-
-State 233
-
-   80 Stmt: id EQ ALLOC '(' ')' ';' .
-
-    $default  reduce using rule 80 (Stmt)
-
-
-State 234
-
-   70 Stmt: IF '(' Bool ')' THEN Slist ELSE . Slist ENDIF ';'
+   72 Stmt: IF '(' Bool ')' THEN . Slist ELSE Slist ENDIF ';'
+   73     | IF '(' Bool ')' THEN . Slist ENDIF ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
@@ -2838,51 +2875,21 @@ State 234
     FREE      shift, and go to state 119
     '&'       shift, and go to state 120
 
-    Slist  go to state 239
+    Slist  go to state 241
     Stmt   go to state 122
     id     go to state 123
     Field  go to state 124
 
 
-State 235
+State 232
 
-   71 Stmt: IF '(' Bool ')' THEN Slist ENDIF . ';'
-
-    ';'  shift, and go to state 240
-
-
-State 236
-
-   72 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE . ';'
-
-    ';'  shift, and go to state 241
-
-
-State 237
-
-   74 Stmt: DO Slist WHILE '(' Bool ')' ';' .
-
-    $default  reduce using rule 74 (Stmt)
-
-
-State 238
-
-   73 Stmt: REPEAT Slist UNTIL '(' Bool ')' ';' .
-
-    $default  reduce using rule 73 (Stmt)
-
-
-State 239
-
-   64 Slist: Slist . Stmt
-   70 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist . ENDIF ';'
+   74 Stmt: WHILE '(' Bool ')' DO . Slist ENDWHILE ';'
 
     ID        shift, and go to state 105
     MUL       shift, and go to state 106
     READ      shift, and go to state 107
     WRITE     shift, and go to state 108
     IF        shift, and go to state 109
-    ENDIF     shift, and go to state 242
     WHILE     shift, and go to state 110
     DO        shift, and go to state 111
     BREAK     shift, and go to state 112
@@ -2894,34 +2901,288 @@ State 239
     FREE      shift, and go to state 119
     '&'       shift, and go to state 120
 
-    Stmt   go to state 152
+    Slist  go to state 242
+    Stmt   go to state 122
     id     go to state 123
     Field  go to state 124
 
 
+State 233
+
+   74 Stmt: WHILE '(' Bool . ')' DO Slist ENDWHILE ';'
+   76     | DO Slist WHILE '(' Bool . ')' ';'
+  108 Bool: Bool . AND Bool
+  109     | Bool . OR Bool
+
+    AND  shift, and go to state 198
+    OR   shift, and go to state 199
+    ')'  shift, and go to state 243
+
+
+State 234
+
+   75 Stmt: REPEAT Slist UNTIL '(' Bool . ')' ';'
+  108 Bool: Bool . AND Bool
+  109     | Bool . OR Bool
+
+    AND  shift, and go to state 198
+    OR   shift, and go to state 199
+    ')'  shift, and go to state 244
+
+
+State 235
+
+   96 ArgList: ArgList ',' . Expr
+
+    NUM     shift, and go to state 140
+    ID      shift, and go to state 141
+    STRING  shift, and go to state 142
+    MUL     shift, and go to state 106
+    NUL     shift, and go to state 143
+    '('     shift, and go to state 144
+    '&'     shift, and go to state 120
+
+    Expr   go to state 245
+    id     go to state 146
+    Field  go to state 124
+
+
+State 236
+
+   95 Expr: ID '(' ArgList ')' .
+
+    $default  reduce using rule 95 (Expr)
+
+
+State 237
+
+   83 Stmt: FREE '(' id ')' ';' .
+
+    $default  reduce using rule 83 (Stmt)
+
+
+State 238
+
+   64 Body: BEG Slist RETURN Expr ';' END .
+
+    $default  reduce using rule 64 (Body)
+
+
+State 239
+
+   82 Stmt: id EQ ALLOC '(' ')' . ';'
+
+    ';'  shift, and go to state 246
+
+
 State 240
 
-   71 Stmt: IF '(' Bool ')' THEN Slist ENDIF ';' .
+   44 FDef: Type ID '(' $@8 ParamList ')' $@9 '{' $@10 LDeclBlock $@11 Body '}' .
 
-    $default  reduce using rule 71 (Stmt)
+    $default  reduce using rule 44 (FDef)
 
 
 State 241
 
-   72 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE ';' .
+   66 Slist: Slist . Stmt
+   72 Stmt: IF '(' Bool ')' THEN Slist . ELSE Slist ENDIF ';'
+   73     | IF '(' Bool ')' THEN Slist . ENDIF ';'
 
-    $default  reduce using rule 72 (Stmt)
+    ID        shift, and go to state 105
+    MUL       shift, and go to state 106
+    READ      shift, and go to state 107
+    WRITE     shift, and go to state 108
+    IF        shift, and go to state 109
+    ELSE      shift, and go to state 247
+    ENDIF     shift, and go to state 248
+    WHILE     shift, and go to state 110
+    DO        shift, and go to state 111
+    BREAK     shift, and go to state 112
+    CONTINUE  shift, and go to state 113
+    REPEAT    shift, and go to state 114
+    BRKP      shift, and go to state 116
+    EXIT      shift, and go to state 117
+    INIT      shift, and go to state 118
+    FREE      shift, and go to state 119
+    '&'       shift, and go to state 120
+
+    Stmt   go to state 153
+    id     go to state 123
+    Field  go to state 124
 
 
 State 242
 
-   70 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF . ';'
+   66 Slist: Slist . Stmt
+   74 Stmt: WHILE '(' Bool ')' DO Slist . ENDWHILE ';'
 
-    ';'  shift, and go to state 243
+    ID        shift, and go to state 105
+    MUL       shift, and go to state 106
+    READ      shift, and go to state 107
+    WRITE     shift, and go to state 108
+    IF        shift, and go to state 109
+    WHILE     shift, and go to state 110
+    DO        shift, and go to state 111
+    ENDWHILE  shift, and go to state 249
+    BREAK     shift, and go to state 112
+    CONTINUE  shift, and go to state 113
+    REPEAT    shift, and go to state 114
+    BRKP      shift, and go to state 116
+    EXIT      shift, and go to state 117
+    INIT      shift, and go to state 118
+    FREE      shift, and go to state 119
+    '&'       shift, and go to state 120
+
+    Stmt   go to state 153
+    id     go to state 123
+    Field  go to state 124
 
 
 State 243
 
-   70 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';' .
+   74 Stmt: WHILE '(' Bool ')' . DO Slist ENDWHILE ';'
+   76     | DO Slist WHILE '(' Bool ')' . ';'
 
-    $default  reduce using rule 70 (Stmt)
+    DO   shift, and go to state 232
+    ';'  shift, and go to state 250
+
+
+State 244
+
+   75 Stmt: REPEAT Slist UNTIL '(' Bool ')' . ';'
+
+    ';'  shift, and go to state 251
+
+
+State 245
+
+   84 Expr: Expr . PLUS Expr
+   85     | Expr . MINUS Expr
+   86     | Expr . MUL Expr
+   87     | Expr . DIV Expr
+   88     | Expr . MOD Expr
+   96 ArgList: ArgList ',' Expr .
+
+    PLUS   shift, and go to state 173
+    MINUS  shift, and go to state 174
+    MUL    shift, and go to state 175
+    DIV    shift, and go to state 176
+    MOD    shift, and go to state 177
+
+    $default  reduce using rule 96 (ArgList)
+
+
+State 246
+
+   82 Stmt: id EQ ALLOC '(' ')' ';' .
+
+    $default  reduce using rule 82 (Stmt)
+
+
+State 247
+
+   72 Stmt: IF '(' Bool ')' THEN Slist ELSE . Slist ENDIF ';'
+
+    ID        shift, and go to state 105
+    MUL       shift, and go to state 106
+    READ      shift, and go to state 107
+    WRITE     shift, and go to state 108
+    IF        shift, and go to state 109
+    WHILE     shift, and go to state 110
+    DO        shift, and go to state 111
+    BREAK     shift, and go to state 112
+    CONTINUE  shift, and go to state 113
+    REPEAT    shift, and go to state 114
+    BRKP      shift, and go to state 116
+    EXIT      shift, and go to state 117
+    INIT      shift, and go to state 118
+    FREE      shift, and go to state 119
+    '&'       shift, and go to state 120
+
+    Slist  go to state 252
+    Stmt   go to state 122
+    id     go to state 123
+    Field  go to state 124
+
+
+State 248
+
+   73 Stmt: IF '(' Bool ')' THEN Slist ENDIF . ';'
+
+    ';'  shift, and go to state 253
+
+
+State 249
+
+   74 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE . ';'
+
+    ';'  shift, and go to state 254
+
+
+State 250
+
+   76 Stmt: DO Slist WHILE '(' Bool ')' ';' .
+
+    $default  reduce using rule 76 (Stmt)
+
+
+State 251
+
+   75 Stmt: REPEAT Slist UNTIL '(' Bool ')' ';' .
+
+    $default  reduce using rule 75 (Stmt)
+
+
+State 252
+
+   66 Slist: Slist . Stmt
+   72 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist . ENDIF ';'
+
+    ID        shift, and go to state 105
+    MUL       shift, and go to state 106
+    READ      shift, and go to state 107
+    WRITE     shift, and go to state 108
+    IF        shift, and go to state 109
+    ENDIF     shift, and go to state 255
+    WHILE     shift, and go to state 110
+    DO        shift, and go to state 111
+    BREAK     shift, and go to state 112
+    CONTINUE  shift, and go to state 113
+    REPEAT    shift, and go to state 114
+    BRKP      shift, and go to state 116
+    EXIT      shift, and go to state 117
+    INIT      shift, and go to state 118
+    FREE      shift, and go to state 119
+    '&'       shift, and go to state 120
+
+    Stmt   go to state 153
+    id     go to state 123
+    Field  go to state 124
+
+
+State 253
+
+   73 Stmt: IF '(' Bool ')' THEN Slist ENDIF ';' .
+
+    $default  reduce using rule 73 (Stmt)
+
+
+State 254
+
+   74 Stmt: WHILE '(' Bool ')' DO Slist ENDWHILE ';' .
+
+    $default  reduce using rule 74 (Stmt)
+
+
+State 255
+
+   72 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF . ';'
+
+    ';'  shift, and go to state 256
+
+
+State 256
+
+   72 Stmt: IF '(' Bool ')' THEN Slist ELSE Slist ENDIF ';' .
+
+    $default  reduce using rule 72 (Stmt)

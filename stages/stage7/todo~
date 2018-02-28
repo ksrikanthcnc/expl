@@ -35,5 +35,3 @@ return last and only one
 
 copy full tuple ie tuple a = tuple x
 
-
-x=initialize();
