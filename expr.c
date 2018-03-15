@@ -1,14 +1,9 @@
-#define puts //puts
-/*
-//uncomment for consoling
-	#define puts(str) tabtemp=0; while(tabtemp++<tabs) printf("\t"); printf(str); printf("\n");
-	#define target_file stdout
-*/
+#define exit(a); /*printf("line:'%d'\n",line);*/ exit(a);
 #include "expr.h"
 struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tnode *l, struct tnode *d,struct tnode *r,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry){
 	struct Paramstruct *ptemp;
 	struct tnode *atemp,*treetemp;
-	struct Typetable *tint,*tstr,*tintptr,*tstrptr,*tvoid,*tbool,*tnull,*tuser;
+	struct Typetable *tint,*tstr,*tintptr,*tstrptr,*tvoid,*tbool,*tnull;
 	tint=TLookup("int");
 	tstr=TLookup("str");
 	tintptr=TLookup("intptr");
@@ -16,14 +11,13 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 	tbool=TLookup("bool");
 	tvoid=TLookup("void");
 	tnull=TLookup("null");
-	switch(nt){
+	/*switch(nt){
 		case nt_NODE:
 			if(t!=tvoid)
 				mismatch(nt,l->t,r->t);
 			break;
 		case nt_PLUS:	
-		case nt_MINUS:
-			/*need to work*/
+		case nt_MINUS://need to work
 		case nt_MUL:
 		case nt_DIV:
 		case nt_MOD:
@@ -59,7 +53,6 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 			if(d->t!=tint && d->t!=tstr)
 				mismatch(nt,t,t);
 			break;
-		/*case nt_PTR:*/
 		case nt_READ:
 		case nt_WRITE:
 		case nt_STR:
@@ -94,7 +87,6 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 					printf("line:%d\ttype mismatch in Function call at '%d' parameter from right\n",line,param_pos);
 					printf("Declared type:'%s'\nCalled type:'%s'\n",ptemp->type->name,atemp->t->name);
 					exit(1);}
-				goto1:
 				ptemp=ptemp->next;
 				atemp=atemp->down;}
 			if(ptemp!=NULL || atemp!=NULL){
@@ -108,8 +100,6 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 				exit(1);}
 			break;
 		case nt_RET:
-			/*if(d->nt==nt_APTR)
-				t-=4;*/
 			if(t!=d->t)
 				mismatch(nt,t,d->t);
 			break;
@@ -143,10 +133,13 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 		case nt_OR:
 		case nt_NOT:
 		case nt_NUL:
+		case nt_SELF://-----------------
+		case nt_NEW:
+		case nt_DELETE:
 			break;
 		default:
 			printf("NO NT MATCHED IN CREATTREE...\n");
-			}
+			}*/
 		
 	
 	treetemp=malloc(sizeof(struct tnode));
@@ -164,8 +157,6 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 	treetemp->right=r;
 	treetemp->down=d;
 	return treetemp;}
-
-
 void GInstall(char *name, struct Typetable *type, int size){
 	//printf("Install-ing in Global Symbol table...\n");
 	struct Gsymbol* gitemp;
@@ -175,6 +166,7 @@ void GInstall(char *name, struct Typetable *type, int size){
 	gitemp=malloc(sizeof(struct Gsymbol));
 	gitemp->name=name;
 	gitemp->type=type;
+	gitemp->class=ctype;
 	gitemp->size=size;
 	if(size>0)
 		gitemp->binding=gbinding;
@@ -187,7 +179,6 @@ void GInstall(char *name, struct Typetable *type, int size){
 	//printf("name:'%s'\ttype:'%d'\tsize:'%d'\tbinding:'%d'\tarr:%d\n",gitemp->name,gitemp->type,gitemp->size,gitemp->binding,gitemp->arr);
 	//printf("Install-ed...\n\n");
 	;}
-
 struct Gsymbol *GLookup(char* name){
 	//printf("  Searching symbol table...\n");
 	struct Gsymbol* temp;
@@ -200,7 +191,6 @@ struct Gsymbol *GLookup(char* name){
 		temp=temp->next;}
 	//printf("  Not found...\n");
 	return NULL;}
-
 void PInstall(char* name, struct Typetable *type){
 	//printf("Install-ing in ParamList...\n");
 	if(PLookup(name)!=NULL){
@@ -215,7 +205,6 @@ void PInstall(char* name, struct Typetable *type){
 	//printf("name:'%s'\ttype:'%d'\t\n",pitemp->name,pitemp->type);
 	//printf("Install-ed...\n\n");
 	;}
-
 struct Paramstruct* PLookup(char* name){
 	struct Paramstruct* temp;
 	temp=phead;
@@ -227,7 +216,6 @@ struct Paramstruct* PLookup(char* name){
 		temp=temp->next;}
 	//printf("  Not found!\n");
 	return NULL;}
-
 void LInstall(char *name, struct Typetable *type){
 	//printf("Install-ing in Local Symbol table...\n");
 	if(LLookup(name)!=NULL){
@@ -243,7 +231,6 @@ void LInstall(char *name, struct Typetable *type){
 	//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",litemp->name,litemp->type,litemp->binding);
 	//printf("Install-ed...\n\n");
 	;}
-
 struct Lsymbol *LLookup(char *name){
 	//printf("Searching Lsymbol table...\n");
 	struct Lsymbol* temp;
@@ -292,14 +279,15 @@ struct Typetable* TLookup(char *name){
 		temp=temp->next;}
 	//printf("Not found...\n");
 	return NULL;}
-void FInstall(char *name,int fieldIndex,struct Typetable *type){
+void FInstall(char *name,int fieldindex,struct Typetable *type){
 	struct Fieldlist *ftemp=malloc(sizeof(struct Fieldlist));
 	if(FLookup(type,name)!=NULL){
 		printf("line:%d\tfield:'%s' redeclared\n",line,name);
 		exit(1);}
 	ftemp->name=name;
-	ftemp->fieldIndex=fieldIndex;
+	ftemp->fieldindex=fieldindex;
 	ftemp->type=type;
+	ftemp->ctype=NULL;
 	ftemp->next=fhead;
 	fhead=ftemp;}
 struct Fieldlist* FLookup(struct Typetable *type, char *name){
@@ -324,90 +312,85 @@ struct Fieldlist* FLookmember(struct Typetable *type, char *name){
 		temp=temp->next;}
 	//printf("line:'%d':Not found '%s' in type:'%s'\n",line,name,type->name);
 	return NULL;}
-
-void CInstall(char *name,struct Ctable *parent,struct Cfields *fields){
-	//printf("Install-ing in CTable...\n");
-	if(CLookup(name)!=NULL){
-		printf("line:%d\tclass:'%s' redeclared\n",line,name);
+struct Classtable* CInstall(char *name,char *parent){
+	struct Classtable *new=malloc(sizeof(struct Classtable));
+	new->name=name;
+	if(parent!=NULL && CLookup(parent)==NULL){
+		printf("line:'%d'\tNo parent class:'%s' to extend from\n",line,parent);
 		exit(1);}
-	struct Ctable *ctemp=malloc(sizeof(struct Ctable));
-	ctemp->name=name;
-	//ctemp->size=size;
-	ctemp->fields=fields;
-	ctemp->next=chead;
-	chead=ctemp;
-	//printf("New entry is----\n");
-	//printf("name:'%s'\n",ttemp->name);
-	//printf("Install-ed...\n\n");
-	}
-struct Ctable *CLookup(char *name){
-	struct Ctable *temp;
+	if(parent!=NULL)
+		new->parent=CLookup(parent);
+	else
+		new->parent=NULL;
+	new->index=cindex++;
+	new->next=chead;
+	chead=new;
+	return new;}
+struct Classtable* CLookup(char *name){
+	struct Classtable *temp;
 	temp=chead;
-	while(temp!=NULL){
-		//printf("name:'%s'\ttype:'%d'\tbinding:'%d'\n",temp->name,temp->type,temp->binding);
+	while(temp){
 		if(strcmp(temp->name,name)==0){
-			//printf("Found!\n");
 			return temp;}
 		temp=temp->next;}
-	//printf("Not found...\n");
 	return NULL;}
-void CFInstall(char *name,int fieldIndex,struct Typetable *type){
-	struct Cfields *cftemp=malloc(sizeof(struct Cfields));
-	if(CFLookup(cfhead,name)!=NULL){
-		printf("line:%d\tcfield:'%s' redeclared\n",line,name);
+void CFInstall(/*struct Classtable *cptr, */char *typename, char *name){
+	struct Fieldlist *new=malloc(sizeof(struct Fieldlist));
+	new->name=name;
+	if(TLookup(typename)!=NULL){
+		new->type=TLookup(typename);
+		new->ctype=NULL;}
+	else{
+		new->type=NULL;
+		new->ctype=CLookup(typename);}
+	if(TLookup(typename)!=NULL && CLookup(typename)!=NULL){
+		printf("line:'%d'\tCHECK ME!\n",line);
 		exit(1);}
-	cftemp->name=name;
-	cftemp->fieldIndex=fieldIndex;
-	cftemp->type=type;
-	cftemp->next=cfhead;
-	cfhead=cftemp;}
-
-struct Cfields* CFLookup(struct Cfields *cfhead, char *name){
-	struct Cfields *temp;
-	temp=cfhead;
-	while(temp!=NULL){
-		//printf("\tname:'%s'\tfieldIndex:'%d'\ttype->name:'%s'\n",temp->name,temp->fieldIndex,temp->type->name);
+	new->fieldindex=fieldindex++;
+	new->next=fhead;
+	fhead=new;}
+struct Fieldlist *CFLookup(struct Classtable *class, char *name){
+	struct Fieldlist *temp;
+	temp=class->memberfield;
+	while(temp){
 		if(strcmp(temp->name,name)==0){
-			//printf("Found!\n");
 			return temp;}
 		temp=temp->next;}
-	//printf("line:'%d':Not found '%s' in type:'%s'\n",line,name,type->name);
 	return NULL;}
-
-
-
-
+void CMInstall(/*struct Classtable *cptr, */char *name, struct Typetable *type, struct Paramstruct *Paramlist){
+	struct Memberfunclist *new=malloc(sizeof(struct Memberfunclist));
+	new->name=name;
+	new->type=type;
+	new->paramlist=Paramlist;
+	new->flabel=flabel++;
+	new->funcposition=funcposition++;
+	new->next=mhead;
+	mhead=new;}
+struct Memberfunclist *CMLookup(struct Classtable *class, char *name){
+	struct Memberfunclist *temp;
+	temp=class->memberfunc;
+	while(temp){
+		if(strcmp(temp->name,name)==0){
+			return temp;}
+		temp=temp->next;}
+	return NULL;}
 int GetSize (struct Typetable *type){
 	return type->size;}
-
-void generate(){
-	puts("\t\t\t\t+Generating Code");
-	fprintf(target_file,"%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",0,2056,0,0,0,0,0,0);
-	fprintf(target_file,"MOV SP,%d --start\n",gbinding-1);
-	fprintf(target_file,"MOV BP,%d --start\n",gbinding);
-	fprintf(target_file,"PUSH R0 --ret.val\n");
-	//Brkp(target_file);
-	fprintf(target_file,"CALL F1000\n");
-	Halt(target_file);
-	puts("\t\t\t\t-Generated");
-	;}
-
 int reg=-1,tempreg;
 int label=0;
 int break2[100];
 int cont1[100];
 int top=-1;
 int readflag=0;
-
 int getReg(){
 	reg++;
 	//puts("\t\t\t\t+reg++");
-	/*
+#ifdef BUG
 	//printf("\t\tgotReg:R%d\t",reg);
 	printf("\t\t\t\t+");
 	for(int s=reg;s>-1;s--) printf("#");
 	printf("\n");
-	*/
+#endif	
 	if(reg>19){printf("Out of registers\n");
 				exit(1);}
 	return reg;}
@@ -416,14 +399,25 @@ void freeReg(){
 	//puts("\t\t\t\t-reg--");
 	if(reg<0){//puts("(All registers free...)");
 	;}
-	/*
+#ifdef BUG
 	//printf("\t\tfreedReg:R%d\t",reg);
 	printf("\t\t\t\t-");
 	for(int s=reg;s>-1;s--) printf("#");
 	printf("\n");
-	*/
+#endif	
 	}
 int getLabel(){label++;return label;}
+void generate(){
+	puts("\t\t\t\t+Generating Code");
+	fprintf(target_file,"F%d:\n",TMAIN);
+	fprintf(target_file,"MOV SP,%d --start\n",gbinding-1);
+	fprintf(target_file,"MOV BP,%d --start\n",gbinding);
+	fprintf(target_file,"PUSH R0 --ret.val\n");
+	//Brkp(target_file);
+	fprintf(target_file,"CALL F%d\n",FMAIN);
+	Halt(target_file);
+	puts("\t\t\t\t-Generated");
+	;}
 int codeGen(struct tnode *t){
 	tabs++;
 	int i,j,k,ret,label1,label2,result,regtemp;
@@ -463,7 +457,7 @@ int codeGen(struct tnode *t){
 			i=getReg();
 			if(t->Lentry==NULL){
 				j=t->Gentry->binding+t->num;
-				fprintf(target_file, "MOV R%d,[%d] --Gid.fetch\n",i,j);}
+				fprintf(target_file, "MOV R%d,[%d] --Gid\n",i,j);}
 			else{
 				j=getReg();
 				fetch_local_loc_to(t,j);
@@ -684,9 +678,22 @@ int codeGen(struct tnode *t){
 			freeReg();//--------------------------
 			restReg();
 			puts("\t\t\t\t-write");
+
 			break;
 		case nt_ASGN:
 			puts("\t\t\t\t+'='");
+			/*if(t->left->class!=NULL && t->left->left->nt==nt_SELF){//self.root=null;
+				j=codeGen(t->right);
+				i=getReg();
+				fprintf(target_file, "MOV R%d,BP --(BP-?)\n",i);
+				fprintf(target_file, "ADD R%d, %d --heapbind\n",i,t->left->left->num);
+				Debug(i);
+				fprintf(target_file, "MOV [R%d],R%d --self\n",i,j);
+				k=getReg();
+				freeReg();
+				freeReg();
+				freeReg();
+				break;}*/
 			if(t->left->Lentry==NULL){//------------------------
 				node=t->left->Gentry;
 				if(t->left->nt==nt_SPTR){
@@ -703,10 +710,16 @@ int codeGen(struct tnode *t){
 					fprintf(target_file,"MOV [%d],\"%s\" --\"str\"\n",j,t->right->str);}
 				else if(t->left->nt==nt_USERROOT){
 					i=codeGen(t->left->left);
-					fprintf(target_file, "ADD R%d,%d --off\n",i,t->left->num);
-					j=codeGen(t->right);
-					fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
-					freeReg();
+					if(t->left->left->nt==nt_SELF){
+						fprintf(target_file, "ADD R%d,%d --off\n",i,t->left->num);
+						j=codeGen(t->right);
+						fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
+						freeReg();}
+					else{
+						fprintf(target_file, "ADD R%d,%d --off\n",i,t->left->num);
+						j=codeGen(t->right);
+						fprintf(target_file, "MOV [R%d],R%d --asgn\n",i,j);
+						freeReg();}
 					freeReg();}
 				else{
 					if(t->left->down!=NULL)
@@ -745,7 +758,6 @@ int codeGen(struct tnode *t){
 					freeReg();
 				}
 				else{
-					k=getReg();
 					fetch_local_loc_to(t->left,k);
 					i=codeGen(t->right);
 					fprintf(target_file,"MOV [R%d],R%d --Lasgn\n",k,i);
@@ -753,7 +765,6 @@ int codeGen(struct tnode *t){
 				freeReg();}
 			puts("\t\t\t\t-'='");
 			break;
-
 		case nt_IF:
 			puts("\t\t\t\t+if");
 			result=codeGen(t->left);
@@ -816,6 +827,17 @@ int codeGen(struct tnode *t){
 				fprintf(target_file, "PUSH R%d --save.reg\n",reg);
 				freeReg();}
 			atemp=t->arglist;
+			if(t->class!=NULL && t->left->nt!=nt_SELF){
+				i=getReg();
+				j=getReg();
+				fprintf(target_file,"MOV R%d, %d --clasloc\n",i,t->left->Gentry->binding);
+				fprintf(target_file,"MOV R%d,[R%d]\n",j,i);
+				fprintf(target_file,"PUSH R%d --clasloc\n",j);
+				fprintf(target_file,"ADD R%d, 1 --vfunc\n",i);
+				fprintf(target_file,"MOV R%d,[R%d]\n",j,i);
+				fprintf(target_file,"PUSH R%d --vfunc\n",j);
+				freeReg();
+				freeReg();}
 			while(atemp){
 				i=getReg();
 				j=codeGen(atemp);
@@ -828,10 +850,16 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "MOV R%d,\"\"\n",i);
 			fprintf(target_file, "PUSH R%d --for.ret\n",i);
 			freeReg();
-			fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
+			if(t->class!=NULL)
+				fprintf(target_file, "CALL F%d\n",CMLookup(t->class,t->str)->flabel);
+			else
+				fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
 			fprintf(target_file, "POP R%d --result\n",regtemp+1);
 			atemp=t->arglist;
 			i=getReg();
+			if(t->class!=NULL && t->left->nt!=nt_SELF){
+				fprintf(target_file, "POP R%d --clasargs\n",i==0?19:0);
+				fprintf(target_file, "POP R%d --clasargs\n",i==0?19:0);}
 			while(atemp){
 				fprintf(target_file, "POP R%d --args\n",i==0?19:0);
 				atemp=atemp->down;}
@@ -891,6 +919,13 @@ int codeGen(struct tnode *t){
 			puts("\t\t\t\t+init");
 			i=getReg();
 			init(i);
+			j=getReg();
+			if(t->down->Lentry==NULL){
+				fprintf(target_file, "MOV R%d, %d\n",j,t->down->Gentry->binding);
+				fprintf(target_file, "MOV R%d,R%d --ret\n",j,i);}
+			else{fetch_local_loc_to(t->down,j);
+				fprintf(target_file, "MOV [R%d],R%d --ret\n",j,i);}
+			freeReg();
 			freeReg();
 			puts("\t\t\t\t-init");
 			break;
@@ -1066,8 +1101,44 @@ int codeGen(struct tnode *t){
 			return result;
 		case nt_NUL:
 			i=getReg();
-			fprintf(target_file, "MOV R%d, 0 --null\n",i);
+			fprintf(target_file, "MOV R%d, \"null\" --null\n",i);
 			return i;
+		case nt_SELF:
+			puts("\t\t\t\t+self");
+			i=getReg();
+			fprintf(target_file, "MOV R%d,BP --(BP-?)\n",i);
+			fprintf(target_file, "ADD R%d, %d --heapbind\n",i,t->num-1);
+			fprintf(target_file, "MOV R%d,[R%d] --self\n",i,i);
+			tabs--;
+			puts("\t\t\t\t-self");
+			return i;
+			break;		
+		case nt_NEW:
+			puts("\t\t\t\t+new");
+			saveReg();
+			i=getReg();
+			fprintf(target_file, "MOV R%d,%d --Gbinding\n",i,t->left->Gentry->binding);
+			j=getReg();
+			alloc_to(8,j);
+			fprintf(target_file, "MOV [R%d],R%d\n",i,j);
+			freeReg();
+			fprintf(target_file, "ADD R%d, 1 --func\n",i);
+			fprintf(target_file, "MOV [R%d], %d --vfunc\n",i,4096+8*t->right->class->index);
+			freeReg();
+			restReg();
+			tabs--;
+			puts("\t\t\t\t-new");
+			break;
+		case nt_DELETE:
+			puts("\t\t\t\t+delete");
+			saveReg();
+			i=codeGen(t->down);
+			freee(i);
+			freeReg();
+			restReg();
+			tabs--;
+			puts("\t\t\t\t-delete");
+			break;
 		default:
 			printf("\tNO CODE-GEN MATCHING FOUND\ttype:'%d'\n",t->nt);
 			exit(1);	
@@ -1075,31 +1146,49 @@ int codeGen(struct tnode *t){
 		tabs--;
 		puts("\t\t\t\t-done");
 		return -1;}
-void funcGen(struct Gsymbol *g){
+void funcGen(char *g){
 	puts("\t\t\t\t+funcGen");
-	fprintf(target_file, "F%d:\n",g->flabel);
-	fprintf(target_file, "PUSH BP --caller.bp\n");
-	fprintf(target_file, "MOV BP,SP --act.rec\n");
-	struct Lsymbol *temp=lhead;
-	int i;
-	i=getReg();
-	while(temp){
-		if(temp->binding>0){
-			fprintf(target_file, "MOV R%d,\"\" --blank\n",i);
-			break;}
-		temp=temp->next;}
-	temp=lhead;
-	while(temp){
-		if(temp->binding>0)
-			fprintf(target_file, "PUSH R%d --for.locals\n",i);
-		temp=temp->next;}
-	freeReg();
+	if(GLookup(g)!=NULL){
+		fprintf(target_file, "F%d:\n",GLookup(g)->flabel);
+		fprintf(target_file, "PUSH BP --caller.bp\n");
+		fprintf(target_file, "MOV BP,SP --act.rec\n");
+		struct Lsymbol *temp=lhead;
+		int i;
+		i=getReg();
+		while(temp){
+			if(temp->binding>0){
+				fprintf(target_file, "MOV R%d,\"\" --blank\n",i);
+				break;}
+			temp=temp->next;}
+		temp=lhead;
+		while(temp){
+			if(temp->binding>0)
+				fprintf(target_file, "PUSH R%d --for.locals\n",i);
+			temp=temp->next;}
+		freeReg();}
+	else{
+		fprintf(target_file, "F%d:\n",CMLookup(class,g)->flabel);
+		fprintf(target_file, "PUSH BP --caller.bp\n");
+		fprintf(target_file, "MOV BP,SP --act.rec\n");
+		struct Lsymbol *temp=lhead;
+		int i;
+		i=getReg();
+		while(temp){
+			if(temp->binding>0){
+				fprintf(target_file, "MOV R%d,\"\" --blank\n",i);
+				break;}
+			temp=temp->next;}
+		temp=lhead;
+		while(temp){
+			if(temp->binding>0)
+				fprintf(target_file, "PUSH R%d --for.locals\n",i);
+			temp=temp->next;}
+		freeReg();}
 	puts("\t\t\t\t-funcGen");
 	;}
-
 void Write(int reg,int ret){
 	int t;
-	puts("\t\t\t\t");
+	puts("\t\t\t\t(write)");
 	t=getReg();
 	fprintf(target_file, "MOV R%d, \"Write\"\n",t);
 	fprintf(target_file, "PUSH R%d--\"write\"\n",t);
@@ -1118,11 +1207,11 @@ void Write(int reg,int ret){
 	fprintf(target_file, "POP R%d--disc\n",t);
 	fprintf(target_file, "POP R%d--disc\n",t);
 	freeReg();
-	puts("\t\t\t\t");
+	puts("\t\t\t\t(write)");
 	;}
 void ReadReg(int reg_addr,int ret){
 	int t;
-	puts("\t\t\t\t");
+	puts("\t\t\t\tread");
 	t=getReg();
 	fprintf(target_file, "MOV R%d, \"Read\"\n",t);
 	fprintf(target_file, "PUSH R%d\n",t);
@@ -1198,7 +1287,7 @@ void alloc_to(int size,int i){
 	t=getReg();
 	fprintf(target_file, "MOV R%d, \"Alloc\"\n",t);
 	fprintf(target_file, "PUSH R%d --\"alloc\"\n",t);
-	fprintf(target_file, "MOV R%d,R%d\n",t,size);
+	fprintf(target_file, "MOV R%d,%d\n",t,size);
 	fprintf(target_file, "PUSH R%d--size\n",t);
 	fprintf(target_file, "MOV R%d, \"\" --blank\n",t);
 	fprintf(target_file, "PUSH R%d--blank\n",t);
@@ -1250,14 +1339,24 @@ void fetch_local_loc_to(struct tnode *t,int i){
 	;}
 void saveReg(){
 	tempreg=reg;
+	#ifdef BUG
+		if(reg>-1){
+			puts("\t\t\t\tsaving regs");}
+	#endif
 	while(reg>-1){
 		fprintf(target_file, "PUSH R%d --save.reg\n",reg);
 		freeReg();}}
 void restReg(){
 	int t;
+	#ifdef BUG
+		if(reg>-1){
+			puts("\t\t\t\trestoring regs");}
+	#endif
 	while(tempreg!=-1){
 		tempreg--;
 		t=getReg();
 		fprintf(target_file, "POP R%d --old.regs\n",t);}}
-
 //
+/*
+void CInstall()
+*/

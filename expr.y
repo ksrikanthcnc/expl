@@ -12,11 +12,14 @@
 	//void yyerror(char const *s);
 	FILE *yyin;
 	int reg;
-	int flabel=1,mainflag=0,equiv=0,tuplesize=0,typesize=0,fieldindex,initflag=0,allocflag=0;
+	int mainflag=0,tolocal=0,tuplesize=0,typesize=0,initflag=0,allocflag=0,genflag=1;
 	struct Typetable *type,*temptype,*t;
 	char *tuplename;
 	int tint=1,ttint=1;
+	struct Classtable *class;
+	int fieldcount,methodcount;
 %}
+%error-verbose
 //tokens
 	%token NUM ID STRING
 	%token PLUS MINUS MUL DIV MOD EQ
@@ -42,310 +45,91 @@
 %%
 //-------------------------------------------------------------------------start
 	start		:Program;
-	Program		:
-				|TDeclBlock GDeclBlock FDefBlock MainBlock					{printf("Syntax Matched\n");}
-				|TDeclBlock GDeclBlock MainBlock							{printf("Syntax Matched\n");}
-				|TDeclBlock MainBlock										{printf("Syntax Matched\n");}
-				|GDeclBlock FDefBlock MainBlock								{printf("Syntax Matched\n");}
-				|GDeclBlock MainBlock										{printf("Syntax Matched\n");}
-				|MainBlock													{printf("Syntax Matched\n");}
-				/*
-				|TDeclBlock CDeclBlock GDeclBlock FDefBlock MainBlock		{printf("Syntax Matched\n");}
-				|TDeclBlock CDeclBlock GDeclBlock MainBlock					{printf("Syntax Matched\n");}
-				|TDeclBlock CDeclBlock MainBlock							{printf("Syntax Matched\n");}
-				|CDeclBlock GDeclBlock FDefBlock MainBlock					{printf("Syntax Matched\n");}
-				|CDeclBlock GDeclBlock MainBlock							{printf("Syntax Matched\n");}
-				|CDeclBlock MainBlock										{printf("Syntax Matched\n");}*/
+	Program		:TDeclBlock CDeclBlock GDeclBlock {generate();} FDefBlock MainBlock		{printf("Syntax Matched\n");}
 				;
 //-------------------------------------------------------------------------type
-	TypeDefBlock  : TYPE TypeDefList ENDTYPE
-              |                                               
-              ;
-
-TypeDefList   : TypeDefList TypeDef
-              | TypeDef
-              ;
-
-TypeDef       : ID '{' FieldDeclList '}'   { Tptr = TInstall(tname,size,$3); }
-              ;
-
-FieldDeclList : FieldDeclList FieldDecl
-              | FieldDecl
-              ;
-
-FieldDecl    : TypeName ID ';';
-
-TypeName     : INT
-             | STR
-             | ID       //TypeName for user-defined types
-             ;
-             
-             
-             
 	TDeclBlock	:TYPE TStructs ENDTYPE					{tprint();}
-				:CLASS TStructs ENDCLASS
-				;
+				|;
 	TStructs	:TStructs TStruct
-				|TStruct;
+				|;
 	TStruct		:ID {TInstall($1->str,0,NULL);}
 					'{' {fhead=NULL;fieldindex=0;typesize=0;}
 						TFields  '}' {TLookup($1->str)->fields=fhead;TLookup($1->str)->size=typesize;}
 				;
-	TFields		:TFields TField			{}			
-				|TField					{}	
+	TFields		:TFields TField			{}
+				|TField					{}
 				;
 	TField		:Type {	type=TLookup($1->str);
 						if(type==NULL){
-							printf("line:'%d'\ttype:'%s' undeclared before this line\n",line,$1->str);
-							exit(1);
-						}} VList ';'
+							printf("line:'%d'\ttype:'%s' undeclared\n",line,$1->str);
+							exit(1);}}
+						VList ';'
 				;
-	VList		:VList ',' Vid 
+	VList		:VList ',' Vid
 				|Vid;
-	Vid			:ID	{FInstall($1->str,fieldindex++,type);typesize++;}	
-				|ID '(' {phead=NULL;temptype=type;} 
-						ParamList {type=temptype;}
-									')'	{	GInstall($1->str,type,0);//-------------------------------------------------------
-											GLookup($1->str)->paramlist=phead;
-											GLookup($1->str)->flabel=flabel++;}	
+	Vid			:ID			{FInstall($1->str,fieldindex++,type);typesize++;}
 				;
-
 //-------------------------------------------------------------------------class
-
-Program : TypeDefBlock ClassDefBlock GlobalDeclBlock FuncDefBlock MainBlock
-;
-ClassDefBlock : CLASS ClassDefList ENDCLASS
-                |
-;
-ClassDefList : ClassDefList ClassDef
-               | ClassDef
-;
-Classdef      : Cname '{'DECL Fieldlists MethodDecl ENDDECL MethodDefns '}'
-;
-Cname         : ID       	{Cptr = Cinstall($1->Name,NULL);}         
-              | ID Extends ID	{Cptr = Cinstall($1->Name,$3->Name);}
-;
-Fieldlists 	: Fieldlists Fld   
-		|
-;     
-Fld         : ID ID ';'		{Class_Finstall(Cptr,$1->Name,$2->Name);} //Installing the field to the class
-;
-MethodDecl : MethodDecl MDecl 
-	   | MDecl 
-;
-MDecl      : ID ID '(' Paramlist ')' ';' {Class_Minstall(Cptr,$2->Name,Tlookup($1->Name),$4);} 
-											//Installing the method to class
-;
-MethodDefns : MethodDefns FDef
-            | FDef
-;
-stmt :    ...
-          | Field ASSIGN Expr ';'
-          ...
-          | ID ASGN NEW '(' ID ')' ';'
-          | Field ASSIGN NEW ’(’ ID ’)’ ';'
-          | DELETE ’(’ Field ’)’ ';'
-;
-
-Expr:     ...
-          | Field
-          | FieldFunction
-;
-Field:    SELF '.' ID
-          |ID '.' ID 		//This will not occur inside a class.
-          |Field '.' ID
-;
-FieldFunction : SELF '.' ID '(' Arglist ')'
-                |ID '.' ID '(' Arglist ')'  	//This will not occur inside a class.
-                |Field '.' ID '(' Arglist ')'             
-;
-Arglist: Arglist ',' Expr
-          |Expr
-          |
-;          
-
-	CDeclBlock	:CLASS CStructs ENDCLASS					{cprint();};
-	CStructs	:CStructs CStruct
-				|CStruct;
-	CStruct		:ID {TInstall($1->str,0,NULL);}
-					'{' {fhead=NULL;fieldindex=0;typesize=0;}
-						TFields  '}' {TLookup($1->str)->fields=fhead;TLookup($1->str)->size=typesize;}
-				|ID EXTENDS ID	{TInstall($1->str,0,NULL);}
-								'{' {fhead=NULL;fieldindex=0;typesize=0;}
-									TFields  '}' {TLookup($1->str)->fields=fhead;TLookup($1->str)->size=typesize;}
+	CDeclBlock	:CLASS {classflag=1;cindex=0;}	CDefList	{classflag=0;}	 ENDCLASS		{cprint();}
+				|;
+	CDefList	:CDefList CDef
+				|CDef;
+	CDef		:Cname '{'	{fhead=NULL;mhead=NULL;funcposition=0;fieldindex=0;gbinding+=8;fieldcount=methodcount=0;}
+							 DECL Fieldlists MethodDecl ENDDECL {CLookup($1->str)->memberfield=fhead;
+							 									CLookup($1->str)->memberfunc=mhead;}
+							 									MethodDefns '}'	{if(class->fieldcount>7) {printf("line:'%d'\t>7 fields declared in class:'%s'\n",line,$1->str); exit(1);}
+							 													if(class->methodcount>7) {printf("line:'%d'\t>7 methods declared in class:'%s'\n",line,$1->str);exit(1);}
+							 													class->fieldcount=fieldcount;
+							 													class->methodcount=methodcount;}
 				;
-	TFields		:TFields TField			{}			
-				|TField					{}	
+	Cname		:ID					{class=CInstall($1->str,NULL);$$=$1;}
+				|ID EXTENDS ID		{class=CInstall($1->str,$3->str);$$=$1;}
 				;
-	TField		:Type {	type=TLookup($1->str);
-						if(type==NULL){
-							printf("line:'%d'\ttype:'%s' undeclared before this line\n",line,$1->str);
-							exit(1);
-						}} VList ';'
+	Fieldlists	:Fieldlists Fld
+				|;
+	Fld			:ID ID ';'		{CFInstall($1->str,$2->str);fieldcount++;}//1st arg class
 				;
-	VList		:VList ',' Vid 
-				|Vid;
-	Vid			:ID	{FInstall($1->str,fieldindex++,type);typesize++;}		
+	MethodDecl	:MethodDecl MDecl
+				|MDecl;
+	MDecl		:ID ID '(' 	{phead=NULL;}
+							ParamList ')' ';'	{CMInstall($2->str,TLookup($1->str),phead);methodcount++;}//1st arg class
 				;
-
+	MethodDefns	:MethodDefns FDef
+				|FDef;
 //-------------------------------------------------------------------------global
-GDeclBlock : DECL GDeclList ENDDECL
-           |
-           ;
-
-GDeclList  : GDecList GDecl
-           | GDecl
-           ;
-
-GDecl      : TypeName Gidlist ';'      
-           ;
-
-Gidlist    : Gidlist ',' Gid
-           |   Gid                     
-           ;
-
-Gid        :   ID                      { GInstall(varname,ttableptr,ctableptr, 1, NULL); } 
-           |   ID '(' ParamList ')'      { GInstall(varname,ttableptr,NULL, 0, $3);   } 
-           |   ID '[' NUM ']'          { GInstall(varname,ttableptr,NULL, $3, NULL);   } //Arrays are not allowed with class objects.
-           ;
-
-ParamList    :  ParamList ',' Param  { AppendParamlist($1,$2);}
-           |  Param
-           |  //There can be functions with no parameters
-           ;
-           
-Param        : TypeName ID { CreateParamlist($1,$2); }
-           ;
-//NOTE 1: The second argument to the function Ginstall() must be a pointer to a type table entry which will be NULL if it is of class type.
-       2: The third argument to the function Ginstall() must be a pointer to class table entry which will be NULL if it is not of class type.
-       3: The functions CreateParamlist() and AppendParamlist() help to create a linked list containing the types and names  
-          of parameters specified in an ExpL function declaration. Design of these functions is left to you.  
-          
-          
-          
-          
-	GDeclBlock	:DECL GDeclList ENDDECL 	{generate();gprint();}
-				|DECL ENDDECL 				{generate();printf("No Globals declared!\n");}
+	GDeclBlock	:DECL GDeclList ENDDECL 	{gprint();}
+				|			 				{printf("No Globals declared!\n");}
 				;
 	GDeclList	:GDeclList GDecl			{}
-				|GDecl						{};
+				|							{};
 	GDecl		:Type GidList ';'			{};
 	Type		:ID							{	type=TLookup($1->str);
-												if(type==NULL){
-													printf("line:'%d'\tundeclared type:'%s'\n",line,$1->str);
+												ctype=CLookup($1->str);
+												if(type==NULL && ctype==NULL){
+													printf("line:'%d'\tno type or class:'%s'\n",line,$1->str);
 													exit(1);}
 												$$=$1;};
-	/*GDecl		:TUPLE	ID {tuplename=$2->str;}
-							'(' {phead=NULL;}
-								ParamList {	struct Paramstruct* ptemp=phead;
-											tuplesize=0;
-											while(ptemp){
-												tuplesize++;
-												ptemp=ptemp->next;
-											}}
-											')'	Tuid ';'
-				;
-	Tuid		:Tuid ',' tuid
-				|tuid
-				;
-	tuid		:ID						{	GInstall($1->str,t_TUPLE,tuplesize);
-											GLookup($1->str)->paramlist=phead;
-											GLookup($1->str)->tuplename=strdup(tuplename);}
-				|MUL ID					{	GInstall($2->str,t_TUPPTR,tuplesize);
-											GLookup($2->str)->paramlist=phead;
-											GLookup($2->str)->tuplename=strdup(tuplename);};*/
 	GidList		:GidList ',' Gid
 				|Gid;
-	Gid			:ID										{if(strcmp(type->name,"void")==0 || strcmp(type->name,"null")==0){
-															printf("line:'%d'\tSorry, you cant declare that type...!\n",line);
-															exit(1);}
-														else
+	Gid			:ID										{int size;
+														if(type!=NULL){
+															if(strcmp(type->name,"void")==0 || strcmp(type->name,"null")==0){
+																	printf("line:'%d'\tSorry, you cant declare that type...!\n",line);
+																	exit(1);}
 															GInstall($1->str,type,1);}
+														else{
+															GInstall($1->str,NULL,2);
+															GLookup($1->str)->class=ctype;}}
 				|ID '[' NUM ']'							{GInstall($1->str,type,$3->num);}
-				/*|ID '[' NUM ']' '[' NUM ']'				{t=type;type=type==t_INT?t_INARR:t_CHARR;GInstall($1->str,type,$3->num*$6->num);type=t;GLookup($1->str)->arr=$3->num;}
-				|MUL ID									{	t=type;
-															if(strcmp(type->name,"int")==0)
-																type=TLookup("intptr");
-															else if(strcmp(type->name,"str")==0)
-																type=TLookup("strptr");
-															else{
-																printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,$2->str);
-																exit(1);}
-															GInstall($2->str,type,GetSize(type));type=t;}*/
-				//ID '(' ParamList ')'
-				|ID '(' {phead=NULL;temptype=type;} 
+				|ID '(' {phead=NULL;temptype=type;}
 						ParamList {type=temptype;}
 									')'	{	GInstall($1->str,type,0);//-------------------------------------------------------
 											GLookup($1->str)->paramlist=phead;
 											GLookup($1->str)->flabel=flabel++;}
-				|MUL ID	'('	 {phead=NULL;temptype=type;} 
-							ParamList {type=temptype;}
-										')'	{	t=type;
-												if(strcmp(type->name,"int")==0)
-													type=TLookup("intptr");
-												else if(strcmp(type->name,"str")==0)
-													type=TLookup("strptr");
-												else{
-													printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,$2->str);
-													exit(1);}
-												GInstall($2->str,type,0);
-												GLookup($2->str)->paramlist=phead;
-												GLookup($2->str)->flabel=flabel++;type=t;}
 				;
 //-------------------------------------------------------------------------functions
-FDefList  : FDefBlock
-          | FDefList FDefBlock
-          ;
-FDefBlock : TypeName ID '(' ParamList ')' '{' LdeclBlock Body '}'  { GUpdate($2->name,$1,$4,$7,$8); }                                
-          ;
-
-Body      : BEGIN Slist Retstmt END     
-          ;
-
-Slist     : Slist Stmt  
-          |             
-          ;
-
-Stmt      : ID ASGN Expr ';' 
-          | ....
-          | IF '(' Expr ')' THEN Slist ELSE Slist ENDIF ';' 
-          | ...
-          | ID ASGN ALLOC'(' ')' ';'
-          | FIELD ASGN ALLOC'(' ')' ';'  
-          | FREE '(' ID ')' ';'           
-          | FREE '(' FIELD ')' ';'  
-          | READ '(' ID ')' ';'
-          | READ '(' FIELD ')' ';'
-          | WRITE '(' Expr ')' ';'
-          ;
-
-FIELD     : ID '.' ID   
-          | FIELD '.' ID  
-          ;
-
-Expr      : Expr PLUS Expr   { $$ = TreeCreate(TLookup("int"),NODETYPE_PLUS,NULL,(union Constant){},NULL,$1,$3,NULL); }
-          | ....
-          | '(' Expr ')'      
-          | NUM               
-          | ID                
-          | ID '[' Expr ']'  
-          | FIELD            
-          | ID '(' ArgList ')'  {
-                                gtemp = GLookup($1->name);
-                                if(gtemp == NULL){
-                                	yyerror("Yacc : Undefined function");exit(1);
-                                }
-                                $$ = TreeCreate(gtemp->type,NODETYPE_FUNCTION,$1->name,(union Constant){},$3,NULL,NULL,NULL);
-                                $$->Gentry = gtemp;
-                              }
-          ;
-          
-          
-          
-          
-          
 	FDefBlock	:FDefBlock FDef
-				|FDef;
+				|;
 				//Type ID '(' ParamList ')' '{' LDeclBlock Body '}'
 	FDef		:Type ID '(' {	checkid($2);
 								funcname=$2->str;
@@ -355,12 +139,12 @@ Expr      : Expr PLUS Expr   { $$ = TreeCreate(TLookup("int"),NODETYPE_PLUS,NULL
 								printf("~~~~~~~~~~~~~~~~~~~~~~\n");
 								lhead=NULL;
 								phead=NULL;
-								equiv=1;
+								tolocal=1;
 								ttint=1;}//-------------------------------------------------------------------
-							ParamList ')' {	equiv=0;
+							ParamList ')' {	tolocal=0;
 											struct Lsymbol *ltemp;
 											struct Paramstruct *ptemp;
-											ptemp=GLookup($2->str)->paramlist;
+											ptemp=ghead->flabel==FMAIN?CMLookup(class,funcname)->paramlist:GLookup($2->str)->paramlist;
 											ltemp=lhead;
 											while(ptemp && ltemp){
 												if(ptemp->type!=ltemp->type || strcmp(ptemp->name,ltemp->name)!=0){//----------------------------------------------
@@ -380,7 +164,7 @@ Expr      : Expr PLUS Expr   { $$ = TreeCreate(TLookup("int"),NODETYPE_PLUS,NULL
 														printf("name:'%s'\ttype:'%s'\n",ltemp->name,ltemp->type->name);
 														ltemp=ltemp->next;}}
 												exit(1);}}
-										 '{' {	binding=0;}
+										 '{' {	heapbinding=binding-1;binding=0;}
 												LDeclBlock {lprint();initflag=allocflag=0;tint=1;}
 															Body '}' ;
 //-------------------------------------------------------------------------param
@@ -388,38 +172,14 @@ Expr      : Expr PLUS Expr   { $$ = TreeCreate(TLookup("int"),NODETYPE_PLUS,NULL
 				|Param
 				| /*param can be empty*/;
 	Param		:Type Pid;
-	Pid			:ID			{if(equiv==1){
+	Pid			:ID			{if(tolocal==1){
 								binding--;
 								LInstall($1->str,type);}
 							else
 								PInstall($1->str,type);}
-				|MUL ID		{if(equiv==1){
-								binding--;
-								t=type;
-								if(strcmp(type->name,"int")==0)
-									type=TLookup("intptr");
-								else if(strcmp(type->name,"str")==0)
-									type=TLookup("strptr");
-								else{
-									printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,$2->str);
-									exit(1);}
-								LInstall($2->str,type);
-								type=t;}
-							else{
-								t=type;
-								if(strcmp(type->name,"int")==0)
-									type=TLookup("intptr");
-								else if(strcmp(type->name,"str")==0)
-									type=TLookup("strptr");
-								else{
-									printf("line:'%d'\tpointer to neither int nor str for id:'%s'\n",line,$2->str);
-									exit(1);}
-								PInstall($2->str,type);
-								type=t;}}
 				;
 //-------------------------------------------------------------------------local
-	LDeclBlock	:DECL LDecList ENDDECL 
-				|DECL ENDDECL 
+	LDeclBlock	:DECL LDecList ENDDECL
 				|;
 	LDecList	:LDecList LDecl
 				|LDecl;
@@ -428,18 +188,8 @@ Expr      : Expr PLUS Expr   { $$ = TreeCreate(TLookup("int"),NODETYPE_PLUS,NULL
 				|Lid;
 	Lid			:ID				{binding+=1;LInstall($1->str,type);};
 //-------------------------------------------------------------------------main
-MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
-                                {
-                                    type = TLookup("int");
-                                    gtemp = GInstall("MAIN",type,0,NULL);
-                                    GUpdate("MAIN",type,NULL,$7,$8);
-                                    $$ = TreeCreate(type, NODETYPE_MAIN, gtemp->name, (Constant){}, NULL, $7, NULL, NULL);
-                                    $$->Gentry = gtemp;
-                                    //reset LocalSymbolHead and other binding variables used
-                                }
-          ;
-	MainBlock 	:MAIN '(' ')' '{' {		binding=0;
-										funcname="main";
+	MainBlock 	:MAIN {	binding=0;}
+						'(' ')' '{' {	funcname="main";
 										printf("\tDeallocating ltable...\n");
 										ldealloc(lhead);
 										printf("~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -452,9 +202,9 @@ MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
 //-------------------------------------------------------------------------body
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	Body		:BEG Slist RETURN Expr ';' END 	{//$$=$2;
-												struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
+												struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
 												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
-												funcGen(GLookup(funcname));
+												funcGen(funcname);
 												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
 												printf("CodeGen-ing '%s'\n",funcname);
@@ -464,8 +214,8 @@ MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
 												bdealloc(body);
 												printf("~~~~~~~~~~~~~~~~~~~~~~\n");
 												printf("################################################################################################\n");}
-				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
-												funcGen(GLookup(funcname));
+				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$3,NULL,NULL,NULL,NULL);
+												funcGen(funcname);
 												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(ret);
 												printf("Finished CodeGen-ing of '%s'\n",funcname);
@@ -488,9 +238,11 @@ MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
 				|CONTINUE ';'										{$$=createtree(TLookup("void"),0,NULL,nt_CONTINUE,NULL,NULL,NULL,NULL,NULL,NULL);}
 				|BRKP ';'											{$$=createtree(TLookup("void"),0,NULL,nt_BRKP,NULL,NULL,NULL,NULL,NULL,NULL);}
 				|EXIT ';'											{$$=createtree(TLookup("void"),0,NULL,nt_EXIT,NULL,NULL,NULL,NULL,NULL,NULL);}
-				|INIT '(' ')' ';'									{$$=createtree(TLookup("void"),0,NULL,nt_INIT,NULL,NULL,NULL,NULL,NULL,NULL);initflag++;}
+				|id EQ INIT '(' ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_INIT,NULL,$1,NULL,NULL,NULL,NULL);initflag++;}
 				|id EQ ALLOC '(' ')' ';'							{$$=createtree(TLookup("void"),8/*GetSize(TLookup($1->str))*/,NULL,nt_ALLOC,NULL,$1,NULL,NULL,NULL,NULL);allocflag++;}//---------------------------------
 				|FREE '(' id ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_FREE,NULL,$3,NULL,NULL,NULL,NULL);}
+				|id EQ NEW '(' ID ')' ';'							{$$=createtree(TLookup("void"),0,NULL,nt_NEW,$1,NULL,$5,NULL,NULL,NULL);}
+				|DELETE '(' id ')'									{$$=createtree(TLookup("void"),0,NULL,nt_DELETE,NULL,$3,NULL,NULL,NULL,NULL);}
 				;
 	Expr		:Expr PLUS Expr			{$$=createtree(TLookup("int"),0,NULL,nt_PLUS,$1,NULL,$3,NULL,NULL,NULL);}
 				|Expr MINUS Expr		{$$=createtree(TLookup("int"),0,NULL,nt_MINUS,$1,NULL,$3,NULL,NULL,NULL);}
@@ -502,8 +254,12 @@ MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
 				|STRING					{$$=$1;}
 				|id						{$$=$1;}
 				|NUL					{$$=$1;}
-				|ID '(' ')'				{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);} 
-				|ID '(' ArgList ')'		{checkid($1);$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);};
+				|id '(' ')'				{/*checkid($1);$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);*/$$=$1;$$->nt=nt_FUNC;}
+				|id '(' ArgList ')'		{/*checkid($1);*/
+										//$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);
+										$$=$1;$$->nt=nt_FUNC;$$->arglist=$3;
+										}
+				;
 	ArgList		:ArgList ',' Expr		{$3->down=$1;$$=$3;}
 				|Expr					{$$=$1;};
 	Bool		:Expr LT Expr			{$$=createtree(TLookup("bool"),0,NULL,nt_LT,$1,NULL,$3,NULL,NULL,NULL);}
@@ -522,53 +278,61 @@ MainBlock : INT MAIN '(' ')' '{' LdeclBlock Body '}'
 //-------------------------------------------------------------------------id
 	//struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 	id			:ID							{checkid($1);
-											$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+											$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));if(classflag==0) $$->class=LLookup($1->str)==NULL?GLookup($1->str)->class:NULL;}
 				|ID '[' Expr ']'			{checkid($1);$$=createtree(LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type,0,$1->str,nt_ARR,NULL,$3,NULL,GLookup($1->str),NULL,LLookup($1->str));}
-				/*|ID '[' NUM ']' '[' NUM ']'	{checkid($1);
-											$$=createtree(TLookup($1->str),(GLookup($1->str)->arr)*($3->num)+($6->num),$1->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}*/
 				|MUL id						{$$=createtree(GLookup($2->str)->type,$2->num,$2->str,nt_SPTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
 				|'&' id						{$$=createtree(GLookup($2->str)->type,$2->num,$2->str,nt_APTR,NULL,NULL,NULL,GLookup($2->str),NULL,LLookup($1->str));}
-				/*|ID'.'ID					{checkid1($1,$3);
-											struct  Paramstruct *ptemp=GLookup($1->str)->paramlist;
-											int t,count=0;
-											while(ptemp){
-												if(strcmp(ptemp->name,$3->str)==0){
-														t=ptemp->type;}
-												count++;
-												ptemp=ptemp->next;}
-											$$=createtree(t,GLookup($1->str)->size-count,$3->str,nt_ID,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);}*/
-				|Field						{$$=$1;$$->nt=nt_USERROOT;}
+				|Field						{$$=$1;}
 	Field		:Field '.' ID 				{struct Typetable *ttemp=$1->t;
-											checktype(ttemp,$3->str);
+											if(ttemp!=NULL)
+												checktype(ttemp,$3->str);
 											struct Fieldlist *ftemp=FLookmember(ttemp,$3->str);
-											$$=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_USERNODE,$1,NULL,NULL,$1->Gentry,NULL,$1->Lentry);}
+											$1->nt=nt_USERNODE;
+											$$=createtree(ftemp->type,ftemp->fieldindex,$3->str,nt_USERROOT,$1,NULL,NULL,$1->Gentry,NULL,$1->Lentry);}
 				|ID '.' ID					{checkid($1);
+											checkmember($1,$3);
 											struct Typetable *ttemp=LLookup($1->str)==NULL?GLookup($1->str)->type:LLookup($1->str)->type;
-											struct Fieldlist *ftemp=FLookup(ttemp,$3->str);
-											checktype(ttemp,$3->str);
+											struct Fieldlist *ftemp;
+											if(ttemp!=NULL){
+												checktype(ttemp,$3->str);
+												ftemp=FLookmember(ttemp,$3->str);}
+											if(ttemp==NULL)
+												if(CFLookup(GLookup($1->str)->class,$3->str)==NULL);
+													//ftemp=CMLookup(GLookup($1->str)->class,$3->str)->type;
+												else
+													ftemp=CFLookup(GLookup($1->str)->class,$3->str);
 											struct tnode *node=createtree(ttemp,0,$1->str,nt_USERNODE,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
-											$$=createtree(ftemp->type,ftemp->fieldIndex,$3->str,nt_USERNODE,node,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));}
+											$$=createtree(ftemp->type,ftemp->fieldindex,$3->str,nt_USERROOT,node,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
+											if(classflag==0) $$->class=LLookup($1->str)==NULL?GLookup($1->str)->class:NULL;}
+				|SELF '.' ID				{struct tnode *self=createtree($3->t,heapbinding,$3->str,nt_SELF,NULL,NULL,NULL,NULL,NULL,NULL);self->class=class;
+											struct Typetable *typ;
+											int field;
+											if(CFLookup(class,$3->str)!=NULL){//Field
+												typ=CFLookup(class,$3->str)->type;
+												field=CFLookup(class,$3->str)->fieldindex;}
+											else{//Method
+												typ=CMLookup(class,$3->str)->type;
+												field=CMLookup(class,$3->str)->funcposition;}
+											$$=createtree(typ,field,$3->str,nt_USERROOT,self,NULL,NULL,NULL,NULL,LLookup($3->str));
+											$$->class=class;}
 				;
 %%
 void checkid(struct tnode *t){
-	if(LLookup(t->str)==NULL && GLookup(t->str)==NULL){
-		printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
-		exit(1);}}
-/*void checkidid(struct tnode *t1,struct tnode *t3){
-	struct Gsymbol *gtemp=GLookup(t1->str);
-	struct Lsymbol *ltemp=LLookup(t1->str);
-	struct Typetable *ttemp;
-	if(gtemp==NULL && ltemp==NULL){
-		printf("line:'%d'\tUndeclared type:'%s' in type:'%s'\n",line,t1->str,t3->str);
-		exit(1);}
-	if(ltemp==NULL)
-		ttemp=gtemp->type;
-	else
-		ttemp=ltemp->type;
-	struct Fieldlist *ftemp=t1->fields;
-	if(FLookup(ttemp,t3->str)==NULL){
-		printf("line:'%d'\tNo member '%s' in type '%s'\n",line,t3->str,t1->str);
-		exit(1);}}*/
+	if(classflag==1){
+		if(CFLookup(class,t->str)==NULL && CMLookup(class,t->str)==NULL && LLookup(t->str)==NULL){
+			printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
+			exit(1);}}
+	else{
+		if(LLookup(t->str)==NULL && GLookup(t->str)==NULL && CLookup(t->str)==NULL){
+			printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
+			exit(1);}}}
+void checkmember(struct tnode *parent, struct tnode *member){
+	struct Classtable *ctemp;
+	if(LLookup(parent->str)==NULL){
+		ctemp=GLookup(parent->str)->class;
+		if(ctemp!=NULL && CFLookup(ctemp,member->str)==NULL && CMLookup(ctemp,member->str)==NULL){
+			printf("line:'%d'\tno field or method:'%s' in class:'%s'\n",line,member->str,ctemp->name);
+			exit(1);}}}
 void checktype(struct Typetable *t1, char *member){
 	if(FLookmember(t1,member)==NULL){
 		printf("line:'%d'\tUndeclared type with name:'%s' in type:'%s'\n",line,member,t1->name);
@@ -581,45 +345,62 @@ void yyerror(char const *s){
 	exit(1);}
 void tprint(){
 	printf("\t\tType Declarations\n");
+	fprintf(types,"\t\tType Declarations\n");
 	struct Typetable *ttemp;
 	struct Fieldlist *ftemp;
 	ttemp=thead;
 	while(ttemp){
 		printf("name:'%s'\tsize:'%d'\n",ttemp->name,ttemp->size);
+		fprintf(types,"name:'%s'\tsize:'%d'\n",ttemp->name,ttemp->size);
 		ftemp=ttemp->fields;
 		if(ftemp)
 			printf("\tFields...\n");
+			fprintf(types,"\tFields...\n");
 		while(ftemp){
 			if(ftemp->type!=NULL)
-				printf("\tname:'%s'\tfieldIndex:'%d'\ttype:'%s'\n",ftemp->name,ftemp->fieldIndex,ftemp->type->name);
+				printf("\tname:'%s'\tfieldIndex:'%d'\ttype:'%s'\n",ftemp->name,ftemp->fieldindex,ftemp->type->name);
+				fprintf(types,"\tname:'%s'\tfieldIndex:'%d'\ttype:'%s'\n",ftemp->name,ftemp->fieldindex,ftemp->type->name);
 			ftemp=ftemp->next;}
 		ttemp=ttemp->next;}
 	printf("######################################################\n");}
 void gprint(){
 	int i,j;
-	printf("\t\tGlobal Table(Static size:'%d')\n",gbinding-4096);
+	printf("\t\tGlobal Table(Static size:'%d')\tgbinding:'%d'\n",gbinding-4096-8*(1+(chead==NULL?-1:chead->index)),gbinding);
+	fprintf(globals,"\t\tGlobal Table(Static size:'%d')\n",gbinding-4096-8*(1+(chead==NULL?-1:chead->index)));
 	struct Gsymbol* gtemp=ghead;
 	struct Paramstruct* ptemp;
 	printf("GLOBALS...\n");
+	fprintf(globals,"GLOBALS...\n");
 	i=1;
 	while(gtemp!=NULL){
 		if(gtemp->size>0){
-			printf("%d.name:'%s'\ttype:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->type->name,gtemp->size,gtemp->binding,gtemp->arr);
+			if(gtemp->type!=NULL){
+				printf("%d.name:'%s'\ttype:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->type->name,gtemp->size,gtemp->binding,gtemp->arr);
+				fprintf(globals,"%d.name:'%s'\ttype:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->type->name,gtemp->size,gtemp->binding,gtemp->arr);}
+			else{
+				printf("%d.name:'%s'\tclass:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->class->name,gtemp->size,gtemp->binding,gtemp->arr);
+				fprintf(globals,"%d.name:'%s'\tclass:'%s'\tsize:'%d'\tbase:'%d'\tarr:%d\n",i++,gtemp->name,gtemp->class->name,gtemp->size,gtemp->binding,gtemp->arr);}
 		if(gtemp->paramlist){
 			ptemp=gtemp->paramlist;
 			printf("\tContent of type...\n");
+			fprintf(globals,"\tContent of type...\n");
 			while(ptemp){
 				printf("\tname:'%s'\ttype:'%s'\n",ptemp->name,ptemp->type->name);
+				fprintf(globals,"\tname:'%s'\ttype:'%s'\n",ptemp->name,ptemp->type->name);
 				ptemp=ptemp->next;}}
 			if(gtemp->paramlist)
-				printf("\n");}
+				printf("\n");
+				fprintf(globals,"\n");}
 		gtemp=gtemp->next;}
 	gtemp=ghead;
 	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+	fprintf(globals,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+	printf("\n\n\n\n");
 	printf("functions\n");
+	fprintf(globals,"functions\n");
 	i=1;
 	while(gtemp!=NULL){
-		if(gtemp->size==0 && gtemp->flabel!=1000){
+		if(gtemp->size==0 && gtemp->flabel!=FMAIN){
 			printf("%d.name:'%s'\ttype:'%s'\tflabel:'%d'\n",i++,gtemp->name,gtemp->type->name,gtemp->flabel);
 			ptemp=gtemp->paramlist;
 			printf("\tparameters\n");
@@ -643,16 +424,56 @@ void lprint(){
 		if(ltemp->binding==1){printf("\narguments\n");i=1;}
 		ltemp=ltemp->next;}
 	printf("######################################################\n");}
+void cprint(){
+	int i,j;
+	struct Classtable *ctemp;
+	ctemp=class;
+	printf("\t\tClass Table\n");
+	while(ctemp){
+		ctemp=ctemp;
+		printf("Class:'%s'\tParent:'%s'\tindex:'%d'\tfieldcount:'%d'\tmethodcount:'%d'\n",ctemp->name,ctemp->parent!=NULL?ctemp->parent->name:"(null)",ctemp->index,ctemp->fieldcount,ctemp->methodcount);
+		struct Fieldlist *ftemp;
+		struct Memberfunclist *mtemp;
+		struct Paramstruct *ptemp;
+		printf("Members:\n");
+		printf("\tFields\n");
+		ftemp=ctemp->memberfield;
+		i=1;
+		while(ftemp){
+			printf("\t%d.name:'%s'\tfieldindex:'%d'\t",i++,ftemp->name,ftemp->fieldindex);
+			if(ftemp->type!=NULL)
+				printf("type:'%s'\t",ftemp->type->name);
+			else
+				printf("type:'---'\t");
+			if(ftemp->ctype!=NULL)
+				printf("ctype:'%s'\n",ftemp->ctype->name);
+			else
+				printf("ctype:---\n");
+			ftemp=ftemp->next;}
+		printf("\tMethods\n");
+		mtemp=ctemp->memberfunc;
+		while(mtemp){
+			printf("\t%d.name:'%s'\ttype:'%s'\tfuncposition:'%d'\tflabel:F'%d'\n",i++,mtemp->name,mtemp->type->name,mtemp->funcposition,mtemp->flabel);
+			printf("\t\tparamters...\n");
+			j=1;
+			ptemp=mtemp->paramlist;
+			while(ptemp){
+				printf("\t\t%d.name:'%s'\ttype:'%s'\n",j,ptemp->name,ptemp->type->name);
+				ptemp=ptemp->next;}
+			printf("\n");
+			mtemp=mtemp->next;}
+		ctemp=ctemp->next;}
+	printf("\n\n\n\n");}
 void ldealloc(struct Lsymbol *lhead){
 	if(lhead==NULL)
 		return;
-	printf("%d.funcname:'%s'\tname:'%s'\n",ttint++,funcname,lhead->name);
+	//printf("%d.funcname:'%s'\tname:'%s'\n",ttint++,funcname,lhead->name);
 	ldealloc(lhead->next);
 	free(lhead->next);}
 void bdealloc(struct tnode *body){
 	if(body==NULL)
 		return;
-	printf("%d.funcname:'%s'\tnt:'%d'\n",tint++,funcname,body->nt);
+	//printf("%d.funcname:'%s'\tnt:'%d'\n",tint++,funcname,body->nt);
 	bdealloc(body->left);
 	free(body->left);
 	bdealloc(body->down);
@@ -660,17 +481,26 @@ void bdealloc(struct tnode *body){
 	bdealloc(body->right);
 	free(body->right);}
 int main(){
+	locals=fopen("locals","w+");
+	globals=fopen("globals","w+");
+	types=fopen("types","w+");
+	classes=fopen("classes","w+");
 	ghead=NULL;
+	chead=NULL;
 	FILE *fp=fopen("input","r");
 	if(fp)
 		yyin=fp;
 	else{
 		printf("Input file error\n");
 		exit(1);}
-	target_file=fopen("intermediate.xsm","w+");//comment for consoling
+	#ifndef BUG
+		target_file=fopen("intermediate.xsm","w+");
+	#endif
 	GInstall("main",TLookup("int"),0);
-	GLookup("main")->flabel=1000;
+	GLookup("main")->flabel=FMAIN;
 	TypeTableCreate();
+	fprintf(target_file,"%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",0,2056,0,0,0,0,0,0);
+	fprintf(target_file,"JMP F%d\n",TMAIN);
 	yyparse();
 	//print();
 	return 0;}
