@@ -1,5 +1,0 @@
-debug mode jump to mistake line
-debug	enter repeats last instruction
-alloc() push -2 instead of alloc(heapallocation page)
-
-

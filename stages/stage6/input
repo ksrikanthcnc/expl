@@ -1,110 +1,72 @@
 type
-  bst{
-  int a;
-  bst left;
-  bst right;
-  }
+node{
+	int m,n,d,q,r;
+	node next;
+}
 endtype
-
 decl
-  int in,opt;
-  bst insert(bst h, int key);
-  int inOrder(bst h); 
-  int preOrder(bst h);
-  int postOrder(bst h);           
+int gcd(int m,int n);
+int x,y;
+node root,t;
 enddecl
-
-bst insert(bst h, int key)
-{
-  begin
-    if (h == null) then
-    h = alloc();
-    h.a = key;
-    h.left = null;
-    h.right = null;
-
-    else if (key < h.a) then
-            h.left  = insert(h.left, key);
-
-         else if (key > h.a) then
-                 h.right = insert(h.right, key);
-              endif;
-          endif;
-    endif;   
-   
-    return h;
-  end
+int gcd(int m,int n){
+	decl
+		int d,q,temp,r;
+	enddecl
+	begin
+		q=m/n;
+		r=m-q*n;
+		if(r==0) then
+			//x=0;
+			//y=1;
+			d=n;
+		else
+			d=gcd(n,r);
+			//temp=y;
+			//y=x-y*q;
+			//x=temp;
+		endif;
+		t=alloc();
+		t.m=m;
+		t.n=n;
+		t.r=r;
+		t.q=q;
+		t.d=d;
+		t.next=root;
+		root=t;
+		return d;
+	end
 }
-
-int inOrder(bst h){
-     
-  begin
-    
-  if(h!=null) then
-     
-    in=inOrder(h.left);
-    write(h.a);
-    in=inOrder(h.right);
-  endif;
-  return 1;
-  end
+int main(){
+	decl
+		int g,a,b;
+	enddecl
+	begin
+		initialize();
+		root=null;
+		read(a);
+		read(b);
+		g=gcd(a,b);
+		print"GCD";
+		write(g);
+		//write(x);
+		//write(y);
+		
+		print"printing";
+		while(root!=null)do
+			print"............";
+			print(" dividend");
+			print(root.m);
+			print(" divisor");
+			print(root.n);
+			print(" GCD");
+			print(root.d);
+			print(" quotient");
+			print(root.q);
+			print(" remainder");
+			print(root.r);
+			root=root.next;
+		endwhile;
+		return 0;
+	end
 }
-
-int preOrder(bst h){
-     
-  begin
-    
-  if(h!=null) then
-    write(h.a);
-    in=preOrder(h.left);
-    
-    in=preOrder(h.right);
-  endif;
-  return 1;
-  end
-}
-
-int postOrder(bst h){
-     
-  begin
-    
-  if(h!=null) then
-    
-    in=postOrder(h.left);
-    
-    in=postOrder(h.right);
-    write(h.a);
-  endif;
-  return 1;
-  end
-}
-
-int main()
-{ 
-  decl
-  int val,flag;
-  bst Root;
-  enddecl
-
-  begin
-    initialize();
-    Root = null;
-
-    read(val);
-
-    while(val!=0) do
-      Root = insert(Root,val);
-      read(val);
-    endwhile;
-
-	write"inorder";
-    in = inOrder(Root);
-    write"preorder";
-    in = preOrder(Root);
-    write"postorder";
-    in = postOrder(Root);
-  
-  return 9;
-  end
-}
-

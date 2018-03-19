@@ -1,0 +1,10756 @@
+MOV R16,
+63
+LOADI R16,
+13
+MOV R16,
+64
+LOADI R16,
+14
+MOV R16,
+65
+LOADI R16,
+7
+MOV R16,
+66
+LOADI R16,
+8
+MOV R16,
+67
+LOADI R16,
+9
+MOV R16,
+68
+LOADI R16,
+10
+MOV R16,
+2
+LOADI R16,
+15
+MOV R16,
+3
+LOADI R16,
+16
+MOV R0,
+4
+MOV R2,
+10
+MOV R3,
+23
+MOV R16,
+18
+GE R16,
+R0
+JZ R16,
+588
+LOADI R2,
+R3
+MOV R16,
+R2
+ADD R16,
+1
+MOV R17,
+R3
+ADD R17,
+1
+LOADI R16,
+R17
+MOV R16,
+R2
+ADD R16,
+2
+MOV R2,
+R16
+MOV R16,
+R3
+ADD R16,
+2
+MOV R3,
+R16
+MOV R16,
+R0
+ADD R16,
+1
+MOV R0,
+R16
+JMP 550
+
+MOV PTBR,
+29696
+MOV PTLR,
+10
+MOV R16,
+PTBR
+ADD R16,
+0
+MOV [R16],
+63
+MOV R16,
+PTBR
+ADD R16,
+1
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+2
+MOV [R16],
+64
+MOV R16,
+PTBR
+ADD R16,
+3
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+4
+MOV [R16],
+71
+MOV R16,
+PTBR
+ADD R16,
+5
+MOV [R16],
+"0110"
+MOV R16,
+PTBR
+ADD R16,
+6
+MOV [R16],
+72
+MOV R16,
+PTBR
+ADD R16,
+7
+MOV [R16],
+"0110"
+MOV R16,
+PTBR
+ADD R16,
+8
+MOV [R16],
+65
+MOV R16,
+PTBR
+ADD R16,
+9
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+10
+MOV [R16],
+66
+MOV R16,
+PTBR
+ADD R16,
+11
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+12
+MOV [R16],
+67
+MOV R16,
+PTBR
+ADD R16,
+13
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+14
+MOV [R16],
+68
+MOV R16,
+PTBR
+ADD R16,
+15
+MOV [R16],
+"0100"
+MOV R16,
+PTBR
+ADD R16,
+16
+MOV [R16],
+69
+MOV R16,
+PTBR
+ADD R16,
+17
+MOV [R16],
+"0110"
+MOV R16,
+PTBR
+ADD R16,
+18
+MOV [R16],
+70
+MOV R16,
+PTBR
+ADD R16,
+19
+MOV [R16],
+"0110"
+MOV R16,
+8
+MUL R16,
+512
+MOV SP,
+R16
+MOV R16,
+69
+MUL R16,
+512
+MOV R17,
+65
+MUL R17,
+512
+ADD R17,
+1
+MOV R17,
+[R17]
+MOV [R16],
+R17
+IRET
+
+HALT
+
+HALT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ADD R16,
+19
+MOV [R16],
+"0110"
+MOV R16,
+28672
+ADD R16,
+16
+MOV [R16],
+0
+MOV R16,
+28672
+ADD R16,
+17
+MOV [R16],
+1
+MOV R16,
+28672
+ADD R16,
+20
+MOV [R16],
+2
+MOV R16,
+28672
+ADD R16,
+27
+MOV [R16],
+78
+MOV R16,
+28672
+ADD R16,
+28
+MOV [R16],
+0
+MOV R16,
+28672
+ADD R16,
+30
+MOV [R16],
+PTBR
+MOV R16,
+28672
+ADD R16,
+31
+MOV [R16],
+PTLR
+MOV R16,
+29560
+ADD R16,
+1
+MOV [R16],
+1
+MOV R16,
+8
+MUL R16,
+512
+MOV SP,
+R16
+MOV R16,
+76
+MUL R16,
+512
+MOV R17,
+65
+MUL R17,
+512
+ADD R17,
+1
+MOV R17,
+[R17]
+MOV [R16],
+R17
+MOV R0,
+0
+MOV R16,
+128
+GT R16,
+ R0
+JZ R16,
+1132
+MOV R16,
+75
+GE R16,
+R0
+JZ R16,
+1118
+MOV R16,
+29184
+ADD R16,
+R0
+MOV [R16],
+1
+JMP 1124
+
+MOV R16,
+29184
+ADD R16,
+R0
+MOV [R16],
+0
+MOV R16,
+R0
+ADD R16,
+1
+MOV R0,
+R16
+JMP 1098
+
+MOV R16,
+29184
+ADD R16,
+76
+MOV [R16],
+1
+MOV R16,
+29184
+ADD R16,
+77
+MOV [R16],
+1
+MOV R16,
+29184
+ADD R16,
+78
+MOV [R16],
+1
+MOV R16,
+29184
+ADD R16,
+79
+MOV [R16],
+1
+MOV R16,
+29184
+ADD R16,
+80
+MOV [R16],
+1
+MOV [29552],
+0
+MOV R1,
+1
+JMP 514
+
+HALT
+
+HALT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+root
+512
+-1
+-1
+-1
+-1
+-1
+5
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+root
+512
+1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+0
+-1
+-1
+-1
+-1
+-1
+-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0
+2056
+0
+0
+0
+0
+0
+0
+MOV SP,
+4095 --start
+MOV BP,
+4096 --start
+PUSH R0 --ret.va
+
+CALL 3176
+
+MOV R0,
+"Exit"
+PUSH R0--"exit"
+
+MOV R0,
+""
+PUSH R0--blank
+
+PUSH R0--blank
+
+PUSH R0--blank
+
+PUSH R0--blank
+
+CALL 0
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R1,
+BP --(BP-?)
+ADD R1,
+-4 --heapbind
+MOV R1,
+[R1] --self
+ADD R1,
+0 --off
+MOV R3,
+BP --BP+?
+ADD R3,
+-3 --L.loc
+MOV R2,
+[R3] --Lid.fetchMOV [R1],
+MOV [R1],
+R2 --asgn
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-4 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-3 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-3 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+1 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R1,
+BP --(BP-?)
+ADD R1,
+-4 --heapbind
+MOV R1,
+[R1] --self
+ADD R1,
+0 --off
+MOV R3,
+BP --BP+?
+ADD R3,
+-3 --L.loc
+MOV R2,
+[R3] --Lid.fetchMOV [R1],
+MOV [R1],
+R2 --asgn
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-4 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-3 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+BP --(BP-?)
+ADD R0,
+-3 --heapbind
+MOV R0,
+[R0] --self
+ADD R0,
+1 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R1,
+MOV R1,
+0 --null
+EQ R0,
+R1
+JZ R0,
+2516
+MOV R1,
+"Alloc"
+PUSH R1 --"aloc"
+
+MOV R1,
+R8
+PUSH R1--size
+
+MOV R1,
+"" --blank
+PUSH R1--blank
+
+PUSH R1--blank
+
+PUSH R1--ret
+
+CALL 0
+
+POP R0--ret
+
+POP R1--disc
+
+POP R1--disc
+
+POP R1--disc
+
+POP R1--disc
+
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV [R1],
+R0 --Lalloc
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+0 --off
+MOV R3,
+BP --BP+?
+ADD R3,
+-4 --L.loc
+MOV R2,
+[R3] --Lid.fetchMOV [R1],
+MOV [R1],
+R2 --asgn
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+MOV R2,
+0 --null
+MOV [R1],
+R2 --asgn
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+MOV R2,
+0 --null
+MOV [R1],
+R2 --asgn
+JMP 2674
+
+MOV R1,
+BP --BP+?
+ADD R1,
+-4 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R2,
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+0 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+LT R0,
+R1
+JZ R0,
+2596
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-4 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2424
+
+POP R2 --result
+
+POP R19 --args
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+MOV [R1],
+R2 --asgn
+JMP 2674
+
+MOV R1,
+BP --BP+?
+ADD R1,
+-4 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R2,
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+0 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+GT R0,
+R1
+JZ R0,
+2674
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-4 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2424
+
+POP R2 --result
+
+POP R19 --args
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+MOV [R1],
+R2 --asgn
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R0,
+[4118] --Gid
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+0 --extra
+MOV R1,
+[4118] --Gid
+MOV R2,
+1 --num
+ADD R1,
+R2
+MOV R2,
+4118 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R1,
+MOV R1,
+0 --null
+NE R0,
+R1
+JZ R0,
+2868
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2692
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --lroot
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2692
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+BRKP
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R1,
+MOV R1,
+0 --null
+NE R0,
+R1
+JZ R0,
+3016
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --lroot
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2884
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2884
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --Lid.fetchMOV R1,
+MOV R1,
+0 --null
+NE R0,
+R1
+JZ R0,
+3162
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+1 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 3030
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R0,
+0 --extra
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+-3 --L.loc
+MOV R1,
+[R2] --lroot
+ADD R1,
+2 --off
+MOV R2,
+[R1] --fetch
+MOV R1,
+[R1] --user
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 3030
+
+POP R1 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+MOV R2,
+4112 --Gbind
+ADD R2,
+R0 --Goff
+MOV [R2],
+R1 --Gasgn
+MOV R1,
+BP --BP+?
+ADD R1,
+-3 --L.loc
+MOV R0,
+[R1] --lroot
+ADD R0,
+0 --off
+MOV R1,
+[R0] --fetch
+MOV R0,
+[R0] --user
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+1 --num
+MOV R0,
+BP
+SUB R0,
+2 --(BP-2)
+MOV [R0],
+R1 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R0 --bp
+
+RET
+
+PUSH BP --caller
+
+MOV BP,
+SP --act.rec
+MOV R0,
+"" --blank
+PUSH R0 --for.lo
+
+PUSH R0 --for.lo
+
+PUSH R0 --for.lo
+
+PUSH R0 --for.lo
+
+MOV R1,
+"Heapset"
+PUSH R1 --"heaps
+
+MOV R1,
+"" --blank
+PUSH R1--blank
+
+PUSH R1--blank
+
+PUSH R1--blank
+
+PUSH R1--ret
+
+CALL 0
+
+POP R0--ret
+
+POP R1--disc
+
+POP R1--disc
+
+POP R1--disc
+
+POP R1--disc
+
+MOV R0,
+4114 --Gbinding
+MOV R2,
+"Alloc"
+PUSH R2 --"aloc"
+
+MOV R2,
+R8
+PUSH R2--size
+
+MOV R2,
+"" --blank
+PUSH R2--blank
+
+PUSH R2--blank
+
+PUSH R2--ret
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV [R0],
+R1
+ADD R0,
+1 --func
+MOV [R0],
+4096 --vfunc
+MOV R0,
+[4114] --Gid
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R0,
+4116 --Gbinding
+MOV R2,
+"Alloc"
+PUSH R2 --"aloc"
+
+MOV R2,
+R8
+PUSH R2--size
+
+MOV R2,
+"" --blank
+PUSH R2--blank
+
+PUSH R2--blank
+
+PUSH R2--ret
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV [R0],
+R1
+ADD R0,
+1 --func
+MOV [R0],
+4104 --vfunc
+MOV R0,
+[4116] --Gid
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+MOV R1,
+BP --BP+?
+ADD R1,
+4 --L.loc
+MOV R2,
+"srikanth" --s"
+MOV [R1],
+R2 --Lasgn
+MOV R1,
+0 --extra
+MOV R2,
+1 --num
+MOV R3,
+4118 --Gbind
+ADD R3,
+R1 --Goff
+MOV [R3],
+R2 --Gasgn
+MOV R2,
+BP --BP+?
+ADD R2,
+1 --L.loc
+MOV R3,
+1 --num
+MOV [R2],
+R3 --Lasgn
+MOV R3,
+BP --BP+?
+ADD R3,
+1 --L.loc
+MOV R2,
+[R3] --Lid.fetchMOV R3,
+MOV R3,
+0 --num
+NE R2,
+R3
+JZ R2,
+3482
+MOV R3,
+BP --BP+?
+ADD R3,
+3 --L.loc
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+1 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R2,
+BP --BP+?
+ADD R2,
+3 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2424
+
+POP R4 --result
+
+POP R19 --args
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+MOV [R3],
+R4 --Lasgn
+MOV R4,
+BP --BP+?
+ADD R4,
+1 --L.loc
+MOV R3,
+[R4] --Lid.fetchMOV R4,
+MOV R4,
+4 --num
+EQ R3,
+R4
+JZ R3,
+3460
+MOV R4,
+BP --BP+?
+ADD R4,
+1 --L.loc
+MOV R5,
+0 --num
+MOV [R4],
+R5 --Lasgn
+MOV R5,
+BP --BP+?
+ADD R5,
+1 --L.loc
+MOV R4,
+[R5] --Lid.fetchMOV R5,
+MOV R5,
+1 --num
+EQ R4,
+R5
+JZ R4,
+3480
+MOV R5,
+BP --BP+?
+ADD R5,
+1 --L.loc
+MOV R6,
+4 --num
+MOV [R5],
+R6 --Lasgn
+JMP 3374
+
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R0,
+"preorder" --s"
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+MOV R5,
+0 --extra
+PUSH R5 --save.r
+
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+3 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2884
+
+POP R6 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+POP R5 --old.reg
+
+MOV R7,
+4112 --Gbind
+ADD R7,
+R5 --Goff
+MOV [R7],
+R6 --Gasgn
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R0,
+"inorder" --str
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+MOV R5,
+0 --extra
+PUSH R5 --save.r
+
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+3 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 2692
+
+POP R6 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+POP R5 --old.reg
+
+MOV R7,
+4112 --Gbind
+ADD R7,
+R5 --Goff
+MOV [R7],
+R6 --Gasgn
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R0,
+"postorder" --"
+MOV R2,
+"Write"
+PUSH R2--"write"
+
+MOV R2,
+-2
+PUSH R2--(-2)
+
+PUSH R0--data
+
+MOV R2,
+""
+PUSH R2--blank
+
+PUSH R2--blank
+
+CALL 0
+
+POP R1--ret
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R2--disc
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+MOV R5,
+0 --extra
+PUSH R5 --save.r
+
+PUSH R4 --save.r
+
+PUSH R3 --save.r
+
+PUSH R2 --save.r
+
+PUSH R1 --save.r
+
+PUSH R0 --save.r
+
+MOV R2,
+BP --BP+?
+ADD R2,
+3 --L.loc
+MOV R1,
+[R2] --Lid.fetchMOV R0,
+MOV R0,
+R1 --arg.val
+PUSH R0 --arg
+
+MOV R0,
+""
+PUSH R0 --for.re
+
+CALL 3030
+
+POP R6 --result
+
+POP R19 --args
+
+POP R0 --old.reg
+
+POP R1 --old.reg
+
+POP R2 --old.reg
+
+POP R3 --old.reg
+
+POP R4 --old.reg
+
+POP R5 --old.reg
+
+MOV R7,
+4112 --Gbind
+ADD R7,
+R5 --Goff
+MOV [R7],
+R6 --Gasgn
+POP R5 --locals
+
+POP R5 --locals
+
+POP R5 --locals
+
+POP R5 --locals
+
+MOV R6,
+9 --num
+MOV R5,
+BP
+SUB R5,
+2 --(BP-2)
+MOV [R5],
+R6 --sav.result
+MOV BP,
+[SP] --old.bp
+POP R5 --bp
+
+RET
+
+RET
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0 ,
+2056
+0 ,
+0
+0 ,
+0
+0 ,
+0
+MOV R15,
+1
+MOV R0,
+"Idle"
+INT 5
+
+JMP 2056
+
+INT 10
+
+INT 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MOV R1,
+SP--lib.write?
+MOV R2,
+5
+SUB R1,
+R2 --SP-5
+MOV R2,
+"Write"
+MOV R1,
+[R1] --"write"
+EQ R1,
+R2
+JZ R1,
+64 --not.write?
+MOV R1,
+SP --yes.write
+MOV R2,
+4
+SUB R1,
+R2
+MOV R2,
+[R1] --(-2)
+ADD R1,
+1
+MOV R3,
+[R1] --data
+ADD R1,
+1
+MOV R4,
+[R1] --""
+MOV R5,
+5 --syscall
+PUSH R5 --syscal
+
+PUSH R2 --(-2)
+
+PUSH R3 --data
+
+PUSH R4 --""
+
+PUSH R4 --""
+
+INT 7
+
+POP R1 --ret.val
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+MOV R2,
+SP
+MOV R3,
+1
+SUB R2,
+R3
+MOV [R2],
+R1 --ret
+RET --lib.write
+
+MOV R1,
+SP--lib.read?
+MOV R2,
+5
+SUB R1,
+R2 --SP-5
+MOV R2,
+"Read"
+MOV R1,
+[R1] --"read"
+EQ R1,
+R2
+JZ R1,
+128 --not.read?
+MOV R1,
+SP --yes.read
+MOV R2,
+4
+SUB R1,
+R2
+MOV R2,
+[R1] --(-2)
+ADD R1,
+1
+MOV R3,
+[R1] --phy.loc
+ADD R1,
+1
+MOV R4,
+[R1] --""
+MOV R5,
+7 --syscall
+PUSH R5 --syscal
+
+PUSH R2 --(-2)
+
+PUSH R3 --phy.lo
+
+PUSH R4 --""
+
+PUSH R4 --""
+
+INT 6
+
+POP R1 --ret.val
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+MOV R2,
+SP
+MOV R3,
+1
+SUB R2,
+R3
+MOV [R2],
+R1 --ret
+RET--lib.read
+
+MOV R1,
+SP--lib.exit?
+MOV R2,
+5
+SUB R1,
+R2 --SP-5
+MOV R2,
+"Exit"
+MOV R1,
+[R1] --"exit"
+EQ R1,
+R2
+JZ R1,
+192 --not.exit?
+MOV R1,
+SP --yes.exit
+MOV R2,
+4
+SUB R1,
+R2
+MOV R2,
+[R1] --""
+ADD R1,
+1
+MOV R3,
+[R1] --""
+ADD R1,
+1
+MOV R4,
+[R1] --""
+MOV R5,
+10 --syscall
+PUSH R5 --syscal
+
+PUSH R4 --""
+
+PUSH R2 --""
+
+PUSH R3 --""
+
+PUSH R5 --""
+
+INT 10
+
+POP R1 --ret.val
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+POP R2 --disc
+
+MOV R2,
+SP
+MOV R3,
+1
+SUB R2,
+R3
+MOV [R2],
+R1
+RET--lib.exit
+
+MOV R1,
+SP --lib.heap?
+MOV R2,
+5
+SUB R1,
+R2
+MOV R2,
+"Heapset"
+MOV R1,
+[R1] --"heapset"EQ R1,
+EQ R1,
+R2
+JZ R1,
+236 --not.heap?
+MOV R1,
+1024 --yes.heap
+MOV R2,
+8
+MOV R3,
+2040 --while
+GT R3,
+R1 --cond
+JZ R3,
+224 --false
+MOV [R1],
+R2 --true
+ADD R1,
+8
+ADD R2,
+8
+JMP 210 --begin
+
+MOV [2040],
+-1 --last
+MOV R2,
+SP
+MOV R3,
+1
+SUB R2,
+R3
+MOV [R2],
+0 --ret.val
+RET--lib.heapset
+
+MOV R1,
+SP --lib.alloc
+MOV R2,
+5
+SUB R1,
+R2
+MOV R2,
+"Alloc"
+MOV R1,
+[R1] --"alloc"
+EQ R1,
+R2
+JZ R1,
+292 --not.alloc?MOV R2,
+MOV R2,
+4 --yes.alloc
+MOV R1,
+SP
+SUB R1,
+R2
+MOV R2,
+[R1] --size
+MOV R3,
+[1024]
+MOV R4,
+-1
+EQ R4,
+R3 --(-1?)
+JNZ R4,
+284 --fail
+ADD R3,
+1024 --alloc
+MOV R4,
+[R3] --next
+MOV [1024],
+R4 --stor
+MOV R2,
+SP
+MOV R1,
+1
+SUB R2,
+R1
+MOV [R2],
+R3--ans
+RET--lib.alloc
+
+MOV R2,
+SP --failed
+MOV R1,
+1
+SUB R2,
+R1
+MOV [R2],
+-1 --(-1)
+RET--lib.alloc
+
+MOV R1,
+SP --lib.free
+MOV R2,
+5
+SUB R1,
+R2
+MOV R2,
+"Free"
+MOV R1,
+[R1] --"free"
+EQ R1,
+R2
+JZ R1,
+334 --not.free?
+MOV R1,
+SP --yes.free
+MOV R2,
+4
+SUB R1,
+R2 --(SP-4)
+MOV R2,
+R1 --R2=to.free
+MOV R1,
+[1024] --presentMOV R3,
+MOV R3,
+[R2]
+MOV [R3],
+R1 --to.free
+SUB R3,
+1024
+MOV [1024],
+R3 --new.head
+MOV R2,
+SP
+MOV R3,
+1
+SUB R2,
+R3
+MOV [R2],
+0 --ret.val
+RET--lib.free
+
+BRKP
+
+--end of lib
+
+--end of lib
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R9
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+POP R2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MOV R16,
+"Exception"
+PORT P1,
+R16
+OUT
+
+MOV R16,
+"Found"
+PORT P1,
+R16
+OUT
+
+MOV R16,
+"Program"
+PORT P1,
+R16
+OUT
+
+MOV R16,
+"Terminated"
+PORT P1,
+R16
+OUT
+
+HALT
+
+HALT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+13
+MOV [R16],
+SP
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+11
+MOV R16,
+[R16]
+MUL R16,
+512
+SUB R16,
+1
+MOV SP,
+R16
+BACKUP
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+4
+MOV [R16],
+1
+CALL 25600
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+4
+MOV [R16],
+2
+RESTORE
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+13
+MOV R16,
+[R16]
+MOV SP,
+R16
+IRET
+
+HALT
+
+HALT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+13
+MOV [R16],
+SP
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+11
+MOV R16,
+[R16]
+MUL R16,
+512
+SUB R16,
+1
+MOV SP,
+R16
+BACKUP
+
+MOV R16,
+ "Disk int"
+PORT P1,
+R16
+OUT
+
+MOV [29552],
+0
+MOV R0,
+0
+MOV R16,
+16
+GT R16,
+ R0
+JZ R16,
+3168
+MOV R16,
+28672
+MOV R17,
+R0
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+4
+MOV R16,
+[R16]
+MOV R17,
+5
+EQ R16,
+R17
+JZ R16,
+3160
+MOV R16,
+28672
+MOV R17,
+R0
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+4
+MOV [R16],
+1
+JMP 3160
+
+MOV R16,
+R0
+ADD R16,
+1
+MOV R0,
+R16
+JMP 3122
+
+RESTORE
+
+MOV R16,
+28672
+MOV R17,
+29560
+ADD R17,
+1
+MOV R17,
+[R17]
+MUL R17,
+16
+ADD R16,
+R17
+ADD R16,
+13
+MOV R16,
+[R16]
+MOV SP,
+R16
+IRET
+
+HALT
+
+HALT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

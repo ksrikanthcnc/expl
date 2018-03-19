@@ -1,0 +1,44 @@
+class
+boo{
+	decl
+		int x;
+		int y;
+		int set(int a,int b);
+		int get();
+	enddecl
+	
+	int set(int a,int b){
+		begin
+			self.x=a;
+			self.y=b;
+			return 0;
+		end
+	}
+	
+	int get(){
+		begin
+			write(self.x);
+			write(self.y);
+			return 0;
+		end
+	}
+}
+endclass
+
+decl
+	boo obg;
+enddecl
+
+int main(){
+	decl
+		int t;
+	enddecl
+	
+	begin
+		t=initialize();
+		obg=new(boo);
+		t=obg.set(143,564);
+		t=obg.get();
+		return 0;
+	end
+}

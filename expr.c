@@ -1,4 +1,3 @@
-#define exit(a); /*printf("line:'%d'\n",line);*/ exit(a);
 #include "expr.h"
 struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tnode *l, struct tnode *d,struct tnode *r,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry){
 	struct Paramstruct *ptemp;
@@ -347,6 +346,7 @@ void CFInstall(/*struct Classtable *cptr, */char *typename, char *name){
 		printf("line:'%d'\tCHECK ME!\n",line);
 		exit(1);}
 	new->fieldindex=fieldindex++;
+	if(new->type==NULL) {fieldindex++;fieldcount++;}//classs 
 	new->next=fhead;
 	fhead=new;}
 struct Fieldlist *CFLookup(struct Classtable *class, char *name){
@@ -410,6 +410,26 @@ int getLabel(){label++;return label;}
 void generate(){
 	puts("\t\t\t\t+Generating Code");
 	fprintf(target_file,"F%d:\n",TMAIN);
+	struct Classtable *ctemp=chead;
+	struct Memberfunclist *mtemp;
+	int base;
+	/* while(base<4096+chead->index*8)
+		fprintf(target_file,"MOV [%d],-1 --vfunc.init\n",base+mtemp->funcposition);base++; */
+	base=4096+chead->index*8;
+	int *func;
+	func=malloc(sizeof(int)*8);
+	while(ctemp){
+		printf("%s\n",ctemp->name);
+		mtemp=ctemp->memberfunc;
+		for(int i=0;i<8;i++)	func[i]=0;
+		while(mtemp){
+			if(func[mtemp->funcposition]==0)
+				fprintf(target_file,"MOV [%d],F%d\n",base+mtemp->funcposition,mtemp->flabel);
+			func[mtemp->funcposition]=1;
+			mtemp=mtemp->next;}
+		base-=8;
+		ctemp=ctemp->next;
+	}
 	fprintf(target_file,"MOV SP,%d --start\n",gbinding-1);
 	fprintf(target_file,"MOV BP,%d --start\n",gbinding);
 	fprintf(target_file,"PUSH R0 --ret.val\n");
@@ -431,7 +451,7 @@ int codeGen(struct tnode *t){
 			codeGen(t->left);
 			puts("\t\t\t\t+right");
 			codeGen(t->right);
-			puts("\t\t\t\t-");
+			//puts("\t\t\t\t-");
 			break;
 		case nt_NUM:
 			puts("\t\t\t\t+num");
@@ -631,24 +651,7 @@ int codeGen(struct tnode *t){
 			// printf("%s",t->down->str);
 			readflag=1;
 			saveReg();
-			if(t->down->Lentry==NULL){
-				if(t->down->nt!=nt_ARR)
-					i=codeGen(t->down);
-				else
-					i=codeGen(t->down->down);
-				k=getReg();
-				if(t->down->nt!=nt_USERROOT){
-					fprintf(target_file,"MOV R%d,%d --Rbind\n",k,t->down->Gentry->binding);
-					fprintf(target_file,"ADD R%d,R%d --Roff\n",k,i);}
-				else{
-					fprintf(target_file,"MOV R%d,R%d --Roff\n",k,i);
-				}
-				freeReg();
-				ret=getReg();
-				ReadReg(k,ret);
-				freeReg();
-				freeReg();}
-			else{
+			if(t->down->Lentry!=NULL){
 				j=getReg();
 				if(t->down->nt==nt_USERROOT){
 					i=codeGen(t->left);
@@ -660,6 +663,32 @@ int codeGen(struct tnode *t){
 				ret = getReg();
 				ReadReg(j, ret);
 				freeReg();
+				freeReg();}
+			else if(t->down->Gentry!=NULL){
+				if(t->down->nt!=nt_ARR)
+					i=codeGen(t->down);
+				else
+					i=codeGen(t->down->down);
+				k=getReg();
+				if(t->down->nt!=nt_USERROOT){
+					fprintf(target_file,"MOV R%d,%d --Rbind\n",k,t->down->Gentry->binding);
+					fprintf(target_file,"ADD R%d,R%d --Roff\n",k,i);}
+				else{
+					fprintf(target_file,"MOV R%d,R%d --Roff\n",k,i);
+				}
+
+				freeReg();
+				ret=getReg();
+				ReadReg(k,ret);
+				freeReg();
+				freeReg();}
+			else{
+				i=getReg();
+				fprintf(target_file, "MOV R%d,BP --(BP-?)\n",i);
+				fprintf(target_file, "ADD R%d, %d --heapbind\n",i,t->down->left->num-1);
+				fprintf(target_file,"MOV R%d,[R%d] --self\n",i,i);
+				fprintf(target_file,"ADD R%d,%d --off\n",i,t->down->num);
+				ReadReg(i,i);
 				freeReg();}
 			readflag=0;
 			restReg();
@@ -694,7 +723,22 @@ int codeGen(struct tnode *t){
 				freeReg();
 				freeReg();
 				break;}*/
-			if(t->left->Lentry==NULL){//------------------------
+			if(t->left->class!=NULL && t->right->class!=NULL){
+				i=getReg();
+				k=getReg();
+				fprintf(target_file,"MOV R%d,%d --rclabind\n",i,t->right->Gentry->binding);
+				fprintf(target_file,"MOV R%d,[R%d] --rclabind\n",k,i);
+				j=getReg();
+				fprintf(target_file,"MOV R%d,%d --lclabind\n",j,t->left->Gentry->binding);
+				fprintf(target_file,"MOV [R%d],R%d --rtolcla\n",j,k);
+				fprintf(target_file,"ADD R%d,1 --vfunc\n",i);
+				fprintf(target_file,"MOV R%d,[R%d] --rvfunc\n",k,i);
+				fprintf(target_file,"ADD R%d,1 --vfunc\n",j);
+				fprintf(target_file,"MOV [R%d],R%d --lvfunc\n",j,k);
+				freeReg();
+				freeReg();
+				freeReg();}
+			else if(t->left->Lentry==NULL){//------------------------
 				node=t->left->Gentry;
 				if(t->left->nt==nt_SPTR){
 					i=codeGen(t->right);
@@ -734,11 +778,15 @@ int codeGen(struct tnode *t){
 					fprintf(target_file,"MOV R%d,%d --Gbind\n",k,node->binding);
 					fprintf(target_file,"ADD R%d,R%d --Goff\n",k,i);
 					fprintf(target_file,"MOV [R%d],R%d --Gasgn\n",k,j);
+					if(t->left->class!=NULL){//class
+						fprintf(target_file,"ADD R%d,1 --vfunc\n",k);
+						//fprintf(target_file,"MOV [R%d],%d --vfunc\n",k,t->left->class->index*8+4096);
+						fprintf(target_file,"MOV [R%d],%d --vfunc\n",k,t->right->down->class->index*8+4096);}
 					freeReg();
 					freeReg();
 					freeReg();}
 				}
-			else{//Local
+			else if(t->left->Gentry==NULL){//Local
 				k=getReg();
 				if(t->left->nt==nt_SPTR){
 					fetch_local_loc_to(t->left,k);
@@ -763,6 +811,18 @@ int codeGen(struct tnode *t){
 					fprintf(target_file,"MOV [R%d],R%d --Lasgn\n",k,i);
 					freeReg();}
 				freeReg();}
+			else{//Class
+				i=getReg();
+				fprintf(target_file, "MOV R%d,BP --(BP-?)\n",i);
+				fprintf(target_file, "ADD R%d, %d --heapbind\n",i,t->left->left->num-1);
+				fprintf(target_file,"MOV [R%d],R%d --self\n",i,i);
+				fprintf(target_file,"ADD R%d,%d --off\n",i,t->left->num);
+				j=codeGen(t->right);
+				fprintf(target_file,"MOV [R%d],R%d --new\n",i,j);
+				fprintf(target_file,"ADD R%d,1 --vfunc\n",i);
+				fprintf(target_file,"MOV [R%d], %d --vfunc\n",i,CFLookup(t->left->class,t->str)->ctype->index*8+4096);
+				
+			}
 			puts("\t\t\t\t-'='");
 			break;
 		case nt_IF:
@@ -776,7 +836,7 @@ int codeGen(struct tnode *t){
 			puts("\t\t\t\t-if");
 			break;
 		case nt_IFELSE:
-			puts("\t\t\t\tifelse");
+			puts("\t\t\t\t+ifelse");
 			label1=getLabel();
 			label2=getLabel();
 			result=codeGen(t->left);
@@ -827,15 +887,30 @@ int codeGen(struct tnode *t){
 				fprintf(target_file, "PUSH R%d --save.reg\n",reg);
 				freeReg();}
 			atemp=t->arglist;
-			if(t->class!=NULL && t->left->nt!=nt_SELF){
+			if(t->class!=NULL /*&& t->left->nt!=nt_SELF*/){//class
+				k=getReg();
 				i=getReg();
 				j=getReg();
-				fprintf(target_file,"MOV R%d, %d --clasloc\n",i,t->left->Gentry->binding);
-				fprintf(target_file,"MOV R%d,[R%d]\n",j,i);
-				fprintf(target_file,"PUSH R%d --clasloc\n",j);
-				fprintf(target_file,"ADD R%d, 1 --vfunc\n",i);
-				fprintf(target_file,"MOV R%d,[R%d]\n",j,i);
-				fprintf(target_file,"PUSH R%d --vfunc\n",j);
+				if(t->left->nt!=nt_SELF){//not in class
+					fprintf(target_file,"MOV R%d, %d --clasloc\n",i,t->left->Gentry->binding);
+					fprintf(target_file,"MOV R%d,[R%d] --clasheap\n",j,i);
+					fprintf(target_file,"PUSH R%d --clasheap\n",j);
+					fprintf(target_file,"ADD R%d, 1 --vfunc\n",i);
+					fprintf(target_file,"MOV R%d,[R%d]\n",j,i);
+					fprintf(target_file,"MOV R%d,[R%d]\n",k,i);
+					fprintf(target_file,"PUSH R%d --vfunc\n",j);}
+				else{//in class		self.set(25,49);
+					fprintf(target_file,"MOV R%d,BP --class\n",i);
+					if(phead!=NULL){//phead
+						fprintf(target_file,"ADD R%d,%d --clabind\n",i,(lhead->binding)-2);}
+					else{//no params
+						fprintf(target_file,"ADD R%d,%d --clabind\n",i,-4);}
+					fprintf(target_file,"MOV R%d,[R%d] --clasheap\n",j,i);
+					fprintf(target_file,"PUSH R%d --clasheap\n",j);
+					fprintf(target_file,"ADD R%d, 1 --vfunc\n",i);
+					fprintf(target_file,"MOV R%d,[R%d] --clasheap\n",j,i);
+					fprintf(target_file,"MOV R%d,[R%d] --clasheap\n",k,i);
+					fprintf(target_file,"PUSH R%d --clasheap\n",j);}
 				freeReg();
 				freeReg();}
 			while(atemp){
@@ -850,14 +925,20 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "MOV R%d,\"\"\n",i);
 			fprintf(target_file, "PUSH R%d --for.ret\n",i);
 			freeReg();
-			if(t->class!=NULL)
-				fprintf(target_file, "CALL F%d\n",CMLookup(t->class,t->str)->flabel);
+			if(t->class!=NULL){//obj.f0()
+				fprintf(target_file, "ADD R%d, %d --vfunc\n",k, CMLookup(t->class,t->str)->funcposition);//-------------------------
+				fprintf(target_file, "MOV R%d,[R%d] --vfunc\n",k,k);
+				fprintf(target_file, "CALL R%d\n",k);
+				freeReg();}
+			else if(t->left->class!=NULL){//self.o1.fact()//---------------------------------------------------------???????something striked
+				fprintf(target_file, "CALL F%d\n",CMLookup(CFLookup(t->left->class,t->left->str)->ctype,t->str)->flabel);
+			}
 			else
 				fprintf(target_file, "CALL F%d\n",t->Gentry->flabel);
 			fprintf(target_file, "POP R%d --result\n",regtemp+1);
 			atemp=t->arglist;
 			i=getReg();
-			if(t->class!=NULL && t->left->nt!=nt_SELF){
+			if(t->class!=NULL){
 				fprintf(target_file, "POP R%d --clasargs\n",i==0?19:0);
 				fprintf(target_file, "POP R%d --clasargs\n",i==0?19:0);}
 			while(atemp){
@@ -910,7 +991,7 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "PUSH R%d  --\"\"\n",i);
 			fprintf(target_file, "PUSH R%d  --\"\"\n",i);
 			fprintf(target_file, "PUSH R%d  --\"\"\n",i);
-			fprintf(target_file, "PUSH R%d  --\"\"\n",i);
+			fprintf-(target_file, "PUSH R%d  --\"\"\n",i);
 			freeReg();
 			fprintf(target_file, "CALL 0\n");
 			puts("\t\t\t\t-exit");
@@ -997,8 +1078,8 @@ int codeGen(struct tnode *t){
 				if(t->Lentry==NULL){
 					i=getReg();
 					fprintf(target_file,"MOV R%d,[%d] --groot\n",i,t->Gentry->binding);
-					tabs--;
 					puts("\t\t\t\t-usernode");
+					tabs--;
 					return i;}
 				else{
 					j=getReg();
@@ -1006,30 +1087,30 @@ int codeGen(struct tnode *t){
 					fetch_local_loc_to(t,i);
 					fprintf(target_file, "MOV R%d,[R%d] --lroot\n",j,i);
 					freeReg();
-					tabs--;
 					puts("\t\t\t\t-usernode");
+					tabs--;
 					return j;}}
 			else{
 				j=codeGen(t->left);
 				fprintf(target_file, "ADD R%d,%d --addr\n",j,t->num);
 				fprintf(target_file, "MOV R%d,[R%d] --addr\n",j,j);
-				tabs--;
 				puts("\t\t\t\t-usernode");
+				tabs--;
 				return j;}
 			break;
 		case nt_TRUE:
 			puts("\t\t\t\t+true");
 			i=getReg();
 			fprintf(target_file, "MOV R%d, 1 --true\n",i);
-			tabs--;
 			puts("\t\t\t\t-true");
+			tabs--;
 			return i;
 		case nt_FALSE:
 			puts("\t\t\t\t+false");
 			i=getReg();
 			fprintf(target_file, "MOV R%d, 0 --false\n",i);
-			tabs--;
 			puts("\t\t\t\t-false");
+			tabs--;
 			return i;
 		case nt_NOT:
 			puts("\t\t\t\t+not");
@@ -1046,8 +1127,8 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "L%d:\n",label1);
 			fprintf(target_file, "MOV R%d,0 --set0\n",j);
 			fprintf(target_file, "L%d:\n",label2);
-			tabs--;
 			puts("\t\t\t\t-not");
+			tabs--;
 			return j;
 		case nt_AND:
 			puts("\t\t\t\t+and");
@@ -1071,8 +1152,8 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "L%d:\n",label1);
 			fprintf(target_file, "MOV R%d,0 --ans0\n",result);
 			fprintf(target_file, "L%d:\n",label2);
-			tabs--;
 			puts("\t\t\t\t-and");
+			tabs--;
 			return result;
 		case nt_OR:
 			puts("\t\t\t\t+or");
@@ -1096,12 +1177,15 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "L%d:\n",label1);
 			fprintf(target_file, "MOV R%d,1 --ans1\n",result);
 			fprintf(target_file, "L%d:\n",label2);
-			tabs--;
 			puts("\t\t\t\t-or");
+			tabs--;
 			return result;
 		case nt_NUL:
+			puts("\t\t\t\t+null");
 			i=getReg();
 			fprintf(target_file, "MOV R%d, \"null\" --null\n",i);
+			puts("\t\t\t\t-null");
+			tabs--;
 			return i;
 		case nt_SELF:
 			puts("\t\t\t\t+self");
@@ -1109,25 +1193,35 @@ int codeGen(struct tnode *t){
 			fprintf(target_file, "MOV R%d,BP --(BP-?)\n",i);
 			fprintf(target_file, "ADD R%d, %d --heapbind\n",i,t->num-1);
 			fprintf(target_file, "MOV R%d,[R%d] --self\n",i,i);
-			tabs--;
 			puts("\t\t\t\t-self");
+			tabs--;
 			return i;
 			break;		
 		case nt_NEW:
 			puts("\t\t\t\t+new");
-			saveReg();
+			/*saveReg();
+			if(t->left->Gentry!=NULL){//Global
+				i=getReg();
+				fprintf(target_file, "MOV R%d,%d --Gbinding\n",i,t->left->Gentry->binding);
+				j=getReg();
+				alloc_to(8,j);
+				fprintf(target_file, "MOV [R%d],R%d\n",i,j);
+				freeReg();
+				fprintf(target_file, "ADD R%d, 1 --func\n",i);
+				fprintf(target_file, "MOV [R%d], %d --vfunc\n",i,4096+8*t->right->class->index);
+				freeReg();}
+			else{//Class
+				i=getReg();
+				alloc_to(8,i);
+
+
+			}
+			restReg();*/
 			i=getReg();
-			fprintf(target_file, "MOV R%d,%d --Gbinding\n",i,t->left->Gentry->binding);
-			j=getReg();
-			alloc_to(8,j);
-			fprintf(target_file, "MOV [R%d],R%d\n",i,j);
-			freeReg();
-			fprintf(target_file, "ADD R%d, 1 --func\n",i);
-			fprintf(target_file, "MOV [R%d], %d --vfunc\n",i,4096+8*t->right->class->index);
-			freeReg();
-			restReg();
-			tabs--;
+			alloc_to(8,i);
 			puts("\t\t\t\t-new");
+			tabs--;
+			return i;
 			break;
 		case nt_DELETE:
 			puts("\t\t\t\t+delete");

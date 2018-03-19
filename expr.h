@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <unistd.h>
 #define brkp	raise(SIGINT);
+#define exit(a); /*printf("line:'%d'\n",line);*/ exit(a);
 //#define BUG
 
 //------------------nt_
@@ -87,6 +88,7 @@ int fieldindex=0;
 int classflag=0;
 int cindex=0;
 int heapbinding=0;
+int fieldcount,methodcount;
 struct Classtable *class;
 struct Classtable *ctype;
 	
@@ -118,27 +120,29 @@ struct Gsymbol{
 	int arr;
 	char *tuplename;
 	struct Gsymbol* next;
-}*ghead;
+}*ghead=NULL;
 
 struct Paramstruct{
 	char* name;
 	struct Typetable *type;
 	struct Paramstruct* next;
-}*phead;
+}*phead=NULL;
 
 struct Lsymbol{
 	char *name;
 	struct Typetable *type;
+	struct Classtable *class;
+
 	int binding;
 	struct Lsymbol *next;
-}*lhead;
+}*lhead=NULL;
 
 struct Typetable{
 	char *name;
 	int size;
 	struct Fieldlist *fields;
 	struct Typetable *next;
-}*thead;
+}*thead=NULL;
 
 struct Fieldlist{
 	char *name;
@@ -146,7 +150,7 @@ struct Fieldlist{
 	struct Typetable *type;
 	struct Classtable *ctype;	//pointer to the class containing the field
 	struct Fieldlist *next;
-}*fhead;
+}*fhead=NULL;
 
 struct Classtable {
  	char *name;							//name of the class
@@ -157,7 +161,7 @@ struct Classtable {
 	int fieldcount;						//count of fields
 	int methodcount;						//count of methods
 	struct Classtable *next;				//pointer to next class table entry
-}*chead;
+}*chead=NULL;
 
 struct Memberfunclist {
  	char *name;						//name of the member function in the class
@@ -166,7 +170,7 @@ struct Memberfunclist {
 	int funcposition;				//position of the function in the class table
  	int flabel;						//A label for identifying the starting address of the function's code in the memory
 	struct Memberfunclist *next;	 //pointer to next Memberfunclist entry
-}*mhead;
+}*mhead=NULL;
 
 
 
@@ -200,12 +204,13 @@ int GetSize (struct Typetable * type);
 
 struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 
-struct tnode *dnode;
+struct tnode *dnode,*ddnode;
 struct Gsymbol *gnode;
 struct Paramstruct *pnode;
 struct Lsymbol *lnode;
 struct Typetable *Tnode;
 struct Fieldlist *fnode;
+struct Classtable *cnode;
 
 
 void generate();

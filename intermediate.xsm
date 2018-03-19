@@ -1,0 +1,445 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+JMP F999
+F1:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,0 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,1 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R1,1 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F2:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1,BP --(BP-?)
+ADD R1, -4 --heapbind
+MOV R1,[R1] --self
+ADD R1,0 --off
+MOV R2,[R1] --fetch
+MOV R1,[R1] --user
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F3:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1,BP --(BP-?)
+ADD R1, -6 --heapbind
+MOV R1,[R1] --self
+ADD R1,0 --off
+MOV R3,BP --BP+?
+ADD R3,-3 --L.loc
+MOV R2,[R3] --Lid.fetch
+MOV [R1],R2 --asgn
+MOV R1,BP --(BP-?)
+ADD R1, -6 --heapbind
+MOV R1,[R1] --self
+ADD R1,1 --off
+MOV R3,BP --BP+?
+ADD R3,-4 --L.loc
+MOV R2,[R3] --Lid.fetch
+MOV [R1],R2 --asgn
+MOV R1,1 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F5:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1,BP --(BP-?)
+ADD R1, -8 --heapbind
+MOV R1,[R1] --self
+ADD R1,0 --off
+MOV R3,BP --BP+?
+ADD R3,-3 --L.loc
+MOV R2,[R3] --Lid.fetch
+MOV [R1],R2 --asgn
+MOV R1,BP --(BP-?)
+ADD R1, -8 --heapbind
+MOV R1,[R1] --self
+ADD R1,1 --off
+MOV R3,BP --BP+?
+ADD R3,-4 --L.loc
+MOV R2,[R3] --Lid.fetch
+MOV [R1],R2 --asgn
+MOV R0,BP --(BP-?)
+ADD R0, -8 --heapbind
+MOV R0,[R0] --self
+ADD R0,2 --off
+MOV R2,BP --BP+?
+ADD R2,-5 --L.loc
+MOV R1,[R2] --Lid.fetch
+MOV [R0],R1 --asgn
+MOV R1,BP --(BP-?)
+ADD R1, -8 --heapbind
+MOV R1,[R1] --self
+ADD R1,3 --off
+MOV R3,BP --BP+?
+ADD R3,-6 --L.loc
+MOV R2,[R3] --Lid.fetch
+MOV [R1],R2 --asgn
+MOV R1,1 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F4:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,0 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,1 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,2 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,BP --(BP-?)
+ADD R0, -4 --heapbind
+MOV R0,[R0] --self
+ADD R0,3 --off
+MOV R1,[R0] --fetch
+MOV R0,[R0] --user
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R1,1 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F999:
+MOV [4107],F5
+MOV [4104],F4
+MOV [4106],F3
+MOV [4105],F2
+MOV [4098],F3
+MOV [4097],F2
+MOV [4096],F1
+MOV SP,4120 --start
+MOV BP,4121 --start
+PUSH R0 --ret.val
+CALL F1000
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0
+F1000:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1, "Heapset"
+PUSH R1 --"heapset"
+MOV R1, "" --blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--blank
+PUSH R1--ret
+CALL 0
+POP R0--ret
+POP R1--disc
+POP R1--disc
+POP R1--disc
+POP R1--disc
+MOV R1, 4112
+MOV R1,R0 --ret
+MOV R0,0 --extra
+MOV R2, "Alloc"
+PUSH R2 --"alloc"
+MOV R2,8
+PUSH R2--size
+MOV R2, "" --blank
+PUSH R2--blank
+PUSH R2--blank
+PUSH R2--ret
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R2,4115 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+ADD R2,1 --vfunc
+MOV [R2],4096 --vfunc
+MOV R0,0 --extra
+PUSH R0 --save.reg
+MOV R1, 4115 --clasloc
+MOV R2,[R1] --clasheap
+PUSH R2 --clasheap
+ADD R1, 1 --vfunc
+MOV R2,[R1]
+MOV R0,[R1]
+PUSH R2 --vfunc
+MOV R2,37 --num
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R2,"Rogers" --str
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R1,""
+PUSH R1 --for.ret
+ADD R0, 2 --vfunc
+MOV R0,[R0] --vfunc
+CALL R0
+POP R1 --result
+POP R19 --clasargs
+POP R19 --clasargs
+POP R19 --args
+POP R19 --args
+POP R0 --old.regs
+MOV R2,4113 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+MOV R0,0 --extra
+MOV R2, "Alloc"
+PUSH R2 --"alloc"
+MOV R2,8
+PUSH R2--size
+MOV R2, "" --blank
+PUSH R2--blank
+PUSH R2--blank
+PUSH R2--ret
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R2,4117 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+ADD R2,1 --vfunc
+MOV [R2],4104 --vfunc
+MOV R0,0 --extra
+PUSH R0 --save.reg
+MOV R1, 4117 --clasloc
+MOV R2,[R1] --clasheap
+PUSH R2 --clasheap
+ADD R1, 1 --vfunc
+MOV R2,[R1]
+MOV R0,[R1]
+PUSH R2 --vfunc
+MOV R2,"CS" --str
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R2,999 --num
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R2,35 --num
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R2,"Mathew" --str
+MOV R1,R2 --arg.val
+PUSH R1 --arg
+MOV R1,""
+PUSH R1 --for.ret
+ADD R0, 3 --vfunc
+MOV R0,[R0] --vfunc
+CALL R0
+POP R1 --result
+POP R19 --clasargs
+POP R19 --clasargs
+POP R19 --args
+POP R19 --args
+POP R19 --args
+POP R19 --args
+POP R0 --old.regs
+MOV R2,4113 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+MOV R0,[4112] --Gid
+MOV R1,4112 --Rbind
+ADD R1,R0 --Roff
+MOV R2, "Read"
+PUSH R2
+MOV R2, -1
+PUSH R2--(-1)
+MOV R2, R1
+PUSH R2--reg.addr
+MOV R2, ""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,[4112] --Gid
+MOV R1,0 --num
+GT R0,R1
+JZ R0,L1
+MOV R0,4115 --rclabind
+MOV R1,[R0] --rclabind
+MOV R2,4119 --lclabind
+MOV [R2],R1 --rtolcla
+ADD R0,1 --vfunc
+MOV R1,[R0] --rvfunc
+ADD R2,1 --vfunc
+MOV [R2],R1 --lvfunc
+JMP L2
+L1:
+MOV R0,4117 --rclabind
+MOV R1,[R0] --rclabind
+MOV R2,4119 --lclabind
+MOV [R2],R1 --rtolcla
+ADD R0,1 --vfunc
+MOV R1,[R0] --rvfunc
+ADD R2,1 --vfunc
+MOV [R2],R1 --lvfunc
+L2:
+MOV R0,0 --extra
+PUSH R0 --save.reg
+MOV R1, 4119 --clasloc
+MOV R2,[R1] --clasheap
+PUSH R2 --clasheap
+ADD R1, 1 --vfunc
+MOV R2,[R1]
+MOV R0,[R1]
+PUSH R2 --vfunc
+MOV R1,""
+PUSH R1 --for.ret
+ADD R0, 0 --vfunc
+MOV R0,[R0] --vfunc
+CALL R0
+POP R1 --result
+POP R19 --clasargs
+POP R19 --clasargs
+POP R0 --old.regs
+MOV R2,4112 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+MOV R1,0 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET

@@ -1,8 +1,9 @@
 class
 Person{
 	decl
+
 		str name;
-		int age;
+		int age,i;
 		int printDetails();
 		str findName();
 		int createPerson(str name, int age);
