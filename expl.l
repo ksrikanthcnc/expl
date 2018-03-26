@@ -3,9 +3,7 @@
 	#include<stdlib.h>
 	#include"y.tab.h"
 %}
-
 %%
-
 "/*"([^*/]|(\*[^/])|(\/))*"*/"	{int i=yyleng;char *c;c=&yytext[0];while(i) {if(*c=='\n') line++;c++;i--;}}
 "//".* 			{}
 "+"				{return PLUS;}
@@ -19,9 +17,7 @@
 "<="			{return LE;}
 ">="			{return GE;}
 "!="			{return NE;}
-"=="			{return EE;}/*
-"++"			{return INC;}
-"--"			{return DEC;}*/
+"=="			{return EE;}
 "!"				{return NOT;}
 "not"			{return NOT;}
 "||"			{return OR;}
@@ -70,14 +66,16 @@
 ["][^"\n]*["]					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
 ['][^'\n]*[']					{yylval = createtree(TLookup("str"),0,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL,NULL,NULL);return STRING;}
 [0-9]+							{yylval = createtree(TLookup("int"),atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL,NULL,NULL); return NUM;}
-[a-zA-Z][a-zA-Z0-9]*			{yylval = createtree(NULL,0,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
+[a-zA-Z][a-zA-Z0-9_]*			{yylval = createtree(NULL,0,yytext,nt_ID,NULL,NULL,NULL,NULL,NULL,NULL);yylval->class=CLookup(yytext);return ID;}
 [(),\[\];&{}.]					{return *yytext;}
 [ \t]							{}
-[\n]							{line++;}
+[\n]							{
+								#ifdef BUG 
+									printf("\t\t\t\t\t\t\t%d\n",line);
+								#endif
+								line++;}
 .								{printf("line:'%d'\tunknown character:'%c'\n",line,*yytext);exit(1);}
-
 %%
 int yywrap(void){
-	return 1;
-}
+	return 1;}
 
