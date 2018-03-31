@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <unistd.h>
 #define brkp	raise(SIGINT);
-#define exit(a); /*printf("line:'%d'\n",line);*/ exit(a);
+#define exit(a); /*brkp*/ exit(a);
 //#define BUG
 
 //------------------nt_
@@ -239,9 +239,11 @@ int evaluate(struct tnode * t);
 
 void fetch_local_loc_to(struct tnode *t,int i);
 
+void checkmembertype(char *clas);
 void checkid(struct tnode *t);
 void checkidid(struct tnode *t1,struct tnode *t3);
 void checktype(struct Typetable *t1, char *member);
+void checkclass(char *member);
 void checkmember(struct tnode *parent, struct tnode *member);
 void yyerror(char const *s);
 void func(struct Paramstruct* phead);

@@ -12,55 +12,19 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 	tbool=TLookup("bool");
 	tvoid=TLookup("void");
 	tnull=TLookup("null");
-	switch(nt){
-	//-------------nodes
+	/*switch(nt){
 		case nt_NODE:
 			if(t!=tvoid)
 				mismatch(nt,l->t,r->t);
 			break;
-		case nt_IF:
-		case nt_IFELSE:
-		case nt_WHILE:
-		case nt_BREAK:
-		case nt_CONTINUE:
-			break;
-	//-------------id
-		case nt_NUM:
-		case nt_STR:
-		case nt_ID:
-		case nt_USERROOT:
-		case nt_USERNODE:
-		case nt_NUL:
-		case nt_SELF://-----------------
-			break;
-		case nt_ARR:
-			if(d->t!=tint && d->t!=tstr)
-				mismatch(nt,t,t);
-			break;
-	//-------------arth
 		case nt_PLUS:
-		case nt_MINUS:
+		case nt_MINUS://need to work
 		case nt_MUL:
 		case nt_DIV:
 		case nt_MOD:
 			if(l->t!=tint || r->t!=tint)
 				mismatch(nt, l->t, r->t);
 			break;
-		case nt_ASGN:
-			if((l->t==tint 		||
-				l->t==tintptr 	||
-				l->t==tbool 	||
-				l->t==tstr 		||
-				l->t==tstrptr 	||
-				l->t==tvoid 	||
-				l->t==tnull)//not type
-					&&
-				r->t==tnull){
-					mismatch(nt,l->t,r->t);}
-			if(l->t!=r->t && r->t!=tnull){
-				mismatch(nt,l->t,r->t);}
-			break;
-	//-------------comp
 		case nt_LT:
 		case nt_LE:
 		case nt_GT:
@@ -81,54 +45,39 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 				(r->t!=tnull))
 				mismatch(nt,l->t,r->t);
 			break;
-		case nt_TRUE:
-		case nt_FALSE:
+		case nt_NUM:
+		case nt_ID:
+		case nt_USERROOT:
+		case nt_USERNODE:
 			break;
-		case nt_NOT:
-			if(d->t!=tbool)
-				mismatch(nt,d->t,d->t);
-		case nt_OR:
-		case nt_AND:
-			if(l->t!=tbool || r->t!=tbool)
-				mismatch(nt,d->t,d->t);
-	//-------------syscalls
+		case nt_ARR:
+			if(d->t!=tint && d->t!=tstr)
+				mismatch(nt,t,t);
+			break;
 		case nt_READ:
 		case nt_WRITE:
-		case nt_INIT:
-		case nt_NEW:
-		case nt_DELETE:
-		case nt_EXIT:
+		case nt_STR:
 			break;
-		case nt_RET:
-			if(t!=d->t)
-				mismatch(nt,t,d->t);
+		case nt_ASGN:
+			if((l->t==tint 		||
+				l->t==tintptr 	||
+				l->t==tbool 	||
+				l->t==tstr 		||
+				l->t==tstrptr 	||
+				l->t==tvoid 	||
+				l->t==tnull)
+					&&
+				r->t==tnull)
+				mismatch(nt,l->t,r->t);
+			if(l->t!=r->t && r->t!=tnull)
+				mismatch(nt,l->t,r->t);
 			break;
-		case nt_ALLOC:
-			if(	d->t==tint 		||
-				d->t==tintptr 	||
-				d->t==tbool 	||
-				d->t==tstr 		||
-				d->t==tstrptr 	||
-				d->t==tvoid 	||
-				d->t==tnull)
-				mismatch(nt,d->t,d->t);
+		case nt_IF:
+		case nt_IFELSE:
+		case nt_WHILE:
 			break;
-		case nt_FREE:
-			if(	d->t==tint 		||
-				d->t==tintptr 	||
-				d->t==tbool 	||
-				d->t==tstr 		||
-				d->t==tstrptr 	||
-				d->t==tvoid 	||
-				d->t==tnull)
-				mismatch(nt,d->t,d->t);
-			break;
-	//-------------func
 		case nt_FUNC:
-			if(GLookup(str)!=NULL)
-				ptemp=GLookup(str)->paramlist;
-			else
-				ptemp=CMLookup(class,str)->paramlist;
+			ptemp=GLookup(str)->paramlist;
 			atemp=arglist;
 			int param_pos=0;
 			while(ptemp!=NULL && atemp!=NULL){
@@ -151,13 +100,47 @@ struct tnode* createtree(struct Typetable *t, int num,char *str,int nt,struct tn
 					atemp=atemp->down;}}
 				exit(1);}
 			break;
-	//-------------extra
+		case nt_RET:
+			if(t!=d->t)
+				mismatch(nt,t,d->t);
+			break;
 		case nt_BRKP:
+		case nt_INIT:
+			break;
+		case nt_ALLOC:
+			if(	d->t==tint 		||
+				d->t==tintptr 	||
+				d->t==tbool 	||
+				d->t==tstr 		||
+				d->t==tstrptr 	||
+				d->t==tvoid 	||
+				d->t==tnull)
+				mismatch(nt,d->t,d->t);
+			break;
+		case nt_FREE:
+			if(	d->t==tint 		||
+				d->t==tintptr 	||
+				d->t==tbool 	||
+				d->t==tstr 		||
+				d->t==tstrptr 	||
+				d->t==tvoid 	||
+				d->t==tnull)
+				mismatch(nt,d->t,d->t);
+			break;
+		case nt_EXIT:
+		case nt_TRUE:
+		case nt_FALSE:
+		case nt_AND:
+		case nt_OR:
+		case nt_NOT:
+		case nt_NUL:
+		case nt_SELF://-----------------
+		case nt_NEW:
+		case nt_DELETE:
 			break;
 		default:
-			printf("NO NT MATCHED IN CREATETREE...'%d'\n",nt);
-			exit(1);}
-	treetemp=malloc(sizeof(struct tnode));
+			printf("NO NT MATCHED IN CREATTREE...\n");}
+	*/treetemp=malloc(sizeof(struct tnode));
 	treetemp->num=num;
 	treetemp->t=t;
 	treetemp->nt=nt;
@@ -353,9 +336,7 @@ int GetSize (struct Typetable *type){
 	return type->size;}
 void mismatch(int n, struct Typetable *l, struct Typetable *r){
 	printf("line:'%d'\ttype mismatch:nt_%d\n",line,n);
-	if(l!=NULL)
-		printf("left:'%s'\n",l->name);
-	if(r!=NULL)
-		printf("right:'%s'\n",r->name);
+	printf("left:'%s'\n",l->name);
+	printf("right:'%s'\n",r->name);
 	exit(1);}
 //

@@ -1,0 +1,31 @@
+--
+++
+
+a[1]
+*a should work
+
+*&&p
+		*
+		&
+		&
+		p
+		
+		
+arr[i]-----------use down
+
+asgn for arr in local
+
+extra lines label.l
+
+important
+read(self.name)
+check parameters to func in classes
+
+
+checkid
+checkmembr
+checktype
+
+
+
+reg optimization set getreg freereg

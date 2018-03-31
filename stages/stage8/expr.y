@@ -104,7 +104,10 @@
 									fieldcount=new->fieldcount=parent->fieldcount;
 									methodcount=new->methodcount=parent->methodcount;
 									new->next=chead;
-									class=chead=new;}
+									chead=new;
+									class=new;
+									$$=$1;}
+
 				;
 	Fieldlists	:Fieldlists Fld
 				|;
@@ -228,6 +231,9 @@
 	Body		:BEG Slist RETURN Expr ';' END 	{//$$=$2;
 												struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
 												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
+											
+											
+											
 												funcGen(funcname);
 												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
@@ -238,6 +244,8 @@
 												bdealloc(body);
 												printf("~~~~~~~~~~~~~~~~~~~~~~\n");
 												printf("################################################################################################\n");}
+
+
 				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$3,NULL,NULL,NULL,NULL);
 												funcGen(funcname);
 												printf("CodeGen-ing '%s'\n",funcname);

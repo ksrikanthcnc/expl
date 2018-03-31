@@ -779,7 +779,7 @@ int codeGen(struct tnode *t){
 			else
 				fprintf(target_file, "CALL F%d  --'%s'\n",t->down->Gentry->flabel,t->down->Gentry->name);
 			fprintf(target_file, "POP R%d --result\n",regtemp+1);
-			atemp=t->arglist;
+			atemp=t->down->arglist;
 			i=getReg();
 			if(t->down->class!=NULL){
 				fprintf(target_file, "POP R%d --clasargs\n",i==0?19:0);

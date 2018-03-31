@@ -270,7 +270,7 @@
 											$$=createtree(CMLookup($1->class,$1->str)->type,0,$1->str,nt_FUNC,NULL,$1,NULL,$1->Gentry,NULL,$1->Lentry);}
 										$$->class=$1->class;}
 				|id '(' ArgList ')'		{checkid($1);
-										if($1->nt!=nt_USERROOT)//self
+										if($1->nt!=nt_USERROOT)
 											$$=createtree(GLookup($1->str)->type,0,$1->str,nt_FUNC,NULL,$1,NULL,$1->Gentry,$3,$1->Lentry);
 										else{
 											class=$1->class;

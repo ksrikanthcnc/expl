@@ -111,7 +111,7 @@
 				;
 	Fieldlists	:Fieldlists Fld
 				|;
-	Fld			:ID ID ';'		{CFInstall($1->str,$2->str);fieldcount++;}//1st arg class
+	Fld			:ID ID ';'		{checkmembertype($1->str);CFInstall($1->str,$2->str);fieldcount++;}
 				;
 	MethodDecl	:MethodDecl MDecl
 				|MDecl;
@@ -285,11 +285,9 @@
 				|STRING					{$$=$1;}
 				|id						{$$=$1;}
 				|NUL					{$$=$1;}
-				|id '(' ')'				{/*checkid($1);$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);*/$$=$1;$$->nt=nt_FUNC;}
-				|id '(' ArgList ')'		{/*checkid($1);*/
-										//$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);
-										$$=$1;$$->nt=nt_FUNC;$$->arglist=$3;
-										}
+				|id '(' ')'				{$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),NULL,NULL);$$=$1;$$->nt=nt_FUNC;$$->t=$1->t;}
+				|id '(' ArgList ')'		{$$=createtree($1->t,0,$1->str,nt_FUNC,NULL,NULL,NULL,GLookup($1->str),$3,NULL);
+										$$=$1;$$->nt=nt_FUNC;$$->arglist=$3;$$->t=$1->t;}
 				|NEW '(' ID ')'			{$$=createtree(NULL,0,NULL,nt_NEW,NULL,$3,NULL,NULL,NULL,NULL);}
 				;
 	ArgList		:ArgList ',' Expr		{$3->down=$1;$$=$3;}
@@ -349,18 +347,19 @@
 												ttemp=ftemp->type;findex=ftemp->fieldindex;}
 											else{//class obj.init()
 												if(CFLookup(GLookup($1->str)->class,$3->str)==NULL){//method
-													;
-													/*mtemp=CMLookup(CFLookup($1->class,$3->str)->ctype,$3->str);
-													ttemp=mtemp->type;findex=mtemp->funcposition;*/
-													//ftemp=CMLookup(GLookup($1->str)->class,$3->str)->type;
-													}
+													mtemp=CMLookup(GLookup($1->str)->class,$3->str);
+													ttemp=mtemp->type;findex=mtemp->funcposition;}
 												else{//field
 													ftemp=CFLookup(GLookup($1->str)->class,$3->str);
 													ttemp=ftemp->type;findex=ftemp->fieldindex;}}
 											struct tnode *node=createtree(ttemp,0,$1->str,nt_USERNODE,NULL,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
 											$$=createtree(ttemp,findex,$3->str,nt_USERROOT,node,NULL,NULL,GLookup($1->str),NULL,LLookup($1->str));
 											if(classflag==0) $$->class=LLookup($1->str)==NULL?GLookup($1->str)->class:NULL;}
-				|SELF '.' ID				{struct tnode *self=createtree($3->t,heapbinding,$3->str,nt_SELF,NULL,NULL,NULL,NULL,NULL,NULL);self->class=class;
+				|SELF '.' ID				{if(classflag==0){
+												printf("Not using SELF in class!\n");
+												exit(1);}
+											checkclass($3->str);
+											struct tnode *self=createtree($3->t,heapbinding,$3->str,nt_SELF,NULL,NULL,NULL,NULL,NULL,NULL);self->class=class;
 											struct Typetable *typ;
 											int field;
 											if(CFLookup(class,$3->str)!=NULL){//Field
@@ -373,6 +372,16 @@
 											$$->class=class;}
 				;
 %%
+void checkmembertype(char *clas){
+	if(CLookup(clas)==NULL && TLookup(clas)==NULL){
+		printf("line:'%d'\tno type or class:'%s' declared\n",line,clas);
+		exit(1);
+	}
+}
+void checkclass(char *member){
+	if(CMLookup(class,member)==NULL && CFLookup(class,member)==NULL){
+		printf("line:'%d'\tMember:'%s' not defined in class:'%s'\n",line,member,class->name);
+		exit(1);}}
 void checkid(struct tnode *t){
 	if(classflag==1){
 		if(CFLookup(class,t->str)==NULL && CMLookup(class,t->str)==NULL && LLookup(t->str)==NULL){
@@ -386,8 +395,12 @@ void checkmember(struct tnode *parent, struct tnode *member){
 	struct Classtable *ctemp;
 	if(LLookup(parent->str)==NULL){
 		ctemp=GLookup(parent->str)->class;
-		if(ctemp!=NULL && CFLookup(ctemp,member->str)==NULL && CMLookup(ctemp,member->str)==NULL){
-			printf("line:'%d'\tno field or method:'%s' in class:'%s'\n",line,member->str,ctemp->name);
+		if(ctemp!=NULL && CMLookup(ctemp,member->str)==NULL){
+			if(CFLookup(ctemp,member->str)==NULL)
+				printf("line:'%d'\tno method:'%s' in class:'%s'\n",line,member->str,ctemp->name);
+			else{
+				printf("line:'%d'\tCan't access Field:'%s' in class:'%s'\t(they are private)\n",line,member->str,parent->str);
+			}
 			exit(1);}}}
 void checktype(struct Typetable *t1, char *member){
 	if(FLookmember(t1,member)==NULL){

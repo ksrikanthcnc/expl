@@ -29,7 +29,7 @@
 					int line;
 					line=search(yytext);
 					fprintf(filey,"%d",line);}}
-[\n]			{lin++;	if(flag==1) fprintf(filey,"%s",yytext);}
+[\n]			{lin++;	if(flag==1) fprintf(filey,"%s",yytext); else ;}
 . 				{if(flag==1) fprintf(filey,"%s",yytext);}
 %%
 int yywrap(void) {
