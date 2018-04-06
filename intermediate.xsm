@@ -1,0 +1,47 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+JMP F999
+F999:
+MOV SP,4096 --start
+MOV BP,4097 --start
+PUSH R0 --ret.val
+CALL F1000
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0
+F1000:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R0,"Hello world" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R1,0 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET

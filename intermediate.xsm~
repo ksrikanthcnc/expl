@@ -1,0 +1,344 @@
+0
+2056
+0
+0
+0
+0
+0
+0
+JMP F999
+F1:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R1,BP --BP+?
+ADD R1,-3 --L.loc
+MOV R0,[R1] --Lid.fetch
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R1,0 --num
+MOV R0,BP
+SUB R0,2 --(BP-2)
+MOV [R0],R1 --sav.result
+MOV BP,[SP] --old.bp
+POP R0 --bp
+RET
+F999:
+MOV SP,4097 --start
+MOV BP,4098 --start
+PUSH R0 --ret.val
+CALL F1000
+MOV R0, "Exit"
+PUSH R0--"exit"
+MOV R0, ""
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+PUSH R0--blank
+CALL 0
+F1000:
+PUSH BP --caller.bp
+MOV BP,SP --act.rec
+MOV R0,"" --blank
+PUSH R0 --for.locals
+MOV R0,0 --extra
+MOV R1,1 --num
+MOV R2,4096 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+MOV R0,0 --extra
+MOV R1,10 --num
+MOV R2,4097 --Gbind
+ADD R2,R0 --Goff
+MOV [R2],R1 --Gasgn
+MOV R0,[4096] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,[4097] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,"---" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,0 --extra
+MOV R1,2 --num
+MOV R2,4096 --Gbind
+ADD R2,R0 --Goff
+MOV [5115],[R2] --pushstacky
+MOV [R2],R1 --Gasgn
+MOV R0,[4096] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,[4097] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,"---" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,0 --extra
+MOV R1,11 --num
+MOV R2,4097 --Gbind
+ADD R2,R0 --Goff
+MOV [5116],[R2] --pushstacky
+MOV [R2],R1 --Gasgn
+MOV R0,[4096] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,[4097] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV R0,"---" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+MOV [4097], [5116] --popstacky
+MOV R0,0 --extra
+MOV R1,123 --num
+MOV [5115], R1 --letasgnorig
+BRKP
+MOV R1,0 --extra
+MOV R2,546 --num
+MOV [5118], R2 --letasgnorig
+BRKP
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,[4096] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,[4097] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,"---" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+MOV [4096], [5115] --popstacky
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,[4096] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,[4097] --Gid
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+BRKP
+PUSH R1 --save.reg
+PUSH R0 --save.reg
+MOV R0,"---" --str
+MOV R2, "Write"
+PUSH R2--"write"
+MOV R2, -2
+PUSH R2--(-2)
+PUSH R0--data
+MOV R2,""
+PUSH R2--blank
+PUSH R2--blank
+CALL 0
+POP R1--ret
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R2--disc
+POP R0 --old.regs
+POP R1 --old.regs
+POP R2 --locals
+MOV R3,0 --num
+MOV R2,BP
+SUB R2,2 --(BP-2)
+MOV [R2],R3 --sav.result
+MOV BP,[SP] --old.bp
+POP R2 --bp
+RET

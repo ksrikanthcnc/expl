@@ -1,5 +1,3 @@
-dealloc full
-
 --
 ++
 
@@ -13,27 +11,21 @@ a[1]
 		p
 		
 		
-global
-	int *ret
-define
-	int *ret(present int ret)
-
-
-
 arr[i]-----------use down
 
-global tuple t(int a)
-local a
+asgn for arr in local
+
+extra lines label.l
+
+important
+read(self.name)
+check parameters to func in classes
 
 
-* in tuple
-
-type = NULL
-
-
-return last and only one
-
-copy full tuple ie tuple a = tuple x
+checkid
+checkmembr
+checktype
 
 
-x=initialize();
+
+reg optimization set getreg freereg

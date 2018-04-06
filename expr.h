@@ -2,28 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <unistd.h>
 #define brkp	raise(SIGINT);
-//#define boo 	printf("\t\t\t\tERROR:\t(File:%s\tfunc:%s\tLine:%d)\n",__FILE__,__func__,__LINE__);
-//#define debug	{printf("debug\n");}
+#define exit(a); /*brkp*/ exit(a);
+//#define BUG
 
-//-------------------t
-	/*
-	#define t_NULL 0
-	#define t_BOOL 1
-	#define t_INT 2
-	#define t_CHAR 3
-	#define t_INARR 4
-	#define t_CHARR 5
-	#define t_INPTR 6
-	#define t_CHPTR 7
-	#define t_AINT	8
-	#define t_ACHAR	9
-	#define t_TUPLE 10
-	#define t_TUPPTR 11
-	*/
 //------------------nt_
-//NULL=0;
-
+	#define FMAIN 1000
+	#define TMAIN 999
 	#define nt_NUM 36
 	#define nt_ID 1
 	#define nt_PLUS 2
@@ -57,7 +43,6 @@
 	#define nt_MOD 30
 	#define nt_APTR 31
 	#define nt_SPTR 32
-	//#define nt_PTR 33
 	#define nt_FUNC 34
 	#define nt_RET 35
 	#define nt_BRKP 37
@@ -73,19 +58,45 @@
 	#define nt_OR 47
 	#define nt_NOT 48
 	#define nt_NUL 49
-	#define nt_SELF 50
+	#define nt_NEW 50
+	#define nt_DELETE 51
+	#define nt_SELF 52
 
-int val[26];
 int line=1;
 char *funcname;
-FILE *target_file;//comment for consoling
-int tabs=0,tabtemp;
-//char *target_file="stdout";
 
+#ifndef BUG
+	#define puts //puts
+	FILE *target_file;//comment for consoling
+#endif
+FILE *locals;
+FILE *globals;
+FILE *types;
+FILE *classes;
+
+#ifdef BUG
+	//uncomment for consoling
+		#define puts(str) tabtemp=0; while(tabtemp++<tabs) printf("\t"); printf(str); printf("\n");
+		#define target_file stdout 
+#endif
+int tabs=0,tabtemp;
+int binding=0;
+int gbinding=4096;
+int flabel=1;
+int funcposition=0;
+int fieldindex=0;
+int classflag=0;
+int cindex=0;
+int heapbinding=0;
+int fieldcount,methodcount;
+struct Classtable *class;
+struct Classtable *ctype;
+	
 union Constant{
 	int intval;
 	char* strval;
 };
+
 typedef struct tnode {
 	struct Typetable *t;
 	int num;
@@ -95,12 +106,13 @@ typedef struct tnode {
 	struct tnode *left,*right,*down,*arglist;
 	struct Gsymbol *Gentry;
 	struct Lsymbol *Lentry;
-	struct Cfields *field;
+	struct Classtable *class;
 }tnode;
 
 struct Gsymbol{
 	char* name;
 	struct Typetable *type;
+	struct Classtable *class;
 	int size;
 	int binding;
 	struct Paramstruct *paramlist;
@@ -108,42 +120,80 @@ struct Gsymbol{
 	int arr;
 	char *tuplename;
 	struct Gsymbol* next;
-}*ghead;
-int binding=0;
-int gbinding=4096;
-struct Gsymbol *GLookup(char * name);
-void GInstall(char *name, struct Typetable *type, int size);
+}*ghead=NULL;
 
 struct Paramstruct{
 	char* name;
 	struct Typetable *type;
 	struct Paramstruct* next;
-}*phead;
-void PInstall(char* name,struct Typetable *type);
-struct Paramstruct* PLookup(char *name);
+}*phead=NULL;
 
 struct Lsymbol{
 	char *name;
 	struct Typetable *type;
+	struct Classtable *class;
+
 	int binding;
 	struct Lsymbol *next;
-}*lhead;
+}*lhead=NULL;
+
+struct Typetable{
+	char *name;
+	int size;
+	struct Fieldlist *fields;
+	struct Typetable *next;
+}*thead=NULL;
+
+struct Fieldlist{
+	char *name;
+	int fieldindex;
+	struct Typetable *type;
+	struct Classtable *ctype;	//pointer to the class containing the field
+	struct Fieldlist *next;
+}*fhead=NULL;
+
+struct Classtable {
+ 	char *name;							//name of the class
+	struct Fieldlist *memberfield;		//pointer to Fieldlist 
+	struct Memberfunclist *memberfunc;		//pointer to Memberfunclist
+	struct Classtable *parent;		 //pointer to the parent's class table
+	int index;						//position of the class in the virtual function table
+	int fieldcount;						//count of fields
+	int methodcount;						//count of methods
+	struct Classtable *next;				//pointer to next class table entry
+}*chead=NULL;
+
+struct Memberfunclist {
+ 	char *name;						//name of the member function in the class
+	struct Typetable *type;			//pointer to typetable
+	struct Paramstruct *paramlist;	//pointer to the head of the formal parameter list
+	int funcposition;				//position of the function in the class table
+ 	int flabel;						//A label for identifying the starting address of the function's code in the memory
+	struct Memberfunclist *next;	 //pointer to next Memberfunclist entry
+}*mhead=NULL;
+
+
+
+
+
+struct Classtable* CInstall(char *name,char *parent);
+struct Classtable* CLookup(char *name);
+
+void CFInstall(/*struct Classtable *cptr, */char *typename, char *name);
+struct Fieldlist *CFLookup(struct Classtable *class, char *name);
+
+void CMInstall(/*struct Classtable *cptr, */char *name, struct Typetable *type, struct Paramstruct *Paramlist);
+struct Memberfunclist *CMLookup(struct Classtable *class, char *name);
+
+struct Gsymbol *GLookup(char * name);
+void GInstall(char *name, struct Typetable *type, int size);
+
+void PInstall(char* name,struct Typetable *type);
+struct Paramstruct* PLookup(char *name);
+
 void LInstall(char *name, struct Typetable *type);
 struct Lsymbol *LLookup(char* name);
 
-struct Typetable{
-    char *name;
-    int size;
-    struct Fieldlist *fields;
-    struct Typetable *next;
-}*thead;
-struct Fieldlist{
-  char *name;
-  int fieldIndex;
-  struct Typetable *type;
-  struct Paramstruct *paramlist;
-  struct Fieldlist *next;
-}*fhead;
 void TypeTableCreate();
 void TInstall(char *name,int size, struct Fieldlist *fields);
 struct Typetable* TLookup(char *name);
@@ -152,37 +202,15 @@ struct Fieldlist* FLookup(struct Typetable *type, char *name);
 struct Fieldlist* FLookmember(struct Typetable *type, char *name);
 int GetSize (struct Typetable * type);
 
-struct Ctable{
-	char *name;
-	struct Ctable *parent;
-	struct Cfields *fields;
-	struct Ctable *next;
-}*chead;
-void CInstall(char *name,struct Ctable *parent,struct Cfields *fields);
-struct Ctable *CLookup(char *name);
-
-struct Cfields{
-	char* name;
-	int fieldIndex;
-	struct Typetable *type;
-	int flabel;
-	struct Paramstruct *paramlist;
-	struct Cfields *next;
-}*cfhead;
-
-void CFInstall(char *name,int fieldIndex,struct Typetable *type);
-struct Cfields* CFLookup(struct Cfields *cfhead, char *name);
-
-
-
 struct tnode* createtree(struct Typetable *type, int num,char *str,int nt, struct tnode *l, struct tnode *r,struct tnode *d,struct Gsymbol *gentry,struct tnode *arglist,struct Lsymbol *lentry);
 
-struct tnode *dnode;
+struct tnode *dnode,*ddnode;
 struct Gsymbol *gnode;
 struct Paramstruct *pnode;
 struct Lsymbol *lnode;
 struct Typetable *Tnode;
 struct Fieldlist *fnode;
+struct Classtable *cnode;
 
 
 void generate();
@@ -191,9 +219,9 @@ void freeReg();
 int getLabel();
 
 int codeGen(struct tnode *t);
-void funcGen(struct Gsymbol *g);
-void Write(int reg,  int ret);
-void Read(int addr,  int ret);
+void funcGen(char *g);
+void Write(int reg,	int ret);
+void Read(int addr,	int ret);
 void ReadReg(int reg_addr,int ret);
 void Halt();
 void Brkp();
@@ -210,20 +238,19 @@ void mismatch(int n, struct Typetable *l, struct Typetable *r);
 int evaluate(struct tnode * t);
 
 void fetch_local_loc_to(struct tnode *t,int i);
-/*
-void debg(struct Gsymbol * g);
-void debt(struct tnode * t);
-*/
 
-
+void checkmembertype(char *clas);
 void checkid(struct tnode *t);
 void checkidid(struct tnode *t1,struct tnode *t3);
 void checktype(struct Typetable *t1, char *member);
+void checkclass(char *member);
+void checkmember(struct tnode *parent, struct tnode *member);
 void yyerror(char const *s);
 void func(struct Paramstruct* phead);
 void tprint();
 void gprint();
 void lprint();
+void cprint();
 
 void ldealloc(struct Lsymbol *lhead);
 void bdealloc(struct tnode *body);

@@ -1,7 +1,0 @@
-nt_num		t_int
-nt_str		t_char
-nt_PTR		t_int	t_char
-nt_id		t_int	t_char
-nt_arr		t_int	t_char
-nt_sptr		t_int	t_char
-nt_aptr		t_int	t_char

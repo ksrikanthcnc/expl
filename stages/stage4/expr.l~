@@ -14,7 +14,7 @@
 "/"				{return DIV;}
 "%"				{return MOD;}
 "="				{return EQ;}
-"<"				{return LT;}
+"<"				{return LT;}/**/*/*/*/*/*/*/*/
 ">"				{return GT;}
 "<="			{return LE;}
 ">="			{return GE;}
@@ -41,10 +41,10 @@
 "enddecl"		{return ENDDECL;}
 "int"			{return INT;}
 "str"			{return STR;}
-["][^"\n]+["]	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
-['][^'\n]+[']	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
+["][^"\n]*["]	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
+['][^'\n]*[']	{yylval = createtree(t_CHAR,NULL,strdup(yytext),nt_STR,NULL,NULL,NULL,NULL);return STRING;}
 [0-9]+			{yylval = createtree(t_INT,atoi(yytext),NULL,nt_NUM,NULL,NULL,NULL,NULL); return NUM;}
-[a-z]+			{yylval = createtree(t_CHAR,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL);return ID;}
+[a-z]+			{yylval = createtree(NULL,NULL,yytext,nt_ID,NULL,NULL,NULL,NULL);return ID;}	//type=t_CHAR???
 [(),\[\];&]		{return *yytext;}
 [ \t]			{}
 [\n]			{line++;}

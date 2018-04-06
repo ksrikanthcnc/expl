@@ -1,0 +1,169 @@
+MOV R1, SP--lib.write?
+MOV R2, 5
+SUB R1, R2 --SP-5
+MOV R2, "Write"
+MOV R1, [R1] --"write"
+EQ R1, R2
+JZ R1, 64 --not.write?
+MOV R1, SP --yes.write
+MOV R2, 4
+SUB R1, R2
+MOV R2, [R1] --(-2)
+ADD R1, 1
+MOV R3, [R1] --data
+ADD R1, 1
+MOV R4, [R1] --""
+MOV R5, 5 --syscall
+PUSH R5 --syscall
+PUSH R2 --(-2)
+PUSH R3 --data
+PUSH R4 --""
+PUSH R4 --""
+INT 7
+POP R1 --ret.val
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], R1 --ret
+RET --lib.write
+MOV R1, SP--lib.read?
+MOV R2, 5
+SUB R1, R2 --SP-5
+MOV R2, "Read"
+MOV R1, [R1] --"read"
+EQ R1, R2
+JZ R1, 128 --not.read?
+MOV R1, SP --yes.read
+MOV R2, 4
+SUB R1, R2
+MOV R2, [R1] --(-2)
+ADD R1, 1
+MOV R3, [R1] --phy.loc
+ADD R1, 1
+MOV R4, [R1] --""
+MOV R5, 7 --syscall
+PUSH R5 --syscall
+PUSH R2 --(-2)
+PUSH R3 --phy.loc
+PUSH R4 --""
+PUSH R4 --""
+INT 6
+POP R1 --ret.val
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], R1 --ret
+RET--lib.read
+MOV R1, SP--lib.exit?
+MOV R2, 5
+SUB R1, R2 --SP-5
+MOV R2, "Exit"
+MOV R1, [R1] --"exit"
+EQ R1, R2
+JZ R1, 192 --not.exit?
+MOV R1, SP --yes.exit
+MOV R2, 4
+SUB R1, R2
+MOV R2, [R1] --""
+ADD R1, 1
+MOV R3, [R1] --""
+ADD R1, 1
+MOV R4, [R1] --""
+MOV R5, 10 --syscall
+PUSH R5 --syscall
+PUSH R4 --""
+PUSH R2 --""
+PUSH R3 --""
+PUSH R5 --""
+INT 10
+POP R1 --ret.val
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+POP R2 --disc
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], R1
+RET--lib.exit
+MOV R1, SP --lib.heap?
+MOV R2, 5
+SUB R1, R2
+MOV R2, "Heapset"
+MOV R1, [R1] --"heapset"
+EQ R1, R2
+JZ R1, 236 --not.heap?
+MOV R1,1024 --yes.heap
+MOV R2,8
+MOV R3,2040 --while
+GT R3,R1 --cond
+JZ R3,224 --false
+MOV [R1],R2 --true
+ADD R1,8
+ADD R2,8
+JMP 210 --begin
+MOV [2040],-1 --last
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], 0 --ret.val
+RET--lib.heapset
+MOV R1, SP --lib.alloc
+MOV R2, 5
+SUB R1, R2
+MOV R2, "Alloc"
+MOV R1, [R1] --"alloc"
+EQ R1, R2
+JZ R1, 292 --not.alloc?
+MOV R2, 4 --yes.alloc
+MOV R1,SP
+SUB R1, R2
+MOV R2, [R1] --size
+MOV R3,[1024]
+MOV R4,-1
+EQ R4,R3 --(-1?)
+JNZ R4,284 --fail
+ADD R3,1024 --alloc
+MOV R4,[R3] --next
+MOV [1024],R4 --stor
+MOV R2, SP
+MOV R1, 1
+SUB R2, R1
+MOV [R2], R3--ans
+RET--lib.alloc
+MOV R2, SP --failed
+MOV R1, 1
+SUB R2, R1
+MOV [R2], -1 --(-1)
+RET--lib.alloc
+MOV R1, SP --lib.free
+MOV R2, 5
+SUB R1, R2
+MOV R2, "Free"
+MOV R1, [R1] --"free"
+EQ R1, R2
+JZ R1, 334 --not.free?
+MOV R1,SP --yes. free
+MOV R2, 4
+SUB R1, R2 --(SP-4)
+MOV R2, R1 --R2=to.free
+MOV R1,[1024] --present
+MOV R3,[R2]
+MOV [R3],R1 --to.free
+SUB R3,1024
+MOV [1024],R3 --new.head
+MOV R2, SP
+MOV R3, 1
+SUB R2, R3
+MOV [R2], 0 --ret.val
+RET--lib.free
+BRKP
+--end of lib
