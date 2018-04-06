@@ -431,11 +431,11 @@ void generate(){
 	int base;
 	/* while(base<4096+chead->index*8)
 		fprintf(target_file,"MOV [%d],-1 --vfunc.init\n",base+mtemp->funcposition);base++; */
+	if(chead!=NULL){
 	base=4096+chead->index*8;
 	int *func;
 	func=malloc(sizeof(int)*8);
 	while(ctemp){
-		printf("%s\n",ctemp->name);
 		mtemp=ctemp->memberfunc;
 		for(int i=0;i<8;i++)	func[i]=0;
 		while(mtemp){
@@ -445,6 +445,7 @@ void generate(){
 			mtemp=mtemp->next;}
 		base-=8;
 		ctemp=ctemp->next;
+	}
 	}
 	fprintf(target_file,"MOV SP,%d --start\n",gbinding-1);
 	fprintf(target_file,"MOV BP,%d --start\n",gbinding);
@@ -461,7 +462,7 @@ int codeGen(struct tnode *t){
 	struct tnode *atemp;
 	struct Lsymbol *ltemp;
 	switch(t->nt){
-		case nt_NODE:
+		case nt_NODE://left right send chesthaadhi
 			puts("\t\t\t\t+node");
 			puts("\t\t\t\t+left");
 			codeGen(t->left);
@@ -469,7 +470,7 @@ int codeGen(struct tnode *t){
 			codeGen(t->right);
 			//puts("\t\t\t\t-");
 			break;
-		case nt_NUM:
+		case nt_NUM://sets number in a reguster n sends
 			puts("\t\t\t\t+num");
 			//printf("%d\n",t->num);
 			i=getReg();
@@ -478,7 +479,7 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		case nt_STR:
+		case nt_STR://sets string in a reg n sends
 			puts("\t\t\t\t+str");
 			//printf("%s\n",t->str);
 			i=getReg();
@@ -487,7 +488,7 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		case nt_ID:
+		case nt_ID://sets value value of id in reg n sends;
 			puts("\t\t\t\t+id");
 			//printf("%s\n",t->str);
 			i=getReg();
@@ -503,7 +504,7 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		case nt_APTR:
+		case nt_APTR://
 			puts("\t\t\t\t+pointer-&");
 			//printf("%s\n",t->str);
 			i=getReg();
@@ -518,7 +519,7 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		case nt_SPTR:
+		case nt_SPTR://
 			puts("\t\t\t\t+pointer-*");
 			//printf("%s\n",t->str);
 			i=getReg();
@@ -535,7 +536,7 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return i;
 			break;
-		case nt_ARR:
+		case nt_ARR://if a[1] or a[expr]
 			puts("\t\t\t\t+arr");
 			//printf("%s\n",t->str);
 			i=getReg();
@@ -681,8 +682,9 @@ int codeGen(struct tnode *t){
 				freeReg();
 				freeReg();}
 			else if(t->down->Gentry!=NULL){
-				if(t->down->nt!=nt_ARR)
-					i=codeGen(t->down);
+				if(t->down->nt!=nt_ARR){
+					i=getReg();
+					fprintf(target_file, "MOV R%d, 0 --0off\n",i);}
 				else
 					i=codeGen(t->down->down);
 				k=getReg();
@@ -690,13 +692,13 @@ int codeGen(struct tnode *t){
 					fprintf(target_file,"MOV R%d,%d --Rbind\n",k,t->down->Gentry->binding);
 					fprintf(target_file,"ADD R%d,R%d --Roff\n",k,i);}
 				else{
-					fprintf(target_file,"MOV R%d,R%d --Roff\n",k,i);
-				}
-
-				freeReg();
+					j=codeGen(t->down);
+					fprintf(target_file,"MOV R%d,R%d --Roff\n",k,j);
+					freeReg();}
 				ret=getReg();
 				ReadReg(k,ret);
 				freeReg();
+//				freeReg();
 				freeReg();}
 			else{
 				i=getReg();
@@ -739,7 +741,7 @@ int codeGen(struct tnode *t){
 				freeReg();
 				freeReg();
 				break;}*/
-			if(t->left->class!=NULL && t->right->class!=NULL){
+			if(classflag==0 && t->left->class!=NULL && t->right->class!=NULL){
 				i=getReg();
 				k=getReg();
 				fprintf(target_file,"MOV R%d,%d --rclabind\n",i,t->right->Gentry->binding);
@@ -946,7 +948,7 @@ int codeGen(struct tnode *t){
 				fprintf(target_file, "MOV R%d,[R%d] --vfunc\n",k,k);
 				fprintf(target_file, "CALL R%d\n",k);
 				freeReg();}
-			else if(t->left->class!=NULL){//self.o1.fact()//---------------------------------------------------------???????something striked
+			else if(t->left!=NULL && t->left->class!=NULL){//self.o1.fact()//---------------------------------------------------------???????something striked
 				fprintf(target_file, "CALL F%d\n",CMLookup(CFLookup(t->left->class,t->left->str)->ctype,t->str)->flabel);
 			}
 			else
@@ -1087,9 +1089,9 @@ int codeGen(struct tnode *t){
 			tabs--;
 			return j;
 			break;
-		case nt_USERNODE:
+		case nt_USERNODE://node.left.right(.val)
 			puts("\t\t\t\t+usernode");
-			if(t->left==NULL){//root node
+			if(t->left==NULL){//root node    //node(.left.right(.val))
 				puts("\t\t\t\t-user");
 				if(t->Lentry==NULL){
 					i=getReg();
@@ -1106,7 +1108,7 @@ int codeGen(struct tnode *t){
 					puts("\t\t\t\t-usernode");
 					tabs--;
 					return j;}}
-			else{
+			else{//(node.)left.right(.val)
 				j=codeGen(t->left);
 				fprintf(target_file, "ADD R%d,%d --addr\n",j,t->num);
 				fprintf(target_file, "MOV R%d,[R%d] --addr\n",j,j);

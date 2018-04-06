@@ -162,9 +162,7 @@
 	FDef		:Type ID '(' {	checkid($2);
 								funcname=$2->str;
 								binding=-2;
-								printf("\tDeallocating ltable...\n");
 								ldealloc(lhead);
-								printf("~~~~~~~~~~~~~~~~~~~~~~\n");
 								lhead=NULL;
 								phead=NULL;
 								tolocal=1;
@@ -218,9 +216,7 @@
 //-------------------------------------------------------------------------main
 	MainBlock 	:MAIN {	binding=0;}
 						'(' ')' '{' {	funcname="main";
-										printf("\tDeallocating ltable...\n");
 										ldealloc(lhead);
-										printf("~~~~~~~~~~~~~~~~~~~~~~\n");
 										lhead=NULL;
 										binding=0;
 										GLookup("main")->type=TLookup("int");}
@@ -229,32 +225,20 @@
 				;
 //-------------------------------------------------------------------------body
 	Body		:BEG Slist RETURN Expr ';' END 	{//$$=$2;
-												struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
+												struct tnode *ret=createtree(classflag==1?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$4,NULL,NULL,NULL,NULL);
 												struct tnode *body=createtree(TLookup("void"),0,NULL,nt_NODE,$2,NULL,ret,NULL,NULL,NULL);
-											
-											
-											
 												funcGen(funcname);
 												if(allocflag>0 && initflag==0){//--------------main:init other:alloc???
 													printf("Using ALLOC without INIT... You may run into something...!\n");}
-												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(body);
-												printf("Finished CodeGen-ing of '%s'\n",funcname);
-												printf("\tDeallocating BODY...\n");
-												bdealloc(body);
-												printf("~~~~~~~~~~~~~~~~~~~~~~\n");
-												printf("################################################################################################\n");}
+												
+												bdealloc(body);}
 
 
 				|BEG RETURN Expr ';' END 		{struct tnode *ret=createtree(ghead->flabel==FMAIN?CMLookup(class,funcname)->type:GLookup(funcname)->type,0,NULL,nt_RET,NULL,$3,NULL,NULL,NULL,NULL);
 												funcGen(funcname);
-												printf("CodeGen-ing '%s'\n",funcname);
 												codeGen(ret);
-												printf("Finished CodeGen-ing of '%s'\n",funcname);
-												printf("\tDeallocating BODY...\n");
-												bdealloc(ret);
-												printf("~~~~~~~~~~~~~~~~~~~~~~\n");
-												printf("################################################################################################\n");};
+												bdealloc(ret);}
 	Slist		:Slist Stmt				{$$=createtree(TLookup("void"),0,NULL,nt_NODE,$1,NULL,$2,NULL,NULL,NULL);}
 				|Stmt					{$$=$1;};
 	Stmt		:READ '(' id ')' ';'								{$$=createtree(TLookup("void"),0,NULL,nt_READ,NULL,$3,NULL,NULL,NULL,NULL);}
@@ -372,17 +356,17 @@
 											$$->class=class;}
 				;
 %%
-void checkmembertype(char *clas){
+void checkmembertype(char *clas){//type of a member in class
 	if(CLookup(clas)==NULL && TLookup(clas)==NULL){
 		printf("line:'%d'\tno type or class:'%s' declared\n",line,clas);
 		exit(1);
 	}
 }
-void checkclass(char *member){
+void checkclass(char *member){//whether member of class or not
 	if(CMLookup(class,member)==NULL && CFLookup(class,member)==NULL){
 		printf("line:'%d'\tMember:'%s' not defined in class:'%s'\n",line,member,class->name);
 		exit(1);}}
-void checkid(struct tnode *t){
+void checkid(struct tnode *t){//global or local declaration
 	if(classflag==1){
 		if(CFLookup(class,t->str)==NULL && CMLookup(class,t->str)==NULL && LLookup(t->str)==NULL){
 			printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
@@ -391,7 +375,8 @@ void checkid(struct tnode *t){
 		if(LLookup(t->str)==NULL && GLookup(t->str)==NULL && CLookup(t->str)==NULL){
 			printf("Undeclared identifier:'%s' at line:'%d'\n",t->str,line);
 			exit(1);}}}
-void checkmember(struct tnode *parent, struct tnode *member){
+			
+void checkmember(struct tnode *parent, struct tnode *member){//id.id private variabless
 	struct Classtable *ctemp;
 	if(LLookup(parent->str)==NULL){
 		ctemp=GLookup(parent->str)->class;
@@ -402,17 +387,25 @@ void checkmember(struct tnode *parent, struct tnode *member){
 				printf("line:'%d'\tCan't access Field:'%s' in class:'%s'\t(they are private)\n",line,member->str,parent->str);
 			}
 			exit(1);}}}
-void checktype(struct Typetable *t1, char *member){
+			
+			
+void checktype(struct Typetable *t1, char *member){//user defined type node.next
 	if(FLookmember(t1,member)==NULL){
-		printf("line:'%d'\tUndeclared type with name:'%s' in type:'%s'\n",line,member,t1->name);
+		printf("line:'%d'\tUndefined type with name:'%s' in type:'%s'\n",line,member,t1->name);
 		exit(1);
 	return;}}
+	
+	
 void yyerror(char const *s){
 	printf("yyerror %s\nLine:%d at '%s'\n",s,line,yytext);
 	if(strcmp(yytext,"end")==0)
 		printf("Did you use a return statement...!\n");
 	exit(1);}
-void tprint(){
+	
+	
+	
+void tprint(){//for printing type table
+return;
 	printf("\t\tType Declarations\n");
 	fprintf(types,"\t\tType Declarations\n");
 	struct Typetable *ttemp;
@@ -432,7 +425,8 @@ void tprint(){
 			ftemp=ftemp->next;}
 		ttemp=ttemp->next;}
 	printf("######################################################\n");}
-void gprint(){
+void gprint(){//global symbol table
+return;
 	int i,j;
 	printf("\t\tGlobal Table(Static size:'%d')\tgbinding:'%d'\n",gbinding-4096-8*(1+(chead==NULL?-1:chead->index)),gbinding);
 	fprintf(globals,"\t\tGlobal Table(Static size:'%d')\n",gbinding-4096-8*(1+(chead==NULL?-1:chead->index)));
@@ -481,6 +475,7 @@ void gprint(){
 		gtemp=gtemp->next;}
 	printf("######################################################\n");}
 void lprint(){
+return;//local symbol table;
 	int i;
 	printf("\t\tLocal Table('%s')\n",funcname);
 	int count=0;
@@ -493,7 +488,8 @@ void lprint(){
 		if(ltemp->binding==1){printf("\narguments\n");i=1;}
 		ltemp=ltemp->next;}
 	printf("######################################################\n");}
-void cprint(){
+void cprint(){//class table;
+return;
 	int i,j;
 	struct Classtable *ctemp;
 	ctemp=chead;
@@ -534,14 +530,16 @@ void cprint(){
 			mtemp=mtemp->next;}
 		ctemp=ctemp->next;}
 	printf("\n\n\n\n");}
+	
+	
 void ldealloc(struct Lsymbol *lhead){
-	if(lhead==NULL)
+	if(lhead==NULL)//local symbol table deallloc
 		return;
 	//printf("%d.funcname:'%s'\tname:'%s'\n",ttint++,funcname,lhead->name);
 	ldealloc(lhead->next);
 	free(lhead->next);}
 void bdealloc(struct tnode *body){
-	if(body==NULL)
+	if(body==NULL)//body deallloc
 		return;
 	//printf("%d.funcname:'%s'\tnt:'%d'\n",tint++,funcname,body->nt);
 	bdealloc(body->left);
@@ -550,16 +548,15 @@ void bdealloc(struct tnode *body){
 	free(body->down);
 	bdealloc(body->right);
 	free(body->right);}
+	
+	
 void sigint_handler(int num){
 	printf("\n\n\nSegmentation occured at line:'%d'\n",line);
 	signal(SIGSEGV, SIG_DFL);
-	raise(SIGSEGV);}
+	raise(SIGSEGV);}//segmentation fault line in input file
+	
 int main(){
 	signal(SIGSEGV, sigint_handler);
-	locals=fopen("locals","w+");
-	globals=fopen("globals","w+");
-	types=fopen("types","w+");
-	classes=fopen("classes","w+");
 	ghead=NULL;
 	chead=NULL;
 	FILE *fp=fopen("input","r");

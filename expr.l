@@ -6,7 +6,7 @@
 
 %%
 
-"/*"([^*/]|(\*[^/])|(\/))*"*/"	{int i=yyleng;char *c;c=&yytext[0];while(i) {if(*c=='\n') line++;c++;i--;}}
+"/*"([^*/]|(\*[^/])|(\/)|('\*\/'))*"*/"	{int i=yyleng;char *c;c=&yytext[0];while(i) {if(*c=='\n') line++;c++;i--;}}
 "//".* 			{}
 "+"				{return PLUS;}
 "-"				{return MINUS;}
