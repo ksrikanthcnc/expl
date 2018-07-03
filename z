@@ -1,0 +1,60 @@
+#!/bin/sh
+set -e
+clear
+if [ ${PWD##*/} != 'expl' ]
+then
+	echo 'run from expl directory'
+	exit
+fi
+cd xfs-interface
+./init
+cd ..
+#root=~/git/MY/expl
+#cd $root
+echo 'removing backup files *~'
+find . -iname "*~" -print -exec rm {} \;	#removing backup files
+
+yacc -d -v --verbose --debug expr.y 
+lex expr.l
+
+#tcc -Werror -g y.tab.c -o compiler
+gcc -Werror -g y.tab.c -o compiler
+echo C O M P I L I N G
+#echo
+set +e
+./compiler
+
+if [ $? -ne 0 ]
+then 	
+		ddd -silent -x ~/gdb --eval-command=quit ./compiler
+		exit
+fi
+
+lex elabel.l
+#tcc -g lex.yy.c -o labeller
+gcc -g lex.yy.c -o labeller
+echo L A B E L L I N G
+echo
+./labeller
+
+if [ $? -ne 0 ]
+then 	
+		ddd -silent -x ~/gdb --eval-command=quit ./labeller
+		exit
+fi
+#cd $root
+echo
+echo Starting Machine
+./xsm -l library.lib -e output.xsm --debug
+
+exit
+
+#gdb -silent -tui -x ~/gdb --eval-command=quit ./labeller
+#ddd -silent -x ~/gdb --eval-command=quit ./compiler
+
+#cp output.xsm ~/workspace/xsm_expl/output.xsm 
+#cp output.xsm $root
+#cd ~/workspace/xsm_expl/
+
+
+
