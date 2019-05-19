@@ -1,6 +1,0 @@
-debug mode jump to mistake line
-debug	enter repeats last instruction
-alloc() push -2 instead of alloc(heapallocation page)
-It is better to maintain the index of a method in the class table (Funcposition) and the virtual function table to be the same
-%error-verbose
-

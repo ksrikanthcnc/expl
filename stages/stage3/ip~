@@ -1,6 +1,0 @@
-begin
-read(a);
-endwhile;
-write(b);
-end;
-

@@ -1,8 +1,0 @@
-decl
-int num,sum;
-int num , sum;
-str mesg;
-enddecl
-
-begin
-end;

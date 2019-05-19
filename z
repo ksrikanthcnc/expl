@@ -11,8 +11,9 @@ cd xfs-interface
 cd ..
 #root=~/git/MY/expl
 #cd $root
-echo 'removing backup files *~'
-find . -iname "*~" -print -exec rm {} \;	#removing backup files
+
+#echo 'removing backup files *~'
+#find . -iname "*~" -print -exec rm {} \;	#removing backup files
 
 yacc -d -v --verbose --debug expr.y 
 lex expr.l

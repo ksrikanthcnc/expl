@@ -1,9 +1,0 @@
-decl
-	int n;
-enddecl
-int main(){
-	begin
-		print"Hello world";
-		return 0;
-	end
-}

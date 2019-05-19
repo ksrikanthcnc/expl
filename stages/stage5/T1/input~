@@ -1,4 +1,0 @@
-decl
-str def();
-int n,fact(int b);
-enddecl;

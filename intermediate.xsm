@@ -8,8 +8,8 @@
 0
 JMP F999
 F999:
-MOV SP,4096 --start
-MOV BP,4097 --start
+MOV SP,4095 --start
+MOV BP,4096 --start
 PUSH R0 --ret.val
 CALL F1000
 MOV R0, "Exit"
