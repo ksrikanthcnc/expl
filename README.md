@@ -2,8 +2,8 @@
 
 Reference: https://silcnitc.github.io/
 
-This is a compiler for a toy operating system ([xos](https://xosnitc.github.io/))
-Running `chmod +x z && ./z` in terminal probably works(after having the pre-requisites)
+This is a compiler for a toy operating system ([xos](https://xosnitc.github.io/))\
+Running `chmod +x z && ./z` in terminal probably works(after having the pre-requisites)\
 For debugging output, uncomment `#define BUG` in [expr.h](expr.h) file
 ### Outline of stages
 Please follow the [Roadmap](documentation/Roadmap.pdf)
@@ -21,15 +21,15 @@ You need flex(lex) and bison(yacc). For futher details click [here](documentatio
 
 
 ## Features implemented and learnt
-Parsing, Tokenizing
-Working of stack
-Abstract Syntax tree
-Usage of machine registers
-Error handling
-Symbol Table
-Type-Checking
-Dynamic memory allocation (Heap)
-Functions' implementation
+Parsing, Tokenizing\
+Working of stack\
+Abstract Syntax tree\
+Usage of machine registers\
+Error handling\
+Symbol Table\
+Type-Checking\
+Dynamic memory allocation (Heap) \
+Functions' implementation\
 Object Oriented Programming
 - Inner workings of Polymorphism
 - Runtime binding of functions
@@ -37,22 +37,21 @@ Object Oriented Programming
 
 ### To-Do
 - Increment(++) and Decrement(--) operator
-- a[1]
-  *a should work
+- a[1] (*a should work)
 - *&&p
-		*
-		&
-		&
-		p		
+  - \*
+  - &
+  - &
+  - p		
 - Implement arr[i] using down pointer
 - Assignment for arr should be possible i local scope
 - extra lines label.l
 
 **Important**
 - read (self.name)
-check parameters to func in classes
+  - check parameters to func in classes
 - checkid
-checkmembr
-checktype
+  - checkmembr
+  - checktype
 - reg optimization set getreg freereg
 
